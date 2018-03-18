@@ -450,8 +450,7 @@ public class TypeResolverBV {
               var = var.union(child);
             }
           }
-        }
-        while (!finished);
+        } while (!finished);
       }
     }
   }

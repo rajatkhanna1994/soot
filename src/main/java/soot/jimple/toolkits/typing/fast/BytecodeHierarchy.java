@@ -97,31 +97,23 @@ public class BytecodeHierarchy implements IHierarchy {
       return Collections.<Type>singletonList(a);
     } else if (a instanceof IntegerType && b instanceof IntegerType) {
       return Collections.<Type>singletonList(IntType.v());
-    }
-
-    // Implicit type widening: Integer+Float -> Float
-    else if (a instanceof IntegerType && b instanceof FloatType) {
+    } else if (a instanceof IntegerType && b instanceof FloatType) {
+      // Implicit type widening: Integer+Float -> Float
       return Collections.<Type>singletonList(FloatType.v());
     } else if (b instanceof IntegerType && a instanceof FloatType) {
       return Collections.<Type>singletonList(FloatType.v());
-    }
-
-    // Disallow type sharing for primitives in general
-    else if (a instanceof PrimType || b instanceof PrimType) {
+    } else if (a instanceof PrimType || b instanceof PrimType) {
+      // Disallow type sharing for primitives in general
       return Collections.<Type>emptyList();
-    }
-
-    // Null reference handling
-    else if (a instanceof NullType) {
+    } else if (a instanceof NullType) {
+      // Null reference handling
       return Collections.<Type>singletonList(b);
     } else if (b instanceof NullType) {
       return Collections.<Type>singletonList(a);
-    }
-
-    // a and b are both ArrayType or RefType
-    else if (a instanceof ArrayType && b instanceof ArrayType) {
-      Type eta = ((ArrayType) a).getElementType(),
-          etb = ((ArrayType) b).getElementType();
+    } else if (a instanceof ArrayType && b instanceof ArrayType) {
+      // a and b are both ArrayType or RefType
+      Type eta = ((ArrayType) a).getElementType();
+      Type etb = ((ArrayType) b).getElementType();
       Collection<Type> ts;
 
       // Primitive arrays are not covariant but all other arrays are
@@ -151,14 +143,14 @@ public class BytecodeHierarchy implements IHierarchy {
         rt = a;
       }
 
-			/* If the reference type implements Serializable or Cloneable then
-			these are the least common supertypes, otherwise the only one is
-			Object. */
+      /* If the reference type implements Serializable or Cloneable then
+      these are the least common supertypes, otherwise the only one is
+      Object. */
 
       LinkedList<Type> r = new LinkedList<Type>();
-			/* Do not consider Object to be a subtype of Serializable or Cloneable
-			(it can appear this way if phantom-refs is enabled and rt.jar is not
-			available) otherwise an infinite loop can result. */
+      /* Do not consider Object to be a subtype of Serializable or Cloneable
+      (it can appear this way if phantom-refs is enabled and rt.jar is not
+       available) otherwise an infinite loop can result. */
       if (!TypeResolver.typesEqual(RefType.v("java.lang.Object"), rt)) {
         if (ancestor_(RefType.v("java.io.Serializable"), rt)) {
           r.add(RefType.v("java.io.Serializable"));
@@ -172,11 +164,10 @@ public class BytecodeHierarchy implements IHierarchy {
         r.add(RefType.v("java.lang.Object"));
       }
       return r;
-    }
-    // a and b are both RefType
-    else {
-      Collection<AncestryTreeNode> treea = buildAncestryTree((RefType) a),
-          treeb = buildAncestryTree((RefType) b);
+    } else {
+      // a and b are both RefType
+      Collection<AncestryTreeNode> treea = buildAncestryTree((RefType) a);
+      Collection<AncestryTreeNode> treeb = buildAncestryTree((RefType) b);
 
       LinkedList<Type> r = new LinkedList<Type>();
       for (AncestryTreeNode nodea : treea) {

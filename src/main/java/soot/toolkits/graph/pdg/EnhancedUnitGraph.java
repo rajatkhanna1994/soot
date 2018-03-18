@@ -194,10 +194,9 @@ public class EnhancedUnitGraph extends UnitGraph {
         parentOfX = dom.getParentOf(x);
 
         // If parent is null we must be at the head of the graph
-        if (parentOfX == null)
-        // throw new
-        // RuntimeException("This should never have happened!");
-        {
+        if (parentOfX == null) {
+          // throw new
+          // RuntimeException("This should never have happened!");
           break;
         }
 
@@ -343,11 +342,10 @@ public class EnhancedUnitGraph extends UnitGraph {
               break;
             }
           }
-        }
-        // the following happens if the throw is the only exit in the
-        // method (even if return stmt is present.)
-        else if (dom.isDominatorOf(dom.getDode(mergePoint),
+        } else if (dom.isDominatorOf(dom.getDode(mergePoint),
             dom.getDode(tail))) {
+          // the following happens if the throw is the only exit in the
+          // method (even if return stmt is present.)
           continue TailsLoop;
         }
 
@@ -529,7 +527,8 @@ public class EnhancedUnitGraph extends UnitGraph {
  */
 class GuardedBlock {
 
-  Unit start, end;
+  Unit start;
+  Unit end;
 
   public GuardedBlock(Unit s, Unit e) {
     this.start = s;

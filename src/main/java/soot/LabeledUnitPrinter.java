@@ -79,9 +79,8 @@ public abstract class LabeledUnitPrinter extends AbstractUnitPrinter {
         label = "[?= " + u + "]";
       }
       output.append(label);
-    }
-    // refs to control flow predecessors (for Shimple)
-    else {
+    } else {
+      // refs to control flow predecessors (for Shimple)
       String ref = references.get(u);
 
       if (startOfLine) {

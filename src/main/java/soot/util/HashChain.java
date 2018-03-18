@@ -452,7 +452,8 @@ public class HashChain<E> extends AbstractCollection<E> implements Chain<E> {
     }
 
     stateCount++;
-    Link<E> newLink, temp;
+    Link<E> newLink;
+    Link<E> temp;
 
     if (map.containsKey(item)) {
       throw new RuntimeException("Chain already contains object.");
@@ -475,7 +476,8 @@ public class HashChain<E> extends AbstractCollection<E> implements Chain<E> {
     }
 
     stateCount++;
-    Link<E> newLink, temp;
+    Link<E> newLink;
+    Link<E> temp;
     if (map.containsKey(item)) {
       throw new RuntimeException("Chain already contains object: " + item);
     }
@@ -767,11 +769,10 @@ public class HashChain<E> extends AbstractCollection<E> implements Chain<E> {
 
       if (destination == null) {
         return (currentLink.getNext() != null);
-      } else
-      // Ignore whether (currentLink.getNext() == null), so
-      // next() will produce a NoSuchElementException if
-      // destination is not in the chain.
-      {
+      } else {
+        // Ignore whether (currentLink.getNext() == null), so
+        // next() will produce a NoSuchElementException if
+        // destination is not in the chain.
         return (destination != currentLink.getItem());
       }
     }

@@ -47,7 +47,9 @@ public class StringTools {
    */
   public static java.lang.String getEscapedStringOf(String fromString) {
     char[] fromStringArray;
-    int cr, lf, ch;
+    int cr;
+    int lf;
+    int ch;
     StringBuffer whole = new StringBuffer();
     StringBuffer mini = new StringBuffer();
 
@@ -82,8 +84,6 @@ public class StringTools {
     return whole.toString();
   }
 
-  ;
-
   /**
    * Returns fromString, but with certain characters printed as if they were
    * in a Java string literal. Used by StringConstant.toString()
@@ -106,19 +106,17 @@ public class StringTools {
         toStringBuffer.append("\\n");
       } else if (ch == '\t') {
         toStringBuffer.append("\\t");
-      }
-      /*
-       * 04.04.2006 mbatch added handling of \r, as compilers throw error
-       * if unicode
-       */
-      else if (ch == '\r') {
+      } else if (ch == '\r') {
+        /*
+         * 04.04.2006 mbatch added handling of \r, as compilers throw error
+         * if unicode
+         */
         toStringBuffer.append("\\r");
-      }
-      /*
-       * 10.04.2006 Nomait A Naeem added handling of \f, as compilers
-       * throw error if unicode
-       */
-      else if (ch == '\f') {
+      } else if (ch == '\f') {
+        /*
+         * 10.04.2006 Nomait A Naeem added handling of \f, as compilers
+         * throw error if unicode
+         */
         toStringBuffer.append("\\f");
       } else if (ch >= 32 && ch <= 126) {
         toStringBuffer.append(ch);

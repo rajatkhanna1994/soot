@@ -69,7 +69,8 @@ public class Typing {
   public static int compare(Typing a, Typing b, IHierarchy h) {
     int r = 0;
     for (Local v : a.map.keySet()) {
-      Type ta = a.get(v), tb = b.get(v);
+      Type ta = a.get(v);
+      Type tb = b.get(v);
 
       int cmp;
       if (TypeResolver.typesEqual(ta, tb)) {

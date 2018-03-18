@@ -79,8 +79,8 @@ import soot.util.StringNumberer;
 /**
  * Manages the SootClasses of the application being analyzed.
  */
-public class Scene // extends AbstractHost
-{
+public class Scene {
+  // extends AbstractHost
   private static final Logger logger = LoggerFactory.getLogger(Scene.class);
   protected final ArrayNumberer<Kind> kindNumberer;
   private final int defaultSdkVersion = 15;
@@ -403,9 +403,8 @@ public class Scene // extends AbstractHost
     // Do we have an explicit API version?
     if (Options.v().android_api_version() > 0) {
       androidAPIVersion = Options.v().android_api_version();
-    }
-    // Look into the manifest file
-    else if (apk != null) {
+    } else if (apk != null) {
+      // Look into the manifest file
       if (apk.toLowerCase().endsWith(".apk")) {
         androidAPIVersion = getTargetSDKVersion(apk, jars);
       }
@@ -604,10 +603,10 @@ public class Scene // extends AbstractHost
           }
           targetApk = entry;
         }
-        if (entry.toLowerCase().endsWith(".dex")) // on Windows, file
-        // names are
-        // case-insensitive
-        {
+        if (entry.toLowerCase().endsWith(".dex")) {
+          // on Windows, file
+          // names are
+          // case-insensitive
           targetDexs.add(entry);
         }
       }
@@ -1213,10 +1212,9 @@ public class Scene // extends AbstractHost
    */
 
   public Hierarchy getActiveHierarchy() {
-    if (!hasActiveHierarchy())
-    // throw new RuntimeException("no active Hierarchy present for
-    // scene");
-    {
+    if (!hasActiveHierarchy()) {
+      // throw new RuntimeException("no active Hierarchy present for
+      // scene");
       setActiveHierarchy(new Hierarchy());
     }
 

@@ -107,12 +107,11 @@ public class JavaAttribute {
     } else if (t instanceof JimpleLineNumberTag) {
       JimpleLineNumberTag jlnTag = (JimpleLineNumberTag) t;
       printJimpleLnAttr(jlnTag.getStartLineNumber(), jlnTag.getEndLineNumber());
-    }
-		/*else if (t instanceof SourceLineNumberTag) {
-            SourceLineNumberTag jlnTag = (SourceLineNumberTag)t; 
-			printJavaLnAttr(jlnTag.getStartLineNumber(), jlnTag.getEndLineNumber());
-		}*/
-    else if (t instanceof LinkTag) {
+    } else if (t instanceof LinkTag) {
+      /*else if (t instanceof SourceLineNumberTag) {
+            SourceLineNumberTag jlnTag = (SourceLineNumberTag)t;
+            printJavaLnAttr(jlnTag.getStartLineNumber(), jlnTag.getEndLineNumber());
+      }*/
       LinkTag lt = (LinkTag) t;
       Host h = lt.getLink();
       printLinkAttr(formatForXML(lt.toString()), getJimpleLnOfHost(h), getJavaLnOfHost(h), lt.getClassName());

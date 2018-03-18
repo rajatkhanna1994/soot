@@ -55,9 +55,8 @@ public class TrapSplitter extends BodyTransformer {
             to.t2Start, to.t1.getHandlerUnit());
         safeAddTrap(b, newTrap, to.t1);
         to.t1.setBeginUnit(to.t2Start);
-      }
-      // (t1start, t2start) ... t1end ... t2end
-      else if (to.t1.getBeginUnit() == to.t2.getBeginUnit()) {
+      } else if (to.t1.getBeginUnit() == to.t2.getBeginUnit()) {
+        // (t1start, t2start) ... t1end ... t2end
         Unit firstEndUnit = to.t1.getBeginUnit();
         while (firstEndUnit != to.t1.getEndUnit() && firstEndUnit != to.t2.getEndUnit()) {
           firstEndUnit = b.getUnits().getSuccOf(firstEndUnit);

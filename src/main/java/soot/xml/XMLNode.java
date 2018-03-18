@@ -210,9 +210,8 @@ public class XMLNode extends XMLRoot {
       if (this.parent.child.equals(this)) {
         this.parent.child = newnode;
       }
-    }
-    // if it has no parent it might be a root's child
-    else {
+    } else {
+      // if it has no parent it might be a root's child
       if (this.prev == null) {
         this.root.child = newnode;
       }

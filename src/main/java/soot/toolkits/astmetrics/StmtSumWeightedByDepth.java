@@ -137,9 +137,8 @@ public class StmtSumWeightedByDepth extends ASTMetric {
         System.out.println(n);
         increaseDepth();
       }
-    }
-    // switch from Stmt to Expr here, since Expr is the smallest unit
-    else if (n instanceof Expr || n instanceof Formal) {
+    } else if (n instanceof Expr || n instanceof Formal) {
+      // switch from Stmt to Expr here, since Expr is the smallest unit
       System.out.print(sum + "  " + n + "  ");
       sum += currentDepth * 2;
       System.out.println(sum);

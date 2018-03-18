@@ -36,11 +36,15 @@ import polyglot.visit.NodeVisitor;
  */
 public class ConstructNumbersMetric extends ASTMetric {
 
-  private int numIf, numIfElse;
+  private int numIf;
+  private int numIfElse;
 
   private int numLabeledBlocks;
 
-  private int doLoop, forLoop, whileLoop, whileTrue;
+  private int doLoop;
+  private int forLoop;
+  private int whileLoop;
+  private int whileTrue;
 
   public ConstructNumbersMetric(Node node) {
     super(node);

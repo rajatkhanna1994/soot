@@ -55,7 +55,6 @@ public class SourceLocator {
   protected List<String> classPath;
   private List<String> sourcePath;
 
-  ;
   private LoadingCache<String, ClassSourceType> pathToSourceType = CacheBuilder.newBuilder().initialCapacity(60)
       .maximumSize(500).softValues().concurrencyLevel(Runtime.getRuntime().availableProcessors())
       .build(new CacheLoader<String, ClassSourceType>() {
@@ -316,9 +315,8 @@ public class SourceLocator {
       } catch (IOException e) {
         throw new CompilationDeathException("Error reading dex source", e);
       }
-    }
-    // load Java class files from ZIP and JAR
-    else if (cst == ClassSourceType.jar || cst == ClassSourceType.zip) {
+    } else if (cst == ClassSourceType.jar || cst == ClassSourceType.zip) {
+      // load Java class files from ZIP and JAR
       ZipFile archive = null;
       try {
         archive = new ZipFile(aPath);
@@ -340,6 +338,7 @@ public class SourceLocator {
             archive.close();
           }
         } catch (Throwable t) {
+          ;
         }
       }
 

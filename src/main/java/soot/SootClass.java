@@ -75,7 +75,11 @@ public class SootClass extends AbstractHost implements Numberable {
   public final static int BODIES = 3;
   private static final Logger logger = LoggerFactory.getLogger(SootClass.class);
   private static ClassValidator[] validators;
-  protected String name, shortName, fixedShortName, packageName, fixedPackageName;
+  protected String name;
+  protected String shortName;
+  protected String fixedShortName;
+  protected String packageName;
+  protected String fixedPackageName;
   protected int modifiers;
   protected Chain<SootField> fields;
   protected SmallNumberedMap<SootMethod> subSigToMethods;
@@ -685,9 +689,7 @@ public class SootClass extends AbstractHost implements Numberable {
 
     for (SootMethod method : methodList) {
       if (method.getName().equals(name) && method.getParameterTypes().equals(parameterTypes)
-          && method.getReturnType().equals(returnType))
-
-      {
+          && method.getReturnType().equals(returnType)) {
         return true;
       }
     }

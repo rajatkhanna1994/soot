@@ -530,7 +530,9 @@ public class PackManager {
   }
 
   public void coffiMetrics() {
-    int tV = 0, tE = 0, hM = 0;
+    int tV = 0;
+    int tE = 0;
+    int hM = 0;
     double aM = 0;
     HashMap<SootMethod, int[]> hashVem = soot.coffi.CFG.methodsToVEM;
     Iterator<SootMethod> it = hashVem.keySet().iterator();
@@ -811,8 +813,8 @@ public class PackManager {
           // System.out.println("body"+body.toString());
           if (transformations) {
             body.analyzeAST();
-          } // if tansformations are enabled
-          else {
+          } else {
+            // if tansformations are enabled
             body.applyBugFixes();
           }
         } else {
@@ -937,8 +939,11 @@ public class PackManager {
     }
     logger.debug("" + c.getName() + "... ");
 
-    boolean produceBaf = false, produceGrimp = false, produceDava = false, produceJimple = true,
-        produceShimple = false;
+    boolean produceBaf = false;
+    boolean produceGrimp = false;
+    boolean produceDava = false;
+    boolean produceJimple = true;
+    boolean produceShimple = false;
 
     switch (format) {
       case Options.output_format_none:

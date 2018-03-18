@@ -296,10 +296,9 @@ public abstract class CFGGraphType extends CFGOptionMatcher.CFGOption {
       DirectedGraph result = (DirectedGraph)
           constructor.newInstance(new Object[] {b});
       return result;
-    }
-    // Turn class loading exceptions into RuntimeExceptions, so callers
-    // don't need to declare them:  perhaps a shoddy tactic.
-    catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
+      // Turn class loading exceptions into RuntimeExceptions, so callers
+      // don't need to declare them:  perhaps a shoddy tactic.
       if (DEBUG) {
         logger.error(e.getMessage(), e);
       }

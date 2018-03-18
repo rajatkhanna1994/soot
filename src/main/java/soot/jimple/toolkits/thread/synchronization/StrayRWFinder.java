@@ -64,9 +64,8 @@ public class StrayRWFinder extends BackwardFlowAnalysis {
    * OUT is the same as (IN minus killSet) plus the genSet.
    **/
   protected void flowThrough(Object inValue, Object unit, Object outValue) {
-    FlowSet
-        in = (FlowSet) inValue,
-        out = (FlowSet) outValue;
+    FlowSet in = (FlowSet) inValue;
+    FlowSet out = (FlowSet) outValue;
 
     RWSet stmtRead = sea.readSet(body.getMethod(), (Stmt) unit);
     RWSet stmtWrite = sea.writeSet(body.getMethod(), (Stmt) unit);
@@ -98,11 +97,10 @@ public class StrayRWFinder extends BackwardFlowAnalysis {
    * union, except for transactions in progress.  They get joined
    **/
   protected void merge(Object in1, Object in2, Object out) {
-    FlowSet
-        inSet1 = ((FlowSet) in1).clone(),
-        inSet2 = ((FlowSet) in2).clone(),
-        outSet = (FlowSet) out;
-/*
+    FlowSet inSet1 = ((FlowSet) in1).clone();
+    FlowSet inSet2 = ((FlowSet) in2).clone();
+    FlowSet outSet = (FlowSet) out;
+    /*
         boolean hasANull1 = false;
         Transaction tn1 = null;
         Iterator inIt1 = inSet1.iterator();
@@ -111,8 +109,8 @@ public class StrayRWFinder extends BackwardFlowAnalysis {
             tn1 = (Transaction) inIt1.next();
             if(tn1.entermonitor == null)
             {
-            	hasANull1 = true;
-            	break;
+                hasANull1 = true;
+                break;
             }
         }
         
@@ -124,31 +122,30 @@ public class StrayRWFinder extends BackwardFlowAnalysis {
             tn2 = (Transaction) inIt2.next();
             if(tn2.entermonitor == null)
             {
-            	hasANull2 = true;
-            	break;
+                hasANull2 = true;
+                break;
             }
         }
         if(hasANull1 && hasANull2)
         {
-        	inSet1.remove(tn1);
-        	Iterator itends = tn1.exitmonitors.iterator();
-        	while(itends.hasNext())
-        	{
-        		Stmt stmt = (Stmt) itends.next();
-        		if(!tn2.exitmonitors.contains(stmt))
-        			tn2.exitmonitors.add(stmt);
-        	}
-        	tn2.read.union(tn1.read);
-        	tn2.write.union(tn1.write);
+            inSet1.remove(tn1);
+            Iterator itends = tn1.exitmonitors.iterator();
+            while(itends.hasNext())
+            {
+                Stmt stmt = (Stmt) itends.next();
+                if(!tn2.exitmonitors.contains(stmt))
+                    tn2.exitmonitors.add(stmt);
+            }
+            tn2.read.union(tn1.read);
+            tn2.write.union(tn1.write);
         }
-*/
+    */
     inSet1.union(inSet2, outSet);
   }
 
   protected void copy(Object source, Object dest) {
-    FlowSet
-        sourceSet = (FlowSet) source,
-        destSet = (FlowSet) dest;
+    FlowSet sourceSet = (FlowSet) source;
+    FlowSet destSet = (FlowSet) dest;
 
     sourceSet.copy(destSet);
   }

@@ -327,7 +327,7 @@ public class BitVector {
     bits[indexOf(bit)] |= mask(bit);
     return ret;
   }
-    /*
+  /*
     public boolean orAndAndNotCheck(BitVector orset, BitVector andset, BitVector andnotset) {
         BitVector orAndAnd = (BitVector) orset.clone();
         if( andset != null ) orAndAnd.and( andset );
@@ -336,11 +336,11 @@ public class BitVector {
         boolean ret = !orAndAnd.equals(this);
         orAndAndNotOld( orset, andset, andnotset );
         if( !this.equals( orAndAnd ) ) {
-            throw new RuntimeException( "orset is "+orset+"\nandset is "+andset+"\nandnotset is "+andnotset+"\nthis is "+this+"\ncorrect is "+orAndAnd );
+          throw new RuntimeException("orset is "+orset+"\nandset is "+andset+"\nandnotset is "+andnotset+"\nthis is "+this+"\ncorrect is "+orAndAnd);
         }
         return ret;
     }
-    */
+  */
 
   /**
    * Returns number of bits in the underlying array.
@@ -374,8 +374,15 @@ public class BitVector {
    */
   public boolean orAndAndNot(BitVector orset, BitVector andset, BitVector andnotset) {
     boolean ret = false;
-    long[] a = null, b = null, c = null, d = null, e = null;
-    int al, bl, cl, dl;
+    long[] a = null;
+    long[] b = null;
+    long[] c = null;
+    long[] d = null;
+    long[] e = null;
+    int al;
+    int bl;
+    int cl;
+    int dl;
     a = this.bits;
     al = a.length;
     if (orset == null) {

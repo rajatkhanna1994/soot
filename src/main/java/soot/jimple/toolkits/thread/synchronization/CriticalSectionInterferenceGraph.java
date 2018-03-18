@@ -27,7 +27,8 @@ public class CriticalSectionInterferenceGraph {
   boolean optionLeaveOriginalLocks = false;
   boolean optionIncludeEmptyPossibleEdges = false;
 
-  public CriticalSectionInterferenceGraph(List<CriticalSection> criticalSections, MhpTester mhp, boolean optionOneGlobalLock, boolean optionLeaveOriginalLocks, boolean optionIncludeEmptyPossibleEdges) {
+  public CriticalSectionInterferenceGraph(List<CriticalSection> criticalSections, MhpTester mhp, boolean optionOneGlobalLock,
+                                          boolean optionLeaveOriginalLocks, boolean optionIncludeEmptyPossibleEdges) {
     this.criticalSections = criticalSections;
     this.mhp = mhp;
     this.pta = Scene.v().getPointsToAnalysis();
@@ -51,8 +52,8 @@ public class CriticalSectionInterferenceGraph {
     groups = new ArrayList<CriticalSectionGroup>();
     groups.add(new CriticalSectionGroup(0)); // dummy group
 
-    if (optionOneGlobalLock) // use one group for all transactions
-    {
+    if (optionOneGlobalLock) {
+      // use one group for all transactions
       CriticalSectionGroup onlyGroup = new CriticalSectionGroup(nextGroup);
       Iterator<CriticalSection> tnIt1 = criticalSections.iterator();
       while (tnIt1.hasNext()) {
@@ -61,8 +62,8 @@ public class CriticalSectionInterferenceGraph {
       }
       nextGroup++;
       groups.add(onlyGroup);
-    } else // calculate separate groups for transactions
-    {
+    } else {
+      // calculate separate groups for transactions
       Iterator<CriticalSection> tnIt1 = criticalSections.iterator();
       while (tnIt1.hasNext()) {
         CriticalSection tn1 = tnIt1.next();
@@ -92,8 +93,8 @@ public class CriticalSectionInterferenceGraph {
             // NOTE: this results in a sound grouping, but a badly
             //       incomplete dependency graph. If the dependency
             //       graph is to be analyzed, we cannot do this
-            //	    			if(tn1.setNumber > 0 && tn1.setNumber == tn2.setNumber)
-            //	    				continue;
+            //          if(tn1.setNumber > 0 && tn1.setNumber == tn2.setNumber)
+            //          continue;
 
             // check if these two transactions can't ever be in parallel
             if (!mayHappenInParallel(tn1, tn2)) {
@@ -172,17 +173,15 @@ public class CriticalSectionInterferenceGraph {
                   // if tn2 is NOT already in a group
                   if (tn2.setNumber == 0) {
                     tn1.group.add(tn2);
-                  }
-                  // if tn2 is already in a group
-                  else if (tn2.setNumber > 0) {
-                    if (tn1.setNumber != tn2.setNumber) // if they are equal, then they are already in the same group!
-                    {
+                  } else if (tn2.setNumber > 0) {
+                    // if tn2 is already in a group
+                    if (tn1.setNumber != tn2.setNumber) {
+                      // if they are equal, then they are already in the same group!
                       tn1.group.mergeGroups(tn2.group);
                     }
                   }
-                }
-                // if tn1 is NOT already in a group
-                else if (tn1.setNumber == 0) {
+                } else if (tn1.setNumber == 0) {
+                  // if tn1 is NOT already in a group
                   // if tn2 is NOT already in a group
                   if (tn2.setNumber == 0) {
                     CriticalSectionGroup newGroup = new CriticalSectionGroup(nextGroup);
@@ -190,9 +189,8 @@ public class CriticalSectionInterferenceGraph {
                     newGroup.add(tn2);
                     groups.add(newGroup);
                     nextGroup++;
-                  }
-                  // if tn2 is already in a group
-                  else if (tn2.setNumber > 0) {
+                  } else if (tn2.setNumber > 0) {
+                    // if tn2 is already in a group
                     tn2.group.add(tn1);
                   }
                 }

@@ -93,7 +93,8 @@ public class TypeResolver {
   // The ArrayType.equals method seems odd in Soot 2.2.5
   public static boolean typesEqual(Type a, Type b) {
     if (a instanceof ArrayType && b instanceof ArrayType) {
-      ArrayType a_ = (ArrayType) a, b_ = (ArrayType) b;
+      ArrayType a_ = (ArrayType) a;
+      ArrayType b_ = (ArrayType) b;
       return a_.numDimensions == b_.numDimensions &&
           a_.baseType.equals(b_.baseType);
     }
@@ -110,7 +111,8 @@ public class TypeResolver {
   }
 
   private void initAssignment(DefinitionStmt ds) {
-    Value lhs = ds.getLeftOp(), rhs = ds.getRightOp();
+    Value lhs = ds.getLeftOp();
+    Value rhs = ds.getRightOp();
     if (lhs instanceof Local || lhs instanceof ArrayRef) {
       int assignmentIdx = this.assignments.size();
       this.assignments.add(ds);
@@ -119,7 +121,8 @@ public class TypeResolver {
         this.addDepend((Local) rhs, assignmentIdx);
       } else if (rhs instanceof BinopExpr) {
         BinopExpr be = (BinopExpr) rhs;
-        Value lop = be.getOp1(), rop = be.getOp2();
+        Value lop = be.getOp1();
+        Value rop = be.getOp2();
         if (lop instanceof Local) {
           this.addDepend((Local) lop, assignmentIdx);
         }
@@ -183,9 +186,8 @@ public class TypeResolver {
     }
 
     tg = this.typePromotion(tg);
-    if (tg == null)
-    // Use original soot algorithm for inserting casts
-    {
+    if (tg == null) {
+      // Use original soot algorithm for inserting casts
       soot.jimple.toolkits.typing.integer.TypeResolver.resolve(this.jb);
     } else {
       for (Local v : this.jb.getLocals()) {
@@ -268,8 +270,8 @@ public class TypeResolver {
                                                         IEvalFunction ef, IHierarchy h) {
     final int numAssignments = this.assignments.size();
 
-    LinkedList<Typing> sigma = new LinkedList<Typing>(),
-        r = new LinkedList<Typing>();
+    LinkedList<Typing> sigma = new LinkedList<Typing>();
+    LinkedList<Typing> r = new LinkedList<Typing>();
     if (numAssignments == 0) {
       return sigma;
     }
@@ -294,7 +296,8 @@ public class TypeResolver {
         wl.clear(defIdx);
         DefinitionStmt stmt = this.assignments.get(defIdx);
 
-        Value lhs = stmt.getLeftOp(), rhs = stmt.getRightOp();
+        Value lhs = stmt.getLeftOp();
+        Value rhs = stmt.getRightOp();
 
         Local v;
         if (lhs instanceof Local) {
@@ -310,10 +313,10 @@ public class TypeResolver {
         boolean isFirstType = true;
         for (Type t_ : eval) {
           if (lhs instanceof ArrayRef) {
-						/* We only need to consider array references on the LHS
-						of assignments where there is supertyping between array
-						types, which is only for arrays of reference types and
-						multidimensional arrays. */
+            /* We only need to consider array references on the LHS
+            of assignments where there is supertyping between array
+            types, which is only for arrays of reference types and
+            multidimensional arrays. */
             if (!(t_ instanceof RefType
                 || t_ instanceof ArrayType)) {
               continue;
@@ -339,7 +342,7 @@ public class TypeResolver {
             if (!typesEqual(t, told)) {
               Typing tg_;
               BitSet wl_;
-              if ( /*(eval.size() == 1 && lcas.size() == 1) ||*/ isFirstType) {
+              if (/*(eval.size() == 1 && lcas.size() == 1) ||*/ isFirstType) {
                 // The types agree, we have a type we can directly use
                 tg_ = tg;
                 wl_ = wl;
@@ -360,7 +363,7 @@ public class TypeResolver {
             }
             isFirstType = false;
           }
-        }//end for
+        } //end for
       }
     }
 
@@ -480,9 +483,9 @@ public class TypeResolver {
 
         Local vold;
         if (!(op instanceof Local)) {
-					/* By the time we have countOnly == false, all variables
-					must by typed with concrete Jimple types, and never [0..1],
-					[0..127] or [0..32767]. */
+          /* By the time we have countOnly == false, all variables
+          must by typed with concrete Jimple types, and never [0..1],
+          [0..127] or [0..32767]. */
           vold = jimple.newLocal("tmp", t);
           vold.setName("tmp$" + System.identityHashCode(vold));
           this.tg.set(vold, t);

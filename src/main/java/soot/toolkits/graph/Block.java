@@ -50,9 +50,12 @@ import soot.util.Chain;
 public class Block implements Iterable<Unit> {
   private static final Logger logger = LoggerFactory.getLogger(Block.class);
   private final Body mBody;
-  private Unit mHead, mTail;
-  private List<Block> mPreds, mSuccessors;
-  private int mBlockLength = 0, mIndexInMethod = 0;
+  private Unit mHead;
+  private Unit mTail;
+  private List<Block> mPreds;
+  private List<Block> mSuccessors;
+  private int mBlockLength = 0;
+  private int mIndexInMethod = 0;
 
   /**
    * Constructs a Block in the context of a BlockGraph, and enclosing Body instances.

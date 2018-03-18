@@ -311,8 +311,7 @@ class TypeNode {
           throw e;
         }
       }
-    }
-    while (!hasAncestor(type));
+    } while (!hasAncestor(type));
 
     return type;
   }
@@ -348,8 +347,7 @@ class TypeNode {
         }
         return null;
       }
-    }
-    while (!hasAncestor(type));
+    } while (!hasAncestor(type));
 
     return type;
   }

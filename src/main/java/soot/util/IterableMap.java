@@ -36,8 +36,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class IterableMap implements Map {
-  private HashMap<Object, Object> content_map, back_map;
-  private HashChain key_chain, value_chain;
+  private HashMap<Object, Object> content_map;
+  private HashMap<Object, Object> back_map;
+  private HashChain key_chain;
+  private HashChain value_chain;
   private transient Set<Object> keySet = null;
   private transient Set<Object> valueSet = null;
   private transient Collection<Object> values = null;

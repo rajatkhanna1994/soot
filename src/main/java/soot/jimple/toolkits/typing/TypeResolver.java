@@ -443,8 +443,7 @@ public class TypeResolver {
               var = var.union(child);
             }
           }
-        }
-        while (!finished);
+        } while (!finished);
       }
     }
   }

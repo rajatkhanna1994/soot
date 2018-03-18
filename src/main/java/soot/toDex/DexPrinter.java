@@ -575,12 +575,11 @@ public class DexPrinter {
       StringConstantValueTag s = (StringConstantValueTag) t;
       if (sf.getType().equals(RefType.v("java.lang.String"))) {
         return new ImmutableStringEncodedValue(s.getStringValue());
-      } else
-      // Not supported in Dalvik
-      // See
-      // https://android.googlesource.com/platform/dalvik.git/+/android-4.3_r3/vm/oo/Class.cpp
-      // Results in "Bogus static initialization"
-      {
+      } else {
+        // Not supported in Dalvik
+        // See
+        // https://android.googlesource.com/platform/dalvik.git/+/android-4.3_r3/vm/oo/Class.cpp
+        // Results in "Bogus static initialization"
         return null;
       }
     } else {
@@ -1443,9 +1442,8 @@ public class DexPrinter {
 
     Integer beforeRegister = seenRegisters.get(local);
     if (beforeRegister != null) {
-      if (beforeRegister == register)
-      // No change
-      {
+      if (beforeRegister == register) {
+        // No change
         return;
       }
       builder.addEndLocal(beforeRegister);
@@ -1536,13 +1534,12 @@ public class DexPrinter {
             newHandlers.addAll(oldHandlers);
           }
           break;
-        }
-        // Check whether the other range is contained in this range. In
-        // this case,
-        // a smaller range is already in the list. We merge the two over
-        // the larger
-        // range.
-        else if (range.containsRange(r)) {
+        } else if (range.containsRange(r)) {
+          // Check whether the other range is contained in this range. In
+          // this case,
+          // a smaller range is already in the list. We merge the two over
+          // the larger
+          // range.
           range.startAddress = r.startAddress;
           range.endAddress = r.endAddress;
 

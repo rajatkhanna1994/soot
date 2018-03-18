@@ -45,7 +45,8 @@ import soot.util.DeterministicHashMap;
  * Prints out a class and all its methods.
  */
 public class Printer {
-  public static final int USE_ABBREVIATIONS = 0x0001, ADD_JIMPLE_LN = 0x0010;
+  public static final int USE_ABBREVIATIONS = 0x0001;
+  public static final int ADD_JIMPLE_LN = 0x0010;
   private static final Logger logger = LoggerFactory.getLogger(Printer.class);
   final private static char fileSeparator =
       System.getProperty("file.separator").charAt(0);
@@ -151,7 +152,7 @@ public class Printer {
 
     out.println();
     incJimpleLnNum();
-/*        if (!addJimpleLn()) {
+    /*    if (!addJimpleLn()) {
             Iterator clTagsIt = cl.getTags().iterator();
             while (clTagsIt.hasNext()) {
                 final Tag t = (Tag)clTagsIt.next();
@@ -222,8 +223,8 @@ public class Printer {
               && !Modifier.isNative(method.getModifiers())) {
             if (!method.hasActiveBody()) {
               method.retrieveActiveBody(); //force loading the body
-              if (!method.hasActiveBody()) //in case we really don't have it
-              {
+              if (!method.hasActiveBody()) {
+                //in case we really don't have it
                 throw new RuntimeException("method " + method.getName() + " has no active body!");
               }
             } else if (Options.v().print_tags_in_output()) {
@@ -276,7 +277,7 @@ public class Printer {
    * @param out a PrintWriter instance to print to.
    */
   public void printTo(Body b, PrintWriter out) {
-//        b.validate();
+    //b.validate();
 
     boolean isPrecise = !useAbbreviations();
 
@@ -387,7 +388,7 @@ public class Printer {
           up.literal("*/");
           up.newline();
         }
-                /*Iterator udIt = currentStmt.getUseAndDefBoxes().iterator();
+        /*Iterator udIt = currentStmt.getUseAndDefBoxes().iterator();
                 while (udIt.hasNext()) {
                     ValueBox temp = (ValueBox)udIt.next();
                     Iterator vbtags = temp.getTags().iterator();

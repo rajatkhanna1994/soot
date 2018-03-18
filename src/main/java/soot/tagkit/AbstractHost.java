@@ -39,7 +39,8 @@ import java.util.List;
  */
 public class AbstractHost implements Host {
 
-  protected int line, col;
+  protected int line;
+  protected int col;
 
   // avoid creating an empty list for each element, when it is not used
   // use lazy instantiation (in addTag) instead

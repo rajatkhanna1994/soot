@@ -689,10 +689,9 @@ class ExprVisitor implements ExprSwitch {
        */
       if (destinationReg.getNumber() != sourceReg.getNumber()) {
         stmtV.addInsn(StmtVisitor.buildMoveInsn(destinationReg, sourceReg), origStmt);
-      }
-      // Make sure that we have at least some statement in case we need
-      // one for jumps
-      else if (!origStmt.getBoxesPointingToThis().isEmpty()) {
+      } else if (!origStmt.getBoxesPointingToThis().isEmpty()) {
+        // Make sure that we have at least some statement in case we need
+        // one for jumps
         stmtV.addInsn(new Insn10x(Opcode.NOP), origStmt);
       }
     } else if (needsCastThroughInt(sourceType, castType)) {

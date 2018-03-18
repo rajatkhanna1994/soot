@@ -142,9 +142,10 @@ public class UseChecker extends AbstractStmtSwitch {
   }
 
   private void handleBinopExpr(BinopExpr be, Stmt stmt, Type tlhs) {
-    Value opl = be.getOp1(), opr = be.getOp2();
-    Type tl = AugEvalFunction.eval_(this.tg, opl, stmt, this.jb),
-        tr = AugEvalFunction.eval_(this.tg, opr, stmt, this.jb);
+    Value opl = be.getOp1();
+    Value opr = be.getOp2();
+    Type tl = AugEvalFunction.eval_(this.tg, opl, stmt, this.jb);
+    Type tr = AugEvalFunction.eval_(this.tg, opr, stmt, this.jb);
 
     if (be instanceof AddExpr
         || be instanceof SubExpr
@@ -174,7 +175,9 @@ public class UseChecker extends AbstractStmtSwitch {
     } else if (be instanceof EqExpr
         || be instanceof NeExpr) {
       if (tl instanceof BooleanType && tr instanceof BooleanType) {
+        ;
       } else if (tl instanceof Integer1Type || tr instanceof Integer1Type) {
+        ;
       } else if (tl instanceof IntegerType) {
         be.setOp1(this.uv.visit(opl, IntType.v(), stmt));
         be.setOp2(this.uv.visit(opr, IntType.v(), stmt));
@@ -303,11 +306,10 @@ public class UseChecker extends AbstractStmtSwitch {
                     break outer;
                   }
                 }
-              }
-              // If we have a comparison, we look at the other value. Using the type
-              // of the value is at least closer to the truth than java.lang.Object
-              // if the other value is a primitive.
-              else if (useStmt instanceof IfStmt) {
+              } else if (useStmt instanceof IfStmt) {
+                // If we have a comparison, we look at the other value. Using the type
+                // of the value is at least closer to the truth than java.lang.Object
+                // if the other value is a primitive.
                 IfStmt ifStmt = (IfStmt) useStmt;
                 if (ifStmt.getCondition() instanceof EqExpr) {
                   EqExpr expr = (EqExpr) ifStmt.getCondition();

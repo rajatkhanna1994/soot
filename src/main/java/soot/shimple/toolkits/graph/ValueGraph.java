@@ -191,10 +191,8 @@ public class ValueGraph {
       if (ret == null) {
         ret = new Node(value, true);
       }
-    }
-
-    // theoretically we could share Constant nodes...
-    else {
+    } else {
+      // theoretically we could share Constant nodes...
       ret = new Node(value);
     }
 

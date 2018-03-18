@@ -89,20 +89,19 @@ public class TypeAssigner extends BodyTransformer {
 
     Iterator<Local> ib = b.getLocals().iterator();
     for (Local v : a.getLocals()) {
-      Type ta = v.getType(), tb = ib.next().getType();
+      Type ta = v.getType();
+      Type tb = ib.next().getType();
 
-      if (soot.jimple.toolkits.typing.fast.TypeResolver
-          .typesEqual(ta, tb)) {
+      if (soot.jimple.toolkits.typing.fast.TypeResolver.typesEqual(ta, tb)) {
         continue;
-      }
-      /*
-       * Sometimes there is no reason to choose between the char and byte /
-       * short types. Enabling this check allows one algorithm to select
-       * char and the other to select byte / short without returning
-       * incomparable.
-       */
-      else if (true && ((ta instanceof CharType && (tb instanceof ByteType || tb instanceof ShortType))
+      } else if (true && ((ta instanceof CharType && (tb instanceof ByteType || tb instanceof ShortType))
           || (tb instanceof CharType && (ta instanceof ByteType || ta instanceof ShortType)))) {
+        /*
+         * Sometimes there is no reason to choose between the char and byte /
+         * short types. Enabling this check allows one algorithm to select
+         * char and the other to select byte / short without returning
+         * incomparable.
+         */
         continue;
       } else if (soot.jimple.toolkits.typing.fast.AugHierarchy.ancestor_(
           ta, tb)) {
@@ -280,9 +279,12 @@ public class TypeAssigner extends BodyTransformer {
   }
 
   private void compareTypeAssigners(Body b, boolean useOlderTypeAssigner) {
-    JimpleBody jb = (JimpleBody) b, oldJb, newJb;
+    JimpleBody jb = (JimpleBody) b;
+    JimpleBody oldJb;
+    JimpleBody newJb;
     int size = jb.getUnits().size();
-    long oldTime, newTime;
+    long oldTime;
+    long newTime;
     if (useOlderTypeAssigner) {
       // Use old type assigner last
       newJb = (JimpleBody) jb.clone();

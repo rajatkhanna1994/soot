@@ -37,7 +37,8 @@ import java.util.List;
  */
 public class DotGraphEdge implements Renderable {
   private boolean isDirected;
-  private DotGraphNode start, end;
+  private DotGraphNode start;
+  private DotGraphNode end;
   private List<DotGraphAttribute> attributes;
 
   /**

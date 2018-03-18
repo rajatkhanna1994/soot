@@ -44,7 +44,9 @@ import soot.Singletons;
  */
 public class SlowPseudoTopologicalOrderer<N> implements Orderer<N> {
 
-  private static final int WHITE = 0, GRAY = 1, BLACK = 2;
+  private static final int WHITE = 0;
+  private static final int GRAY = 1;
+  private static final int BLACK = 2;
   private final HashMap<N, List<N>> succsMap = new HashMap<N, List<N>>();
   private Map<N, Integer> stmtToColor;
   private LinkedList<N> order;
@@ -228,7 +230,9 @@ public class SlowPseudoTopologicalOrderer<N> implements Orderer<N> {
 
   private class PseudoTopologicalReverseOrderer<N> {
 
-    private static final int WHITE = 0, GRAY = 1, BLACK = 2;
+    private static final int WHITE = 0;
+    private static final int GRAY = 1;
+    private static final int BLACK = 2;
     private final boolean mIsReversed = false;
     private Map<N, Integer> stmtToColor;
     private LinkedList<N> order;

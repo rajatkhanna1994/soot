@@ -39,8 +39,10 @@ import polyglot.visit.NodeVisitor;
   */
 public class AbruptEdgesMetric extends ASTMetric {
 
-  private int iBreaks, eBreaks;
-  private int iContinues, eContinues;
+  private int iBreaks;
+  private int eBreaks;
+  private int iContinues;
+  private int eContinues;
 
   public AbruptEdgesMetric(polyglot.ast.Node astNode) {
     super(astNode);

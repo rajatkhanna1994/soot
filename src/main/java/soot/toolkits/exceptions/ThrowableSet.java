@@ -403,13 +403,12 @@ public final class ThrowableSet {
           if (!incumbentBase.equals(newBase)) {
             resultSet.add(incumbent);
           }
-        }
-        // We have to use the base types in these hierarchy
-        // calls
-        // because we want to know if _all_ possible
-        // types represented by e can be represented by
-        // the incumbent, or vice versa.
-        else if (hierarchy.canStoreType(newBase, incumbentBase)) {
+        } else if (hierarchy.canStoreType(newBase, incumbentBase)) {
+          // We have to use the base types in these hierarchy
+          // calls
+          // because we want to know if _all_ possible
+          // types represented by e can be represented by
+          // the incumbent, or vice versa.
           addNewException = false;
           resultSet.add(incumbent);
         } else if (hierarchy.canStoreType(incumbentBase,
@@ -695,11 +694,10 @@ public final class ThrowableSet {
             if (thrownBase.equals(catcher) || thrownBase.getClassName().equals("java.lang.Throwable")) {
               return true;
             }
-          }
-          // At runtime, thrownType might be instantiated by any
-          // of thrownBase's subtypes, so:
-          else if (h.canStoreType(thrownBase, catcher)
+          } else if (h.canStoreType(thrownBase, catcher)
               || h.canStoreType(catcher, thrownBase)) {
+            // At runtime, thrownType might be instantiated by any
+            // of thrownBase's subtypes, so:
             return true;
           }
         }

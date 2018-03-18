@@ -61,8 +61,7 @@ public class GuaranteedDefs {
       while (unitIt.hasNext()) {
         Unit s = (Unit) unitIt.next();
         FlowSet set = (FlowSet) analysis.getFlowBefore(s);
-        unitToGuaranteedDefs.put
-            (s, Collections.unmodifiableList(set.toList()));
+        unitToGuaranteedDefs.put(s, Collections.unmodifiableList(set.toList()));
       }
     }
   }
@@ -128,9 +127,8 @@ class GuaranteedDefsAnalysis extends ForwardFlowAnalysis {
    * OUT is the same as IN plus the genSet.
    **/
   protected void flowThrough(Object inValue, Object unit, Object outValue) {
-    FlowSet
-        in = (FlowSet) inValue,
-        out = (FlowSet) outValue;
+    FlowSet in = (FlowSet) inValue;
+    FlowSet out = (FlowSet) outValue;
 
     // perform generation (kill set is empty)
     in.union(unitToGenerateSet.get(unit), out);
@@ -140,18 +138,16 @@ class GuaranteedDefsAnalysis extends ForwardFlowAnalysis {
    * All paths == Intersection.
    **/
   protected void merge(Object in1, Object in2, Object out) {
-    FlowSet
-        inSet1 = (FlowSet) in1,
-        inSet2 = (FlowSet) in2,
-        outSet = (FlowSet) out;
+    FlowSet inSet1 = (FlowSet) in1;
+    FlowSet inSet2 = (FlowSet) in2;
+    FlowSet outSet = (FlowSet) out;
 
     inSet1.intersection(inSet2, outSet);
   }
 
   protected void copy(Object source, Object dest) {
-    FlowSet
-        sourceSet = (FlowSet) source,
-        destSet = (FlowSet) dest;
+    FlowSet sourceSet = (FlowSet) source;
+    FlowSet destSet = (FlowSet) dest;
 
     sourceSet.copy(destSet);
   }

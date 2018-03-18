@@ -113,8 +113,10 @@ public class AugEvalFunction implements IEvalFunction {
     } else if (expr instanceof BinopExpr) {
       BinopExpr be = (BinopExpr) expr;
 
-      Value opl = be.getOp1(), opr = be.getOp2();
-      Type tl = eval_(tg, opl, stmt, jb), tr = eval_(tg, opr, stmt, jb);
+      Value opl = be.getOp1();
+      Value opr = be.getOp2();
+      Type tl = eval_(tg, opl, stmt, jb);
+      Type tr = eval_(tg, opr, stmt, jb);
 
       if (expr instanceof CmpExpr
           || expr instanceof CmpgExpr
@@ -176,9 +178,9 @@ public class AugEvalFunction implements IEvalFunction {
     } else if (expr instanceof NegExpr) {
       Type t = eval_(tg, ((NegExpr) expr).getOp(), stmt, jb);
       if (t instanceof IntegerType) {
-				/* Here I repeat the behaviour of the original type assigner,
-				but is it right? For example, -128 is a byte, but -(-128) is
-				not! --BRB */
+        /* Here I repeat the behaviour of the original type assigner,
+        but is it right? For example, -128 is a byte, but -(-128) is
+        not! --BRB */
         if (t instanceof Integer1Type
             || t instanceof BooleanType
             || t instanceof Integer127Type
@@ -202,9 +204,10 @@ public class AugEvalFunction implements IEvalFunction {
           r = t;
         } else if (t.getSootClass().isPhantom() || r.getSootClass().isPhantom()) {
           r = throwableType;
-        } else
-					/* In theory, we could have multiple exception types
-					pointing here. The JLS requires the exception parameter be a *subclass* of Throwable, so we do not need to worry about multiple inheritance. */ {
+        } else {
+          /* In theory, we could have multiple exception types
+          pointing here. The JLS requires the exception parameter be a *subclass* of Throwable,
+          so we do not need to worry about multiple inheritance. */
           r = BytecodeHierarchy.lcsc(r, t, throwableType);
         }
       }

@@ -61,19 +61,19 @@ public class IdentifiersMetric extends ASTMetric {
    *                <p>
    *                First the alpha tokens are parsed by splitting on non-alphas and capitals:
    *                <p>
-   *                example identifier: getASTNode		alpha tokens: get, AST, Node
-   *                example identifier: ___Junk$$name	alpha tokens: Junk, name)
+   *                example identifier: getASTNode alpha tokens: get, AST, Node
+   *                example identifier: ___Junk$$name alpha tokens: Junk, name)
    *                <p>
    *                The alpha tokens are then counted and a 'token complexity' is formed by the ratio
    *                of total tokens to the number of tokens found in the dictionary:
    *                <p>
-   *                example identifier: getASTNode		Total: 3, Found: 2, Complexity: 1.5
+   *                example identifier: getASTNode Total: 3, Found: 2, Complexity: 1.5
    *                <p>
    *                Then the 'character complexity' is computed, which is a ratio of total number of
    *                characters to the number of non-complex characters. Non-complex characters are
    *                those which are NOT part of a multiple string of non-alphas.
    *                <p>
-   *                example identifier: ___Junk$$name	complex char strings: '___', '$$'
+   *                example identifier: ___Junk$$name complex char strings: '___', '$$'
    *                number of non-complex (Junk + name): 8, total: 13, Complexity: 1.625
    *                <p>
    *                Finally, the total identifier complexity is the sum of the token and character
@@ -108,6 +108,7 @@ public class IdentifiersMetric extends ASTMetric {
           addWord(line);
         }
       } catch (IOException ioexc) {
+        ;
       }
     }
 
@@ -120,6 +121,7 @@ public class IdentifiersMetric extends ASTMetric {
           addWord(line.trim().toLowerCase());
         }
       } catch (IOException ioexc) {
+        ;
       }
     }
 
@@ -132,12 +134,14 @@ public class IdentifiersMetric extends ASTMetric {
     try {
       is.close();
     } catch (IOException e) {
+      ;
     }
     try {
       if (br != null) {
         br.close();
       }
     } catch (IOException e) {
+      ;
     }
 
   }
@@ -283,7 +287,10 @@ public class IdentifiersMetric extends ASTMetric {
   }
 
   private double computeCharComplexity(String name) {
-    int count = 0, index = 0, last = 0, lng = name.length();
+    int count = 0;
+    int index = 0;
+    int last = 0;
+    int lng = name.length();
     while (index < lng) {
       char c = name.charAt(index);
       if ((c < 65 || c > 90) && (c < 97 || c > 122)) {
@@ -312,8 +319,8 @@ public class IdentifiersMetric extends ASTMetric {
    *
    * Created on 6-Mar-2006
    *
-   * @param	name	string to parse
-   * @return		number of leading capital letters
+   * @param name string to parse
+   * @return number of leading capital letters
    */
   private int countCaps(String name) {
     int caps = 0;
@@ -334,8 +341,8 @@ public class IdentifiersMetric extends ASTMetric {
    *
    * Created on 6-Mar-2006
    *
-   * @param	name	string to parse
-   * @return		index of first capital letter
+   * @param name string to parse
+   * @return index of first capital letter
    */
   private int findCap(String name) {
     int idx = 0;

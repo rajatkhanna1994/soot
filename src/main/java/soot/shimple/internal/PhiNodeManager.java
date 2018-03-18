@@ -241,9 +241,9 @@ public class PhiNodeManager {
    * @see #trimExceptionalPhiNodes()
    **/
   public void trimPhiNode(PhiExpr phiExpr) {
-        /* A value may appear many times in an exceptional Phi. Hence,
-           the same value may be associated with many UnitBoxes. We
-           build the MultiMap valueToPairs for convenience.  */
+    /* A value may appear many times in an exceptional Phi. Hence,
+       the same value may be associated with many UnitBoxes. We
+       build the MultiMap valueToPairs for convenience.  */
 
     MultiMap<Value, ValueUnitPair> valueToPairs = new HashMultiMap<Value, ValueUnitPair>();
     for (ValueUnitPair argPair : phiExpr.getArgs()) {
@@ -251,10 +251,10 @@ public class PhiNodeManager {
       valueToPairs.put(value, argPair);
     }
 
-        /* Consider each value and see if we can find the dominating
-           UnitBoxes.  Once we have found all the dominating
-           UnitBoxes, the rest of the redundant arguments can be
-           trimmed.  */
+    /* Consider each value and see if we can find the dominating
+       UnitBoxes.  Once we have found all the dominating
+       UnitBoxes, the rest of the redundant arguments can be
+       trimmed.  */
 
     Iterator<Value> valuesIt = valueToPairs.keySet().iterator();
     while (valuesIt.hasNext()) {
@@ -291,20 +291,17 @@ public class PhiNodeManager {
           if (dominates(champU, challengerU)) {
             phiExpr.removeArg(challenger);
             iterator.remove();
-          }
-          // we die, find a new champ
-          else if (dominates(challengerU, champU)) {
+          } else if (dominates(challengerU, champU)) {
+            // we die, find a new champ
             phiExpr.removeArg(champ);
             champ = challenger;
             champU = champ.getUnit();
-          }
-
-          // neither wins, oops!  we'll have to try the next
-          // available champ at the next pass.  It may very
-          // well be inevitable that we will have two
-          // identical value args in an exceptional PhiExpr,
-          // but the more we can trim the better.
-          else {
+          } else {
+            // neither wins, oops!  we'll have to try the next
+            // available champ at the next pass.  It may very
+            // well be inevitable that we will have two
+            // identical value args in an exceptional PhiExpr,
+            // but the more we can trim the better.
             retry = true;
           }
         }
@@ -319,7 +316,7 @@ public class PhiNodeManager {
       }
     }
 
-        /*
+    /*
         {
             List preds = phiExpr.getPreds();
 

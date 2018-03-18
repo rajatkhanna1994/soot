@@ -101,7 +101,8 @@ public abstract class UnitGraph implements DirectedGraph<Unit> {
   protected void buildUnexceptionalEdges(Map<Unit, List<Unit>> unitToSuccs,
                                          Map<Unit, List<Unit>> unitToPreds) {
     Iterator<Unit> unitIt = unitChain.iterator();
-    Unit currentUnit, nextUnit;
+    Unit currentUnit;
+    Unit nextUnit;
 
     nextUnit = unitIt.hasNext() ? (Unit) unitIt.next() : null;
 
