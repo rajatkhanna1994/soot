@@ -19,40 +19,54 @@
 
 package soot.jimple.toolkits.callgraph;
 
-import soot.*;
-import soot.jimple.*;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
-public class UnreachableMethodTransformer extends BodyTransformer
-{
-    protected void internalTransform(Body b, String phaseName, Map options) {
-        //System.out.println( "Performing UnreachableMethodTransformer" );
-        ReachableMethods reachableMethods = Scene.v().getReachableMethods();
-        SootMethod method = b.getMethod();
-        //System.out.println( "Method: " + method.getName() );
-        if( reachableMethods.contains( method ) ) return;
+import soot.Body;
+import soot.BodyTransformer;
+import soot.Local;
+import soot.PatchingChain;
+import soot.RefType;
+import soot.Scene;
+import soot.SootMethod;
+import soot.Unit;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.StringConstant;
 
-        JimpleBody body = (JimpleBody) method.getActiveBody();
+public class UnreachableMethodTransformer extends BodyTransformer {
+  protected void internalTransform(Body b, String phaseName, Map options) {
+    //System.out.println( "Performing UnreachableMethodTransformer" );
+    ReachableMethods reachableMethods = Scene.v().getReachableMethods();
+    SootMethod method = b.getMethod();
+    //System.out.println( "Method: " + method.getName() );
+    if (reachableMethods.contains(method)) {
+      return;
+    }
 
-        PatchingChain units = body.getUnits();
-        List<Unit> list = new Vector<Unit>();
+    JimpleBody body = (JimpleBody) method.getActiveBody();
 
-        Local tmpRef = Jimple.v().newLocal( "tmpRef", RefType.v( "java.io.PrintStream" ) );
-        body.getLocals().add(tmpRef);
-        list.add( Jimple.v().newAssignStmt( tmpRef, Jimple.v().newStaticFieldRef( 
-            Scene.v().getField( "<java.lang.System: java.io.PrintStream out>" ).makeRef() ) ) );
+    PatchingChain units = body.getUnits();
+    List<Unit> list = new Vector<Unit>();
 
-        SootMethod toCall = Scene.v().getMethod( "<java.lang.Thread: void dumpStack()>" );
-        list.add( Jimple.v().newInvokeStmt( Jimple.v().newStaticInvokeExpr( toCall.makeRef() ) ) );
+    Local tmpRef = Jimple.v().newLocal("tmpRef", RefType.v("java.io.PrintStream"));
+    body.getLocals().add(tmpRef);
+    list.add(Jimple.v().newAssignStmt(tmpRef, Jimple.v().newStaticFieldRef(
+        Scene.v().getField("<java.lang.System: java.io.PrintStream out>").makeRef())));
 
-        toCall = Scene.v().getMethod( "<java.io.PrintStream: void println(java.lang.String)>" );
-        list.add( Jimple.v().newInvokeStmt( Jimple.v().newVirtualInvokeExpr( 
-            tmpRef, toCall.makeRef(), StringConstant.v( "Executing supposedly unreachable method:" ) ) ) );
-        list.add( Jimple.v().newInvokeStmt( Jimple.v().newVirtualInvokeExpr( 
-            tmpRef, toCall.makeRef(), StringConstant.v( "\t" + method.getDeclaringClass().getName() + "." + method.getName() ) ) ) );
+    SootMethod toCall = Scene.v().getMethod("<java.lang.Thread: void dumpStack()>");
+    list.add(Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(toCall.makeRef())));
 
-        toCall = Scene.v().getMethod( "<java.lang.System: void exit(int)>" );
-        list.add( Jimple.v().newInvokeStmt( Jimple.v().newStaticInvokeExpr( toCall.makeRef(), IntConstant.v( 1 ) ) ) );
+    toCall = Scene.v().getMethod("<java.io.PrintStream: void println(java.lang.String)>");
+    list.add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
+        tmpRef, toCall.makeRef(), StringConstant.v("Executing supposedly unreachable method:"))));
+    list.add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
+        tmpRef, toCall.makeRef(), StringConstant.v("\t" + method.getDeclaringClass().getName() + "." + method.getName()))));
+
+    toCall = Scene.v().getMethod("<java.lang.System: void exit(int)>");
+    list.add(Jimple.v().newInvokeStmt(Jimple.v().newStaticInvokeExpr(toCall.makeRef(), IntConstant.v(1))));
 
         /*
         Stmt r;
@@ -103,9 +117,9 @@ public class UnreachableMethodTransformer extends BodyTransformer
             }
         } else {
             */
-        {
-            units.insertBefore( list, units.getFirst() );
-        }
+    {
+      units.insertBefore(list, units.getFirst());
+    }
         /*
         ArrayList toRemove = new ArrayList();
         for( Iterator sIt = units.iterator(r); sIt.hasNext(); ) {
@@ -119,5 +133,5 @@ public class UnreachableMethodTransformer extends BodyTransformer
         }
         body.getTraps().clear();
         */
-    }
+  }
 }

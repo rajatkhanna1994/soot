@@ -18,21 +18,27 @@
  */
 
 package soot.javaToJimple;
-import java.util.*;
+
+import java.util.ArrayList;
 
 import polyglot.ast.Node;
 
 public class InnerClassInfoFinder extends polyglot.visit.NodeVisitor {
 
-    private final ArrayList<Node> localClassDeclList;
-    private final ArrayList<Node> anonBodyList;
-    private final ArrayList<Node> memberList;
-    //private ArrayList declaredInstList;
-    //private ArrayList usedInstList;
-    
-    public ArrayList<Node> memberList(){
-        return memberList;
-    }
+  private final ArrayList<Node> localClassDeclList;
+  private final ArrayList<Node> anonBodyList;
+  private final ArrayList<Node> memberList;
+  //private ArrayList declaredInstList;
+  //private ArrayList usedInstList;
+
+  public InnerClassInfoFinder() {
+    //declFound = null;
+    localClassDeclList = new ArrayList<Node>();
+    anonBodyList = new ArrayList<Node>();
+    memberList = new ArrayList<Node>();
+    //declaredInstList = new ArrayList();
+    //usedInstList = new ArrayList();
+  }
 
     /*public ArrayList declaredInstList(){
         return declaredInstList;
@@ -42,55 +48,50 @@ public class InnerClassInfoFinder extends polyglot.visit.NodeVisitor {
         return usedInstList;
     }*/
 
-    public ArrayList<Node> localClassDeclList(){
-        return localClassDeclList;
-    }
+  public ArrayList<Node> memberList() {
+    return memberList;
+  }
 
-    public ArrayList<Node> anonBodyList(){
-        return anonBodyList;
-    }
+  public ArrayList<Node> localClassDeclList() {
+    return localClassDeclList;
+  }
 
-    public InnerClassInfoFinder(){
-        //declFound = null;
-        localClassDeclList = new ArrayList<Node>();
-        anonBodyList = new ArrayList<Node>();
-        memberList = new ArrayList<Node>();
-        //declaredInstList = new ArrayList();
-        //usedInstList = new ArrayList();
-    }
+  public ArrayList<Node> anonBodyList() {
+    return anonBodyList;
+  }
 
-    public polyglot.visit.NodeVisitor enter(polyglot.ast.Node parent, polyglot.ast.Node n) {
-    
-        if (n instanceof polyglot.ast.LocalClassDecl) {
-            localClassDeclList.add(n);
-        }
-        if (n instanceof polyglot.ast.New) {
-            if (((polyglot.ast.New)n).anonType() != null){
-                anonBodyList.add(n);
-            }
+  public polyglot.visit.NodeVisitor enter(polyglot.ast.Node parent, polyglot.ast.Node n) {
+
+    if (n instanceof polyglot.ast.LocalClassDecl) {
+      localClassDeclList.add(n);
+    }
+    if (n instanceof polyglot.ast.New) {
+      if (((polyglot.ast.New) n).anonType() != null) {
+        anonBodyList.add(n);
+      }
             /*polyglot.types.ProcedureInstance pi = ((polyglot.ast.New)n).constructorInstance();
             if (pi.isPrivate()){
                 usedInstList.add(new polyglot.util.IdentityKey(pi));
             }*/
-        }
-        
-        if (n instanceof polyglot.ast.ProcedureDecl) {
-            memberList.add(n);
+    }
+
+    if (n instanceof polyglot.ast.ProcedureDecl) {
+      memberList.add(n);
             /*polyglot.types.ProcedureInstance pi = ((polyglot.ast.ProcedureDecl)n).procedureInstance();
             if (pi.flags().isPrivate()){
                 declaredInstList.add(new polyglot.util.IdentityKey(pi));
             }*/
-        }
-        if (n instanceof polyglot.ast.FieldDecl) {
-            memberList.add(n);
+    }
+    if (n instanceof polyglot.ast.FieldDecl) {
+      memberList.add(n);
             /*polyglot.types.FieldInstance fi = ((polyglot.ast.FieldDecl)n).fieldInstance();
             if (fi.flags().isPrivate()){
                 declaredInstList.add(new polyglot.util.IdentityKey(fi));
             }*/
-        }
-        if (n instanceof polyglot.ast.Initializer) {
-            memberList.add(n);
-        }
+    }
+    if (n instanceof polyglot.ast.Initializer) {
+      memberList.add(n);
+    }
 
         /*if (n instanceof polyglot.ast.Field) {
             polyglot.types.FieldInstance fi = ((polyglot.ast.Field)n).fieldInstance();
@@ -110,8 +111,8 @@ public class InnerClassInfoFinder extends polyglot.visit.NodeVisitor {
                 usedInstList.add(new polyglot.util.IdentityKey(pi));
             }
         }*/
-        
-        
-        return enter(n);
-    }
+
+
+    return enter(n);
+  }
 }

@@ -18,61 +18,55 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.jimple.toolkits.annotation.arraycheck;
 
-class IntContainer
-{
-    static IntContainer[] pool = new IntContainer[100];
-    static {
-	for (int i=0; i<100; i++)
-	    pool[i] = new IntContainer(i-50);
+class IntContainer {
+  static IntContainer[] pool = new IntContainer[100];
+
+  static {
+    for (int i = 0; i < 100; i++) {
+      pool[i] = new IntContainer(i - 50);
+    }
+  }
+
+  int value;
+
+  public IntContainer(int v) {
+    this.value = v;
+  }
+
+  public static IntContainer v(int v) {
+    if ((v >= -50) && (v <= 49)) {
+      return pool[v + 50];
+    } else {
+      return new IntContainer(v);
+    }
+  }
+
+  public IntContainer dup() {
+    return new IntContainer(value);
+  }
+
+  public int hashCode() {
+    return value;
+  }
+
+  public boolean equals(Object other) {
+    if (other instanceof IntContainer) {
+      return ((IntContainer) other).value == this.value;
     }
 
-    int value;
-    public IntContainer(int v)
-    {
-	this.value = v;
-    }
+    return false;
+  }
 
-    public static IntContainer v(int v)
-    {
-	if ((v >= -50) && (v <= 49))
-	{
-	    return pool[v+50];
-	}
-	else
-	    return new IntContainer(v);
-    }
-
-    public IntContainer dup()
-    {
-	return new IntContainer(value);
-    }
-
-    public int hashCode()
-    {
-	return value;
-    }
-
-    public boolean equals(Object other)
-    {
-	if (other instanceof IntContainer)
-	{
-	    return ((IntContainer)other).value == this.value ;
-	}
-	
-	return false;
-    }
-
-    public String toString()
-    {
-	return ""+value;
-    }
+  public String toString() {
+    return "" + value;
+  }
 
 }	
 

@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand;
 
 import java.util.HashSet;
@@ -32,104 +33,101 @@ import soot.jimple.spark.pag.SparkField;
 
 public class IncrementalTypesHeuristic implements FieldCheckHeuristic {
 
-    private final TypeManager manager;
+  private static final boolean EXCLUDE_TYPES = false;
+  private static final String[] EXCLUDED_NAMES = new String[] {"ca.mcgill.sable.soot.SootMethod"};
+  private final TypeManager manager;
+  private Set<RefType> typesToCheck = new HashSet<RefType>();
 
-    private static final boolean EXCLUDE_TYPES = false;
+  private Set<RefType> notBothEndsTypes = new HashSet<RefType>();
 
-    private static final String[] EXCLUDED_NAMES = new String[] { "ca.mcgill.sable.soot.SootMethod" };
-
-    private Set<RefType> typesToCheck = new HashSet<RefType>();
-
-    private Set<RefType> notBothEndsTypes = new HashSet<RefType>();
-
-    private RefType newTypeOnQuery = null;
+  private RefType newTypeOnQuery = null;
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see AAA.algs.Heuristic#newQuery()
-     */
-    public boolean runNewPass() {
+  public IncrementalTypesHeuristic(TypeManager manager) {
+    super();
+    this.manager = manager;
+  }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see AAA.algs.Heuristic#newQuery()
+   */
+  public boolean runNewPass() {
 //        if (!aggressive && reachedAggressive) {
 //            aggressive = true;
 //            return true;
 //        }
-        if (newTypeOnQuery != null) {
-            boolean added = typesToCheck.add(newTypeOnQuery);
-            if (SootUtil.hasRecursiveField(newTypeOnQuery.getSootClass())) {
-                notBothEndsTypes.add(newTypeOnQuery);
-            }
-            newTypeOnQuery = null;
-            return added;
-        }
-        return false;
+    if (newTypeOnQuery != null) {
+      boolean added = typesToCheck.add(newTypeOnQuery);
+      if (SootUtil.hasRecursiveField(newTypeOnQuery.getSootClass())) {
+        notBothEndsTypes.add(newTypeOnQuery);
+      }
+      newTypeOnQuery = null;
+      return added;
     }
+    return false;
+  }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see AAA.algs.Heuristic#validateMatchesForField(soot.jimple.spark.pag.SparkField)
-     */
-    public boolean validateMatchesForField(SparkField field) {
-        // if (true) return true;
-        if (field instanceof ArrayElement) {
-            return true;
-        }
-        SootField sootField = (SootField) field;
-        RefType declaringType = sootField.getDeclaringClass().getType();
-        if (EXCLUDE_TYPES) {
-            for (String typeName : EXCLUDED_NAMES) {
-                if (Util.stringContains(declaringType.toString(), typeName)) {
-                    return false;
-                }
-            }
-        }
-        for (RefType typeToCheck : typesToCheck) {
-            if (manager.castNeverFails(declaringType, typeToCheck)) {
-                return true;
-            }
-        }
-        if (newTypeOnQuery == null) {
-            newTypeOnQuery = declaringType;
-            // System.err.println("adding type " + declaringType);
-        }
-        // System.err.println("false for " + field);
-        return false;
+  /*
+   * (non-Javadoc)
+   *
+   * @see AAA.algs.Heuristic#validateMatchesForField(soot.jimple.spark.pag.SparkField)
+   */
+  public boolean validateMatchesForField(SparkField field) {
+    // if (true) return true;
+    if (field instanceof ArrayElement) {
+      return true;
     }
-
-    public IncrementalTypesHeuristic(TypeManager manager) {
-        super();
-        this.manager = manager;
-    }
-
-    public String toString() {
-        StringBuffer ret = new StringBuffer();
-        ret.append("types ");
-        ret.append(typesToCheck.toString());
-        if (!notBothEndsTypes.isEmpty()) {
-            ret.append(" not both ");
-            ret.append(notBothEndsTypes.toString());
+    SootField sootField = (SootField) field;
+    RefType declaringType = sootField.getDeclaringClass().getType();
+    if (EXCLUDE_TYPES) {
+      for (String typeName : EXCLUDED_NAMES) {
+        if (Util.stringContains(declaringType.toString(), typeName)) {
+          return false;
         }
-        return ret.toString();
+      }
     }
-
-    public boolean validFromBothEnds(SparkField field) {
-        if (field instanceof SootField) {
-            SootField sootField = (SootField) field;
-            RefType declaringType = sootField.getDeclaringClass().getType();
-            for (RefType type : notBothEndsTypes) {
-                if (manager.castNeverFails(declaringType, type)) {
-                    return false;
-                }
-            }
-        }
+    for (RefType typeToCheck : typesToCheck) {
+      if (manager.castNeverFails(declaringType, typeToCheck)) {
         return true;
+      }
     }
+    if (newTypeOnQuery == null) {
+      newTypeOnQuery = declaringType;
+      // System.err.println("adding type " + declaringType);
+    }
+    // System.err.println("false for " + field);
+    return false;
+  }
 
-    public boolean refineVirtualCall(CallSiteAndContext callSiteAndContext) {
-        // TODO make real heuristic
-        return true;
+  public String toString() {
+    StringBuffer ret = new StringBuffer();
+    ret.append("types ");
+    ret.append(typesToCheck.toString());
+    if (!notBothEndsTypes.isEmpty()) {
+      ret.append(" not both ");
+      ret.append(notBothEndsTypes.toString());
     }
+    return ret.toString();
+  }
+
+  public boolean validFromBothEnds(SparkField field) {
+    if (field instanceof SootField) {
+      SootField sootField = (SootField) field;
+      RefType declaringType = sootField.getDeclaringClass().getType();
+      for (RefType type : notBothEndsTypes) {
+        if (manager.castNeverFails(declaringType, type)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public boolean refineVirtualCall(CallSiteAndContext callSiteAndContext) {
+    // TODO make real heuristic
+    return true;
+  }
 
 }

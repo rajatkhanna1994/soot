@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -28,57 +28,52 @@ package soot.tagkit;
 
 import java.io.UnsupportedEncodingException;
 
-public class SourceFileTag implements Tag
-{
-    private String sourceFile;
-    private String absolutePath;
-    
-    public SourceFileTag(String sourceFile) {
-    	this(sourceFile,null);
-    }
+public class SourceFileTag implements Tag {
+  private String sourceFile;
+  private String absolutePath;
 
-    public SourceFileTag(String sourceFile, String path)
-    {
-	    this.sourceFile = sourceFile.intern();
-        this.absolutePath = path;
-    }
+  public SourceFileTag(String sourceFile) {
+    this(sourceFile, null);
+  }
 
-    public SourceFileTag(){
-    }
+  public SourceFileTag(String sourceFile, String path) {
+    this.sourceFile = sourceFile.intern();
+    this.absolutePath = path;
+  }
 
-    public String getName()
-    {
-	return "SourceFileTag";
-    }
+  public SourceFileTag() {
+  }
 
-    public byte[] getValue()
-    {
-	try {
-		return sourceFile.getBytes("UTF8");
-	} catch (UnsupportedEncodingException e) {
-		return new byte[0];
-	}
-    }
+  public String getName() {
+    return "SourceFileTag";
+  }
 
-    public void setSourceFile(String srcFile){
-        sourceFile = srcFile.intern();
+  public byte[] getValue() {
+    try {
+      return sourceFile.getBytes("UTF8");
+    } catch (UnsupportedEncodingException e) {
+      return new byte[0];
     }
-    public String getSourceFile()
-    {
-	return sourceFile;
-    }
+  }
 
-    public void setAbsolutePath(String path){
-        absolutePath = path;
-    }
+  public String getSourceFile() {
+    return sourceFile;
+  }
 
-    public String getAbsolutePath(){
-        return absolutePath;
-    }
+  public void setSourceFile(String srcFile) {
+    sourceFile = srcFile.intern();
+  }
 
-    public String toString()
-    {
-	return sourceFile;
-    }
+  public String getAbsolutePath() {
+    return absolutePath;
+  }
+
+  public void setAbsolutePath(String path) {
+    absolutePath = path;
+  }
+
+  public String toString() {
+    return sourceFile;
+  }
 }
 

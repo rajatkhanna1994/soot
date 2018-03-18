@@ -19,64 +19,70 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.SootMethodRef;
+import soot.UnitPrinter;
+import soot.baf.InstSwitch;
+import soot.baf.InterfaceInvokeInst;
+import soot.util.Switch;
 
-public class BInterfaceInvokeInst extends AbstractInvokeInst 
-                                  implements InterfaceInvokeInst
-{
-    int argCount;
-    
-    public int getInCount()
-    {
-        return methodRef.parameterTypes().size()+1;
-        
+public class BInterfaceInvokeInst extends AbstractInvokeInst
+    implements InterfaceInvokeInst {
+  int argCount;
+
+  public BInterfaceInvokeInst(SootMethodRef methodRef, int argCount) {
+    if (methodRef.isStatic()) {
+      throw new RuntimeException("wrong static-ness");
     }
+    this.methodRef = methodRef;
+    this.argCount = argCount;
+  }
 
-    public int getInMachineCount()
-    {
-        return super.getInMachineCount() +1;        
-    }
-    
+  public int getInCount() {
+    return methodRef.parameterTypes().size() + 1;
 
-    public BInterfaceInvokeInst(SootMethodRef methodRef, int argCount) 
-        {
-            if( methodRef.isStatic() ) throw new RuntimeException("wrong static-ness");
-            this.methodRef = methodRef; this.argCount = argCount;
-        }
+  }
+
+  public int getInMachineCount() {
+    return super.getInMachineCount() + 1;
+  }
+
+  public Object clone() {
+    return new BInterfaceInvokeInst(methodRef, getArgCount());
+  }
 
 
-    public Object clone() 
-    {
-        return new  BInterfaceInvokeInst(methodRef, getArgCount());
-    }
+  final public String getName() {
+    return "interfaceinvoke";
+  }
 
-    
+  final String getParameters() {
+    return super.getParameters() + " " + argCount;
+  }
 
-    final public String getName() { return "interfaceinvoke"; }
-    final String getParameters()
-        { return super.getParameters() + " " + argCount; }
-    protected void getParameters(UnitPrinter up) {
-        super.getParameters(up);
-        up.literal(" ");
-        up.literal(new Integer(argCount).toString());
-    }
+  protected void getParameters(UnitPrinter up) {
+    super.getParameters(up);
+    up.literal(" ");
+    up.literal(new Integer(argCount).toString());
+  }
 
-    public int getArgCount() { return argCount; }
-    public void setArgCount(int x) { argCount = x; }
+  public int getArgCount() {
+    return argCount;
+  }
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseInterfaceInvokeInst(this);
-    }   
+  public void setArgCount(int x) {
+    argCount = x;
+  }
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseInterfaceInvokeInst(this);
+  }
 }
 
 

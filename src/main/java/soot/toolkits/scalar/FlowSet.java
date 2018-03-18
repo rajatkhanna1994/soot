@@ -19,7 +19,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -27,10 +27,11 @@
 
 package soot.toolkits.scalar;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * Represents information for flow analysis.  
+ * Represents information for flow analysis.
  * A FlowSet is an element of a lattice; this lattice might be described by a
  * FlowUniverse.
  * If add, remove, size, isEmpty, toList and contains are implemented, the
@@ -44,7 +45,7 @@ public interface FlowSet<T> extends Iterable<T> {
    */
   public FlowSet<T> clone();
 
-  /** 
+  /**
    * returns an empty set, most often more efficient than:
    * <code>((FlowSet)clone()).clear()</code>
    */
@@ -55,17 +56,19 @@ public interface FlowSet<T> extends Iterable<T> {
    */
   public void copy(FlowSet<T> dest);
 
-  /** 
+  /**
    * Sets this FlowSet to the empty set (more generally, the bottom element
-   * of the lattice.) */
+   * of the lattice.)
+   */
   public void clear();
 
   /**
    * Returns the union (join) of this FlowSet and <code>other</code>, putting
-   * result into <code>this</code>. */
+   * result into <code>this</code>.
+   */
   public void union(FlowSet<T> other);
 
-  /** 
+  /**
    * Returns the union (join) of this FlowSet and <code>other</code>, putting
    * result into <code>dest</code>. <code>dest</code>, <code>other</code> and
    * <code>this</code> could be the same object.
@@ -85,14 +88,14 @@ public interface FlowSet<T> extends Iterable<T> {
    */
   public void intersection(FlowSet<T> other, FlowSet<T> dest);
 
-  /** 
+  /**
    * Returns the set difference (this intersect ~other) of this FlowSet and
    * <code>other</code>, putting result into <code>this</code>.
    */
   public void difference(FlowSet<T> other);
 
   /**
-   * Returns the set difference (this intersect ~other) of this FlowSet and 
+   * Returns the set difference (this intersect ~other) of this FlowSet and
    * <code>other</code>, putting result into <code>dest</code>.
    * <code>dest</code>, <code>other</code> and <code>this</code> could be the
    * same object.
@@ -140,7 +143,7 @@ public interface FlowSet<T> extends Iterable<T> {
    * Returns true if the <code>other</code> FlowSet is a subset of <code>this</code> FlowSet.
    */
   public boolean isSubSet(FlowSet<T> other);
-  
+
   /**
    * returns an iterator over the elements of the flowSet. Note that the
    * iterator might be backed, and hence be faster in the creation, than doing

@@ -18,65 +18,60 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
+import soot.AbstractJasminClass;
+import soot.ArrayType;
+import soot.NullType;
+import soot.RefType;
+import soot.Type;
+import soot.UnitPrinter;
+import soot.baf.Baf;
 
-public abstract class AbstractOpTypeInst extends AbstractInst
-{
-    protected Type opType;
+public abstract class AbstractOpTypeInst extends AbstractInst {
+  protected Type opType;
 
-    protected AbstractOpTypeInst(Type opType)
-    {
-        if(opType instanceof NullType || opType instanceof ArrayType || opType instanceof RefType)
-            opType = RefType.v();
-        
-        this.opType = opType;
-    }
-    
-    public Type getOpType()
-    {
-        return opType;
-    }
-    
-    public void setOpType(Type t)
-    {
-        opType = t;
-        if(opType instanceof NullType || opType instanceof ArrayType || opType instanceof RefType)
-            opType = RefType.v();
+  protected AbstractOpTypeInst(Type opType) {
+    if (opType instanceof NullType || opType instanceof ArrayType || opType instanceof RefType) {
+      opType = RefType.v();
     }
 
-    /* override AbstractInst's toString with our own, including types */
-    public String toString()
-    {
-        return getName() + "." + 
-          Baf.bafDescriptorOf(opType) + getParameters();
+    this.opType = opType;
+  }
+
+  public Type getOpType() {
+    return opType;
+  }
+
+  public void setOpType(Type t) {
+    opType = t;
+    if (opType instanceof NullType || opType instanceof ArrayType || opType instanceof RefType) {
+      opType = RefType.v();
     }
-    
-    public void toString(UnitPrinter up) {
-        up.literal(getName());
-        up.literal(".");
-        up.literal(Baf.bafDescriptorOf(opType));
-        getParameters(up);
-    }
+  }
+
+  /* override AbstractInst's toString with our own, including types */
+  public String toString() {
+    return getName() + "." +
+        Baf.bafDescriptorOf(opType) + getParameters();
+  }
+
+  public void toString(UnitPrinter up) {
+    up.literal(getName());
+    up.literal(".");
+    up.literal(Baf.bafDescriptorOf(opType));
+    getParameters(up);
+  }
 
 
-  
-  
-  
-  public int getOutMachineCount()
-  {
+  public int getOutMachineCount() {
     return AbstractJasminClass.sizeOfType(getOpType());
-  } 
+  }
 
 }

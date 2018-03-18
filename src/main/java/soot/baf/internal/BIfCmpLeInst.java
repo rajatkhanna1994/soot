@@ -18,60 +18,55 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.AbstractJasminClass;
+import soot.Type;
+import soot.Unit;
+import soot.baf.Baf;
+import soot.baf.IfCmpLeInst;
+import soot.baf.InstSwitch;
+import soot.util.Switch;
 
-public class BIfCmpLeInst extends AbstractOpTypeBranchInst 
-                          implements IfCmpLeInst
-{
-    public BIfCmpLeInst(Type opType, Unit target)
-    {
-        super(opType, Baf.v().newInstBox(target));
-    }
+public class BIfCmpLeInst extends AbstractOpTypeBranchInst
+    implements IfCmpLeInst {
+  public BIfCmpLeInst(Type opType, Unit target) {
+    super(opType, Baf.v().newInstBox(target));
+  }
 
-    public int getInCount()
-    {
-        return 2;
-    }
+  public int getInCount() {
+    return 2;
+  }
 
-    public Object clone() 
-    {
-        return new  BIfCmpLeInst(getOpType(), getTarget());
-    }
+  public Object clone() {
+    return new BIfCmpLeInst(getOpType(), getTarget());
+  }
 
-    public int getInMachineCount()
-    {
-        return 2*AbstractJasminClass.sizeOfType(getOpType());
-    }
-    
-    public int getOutCount()
-    {
-        return 0;
-    }
+  public int getInMachineCount() {
+    return 2 * AbstractJasminClass.sizeOfType(getOpType());
+  }
 
-    public int getOutMachineCount()
-    {
-        return 0;
-    }
+  public int getOutCount() {
+    return 0;
+  }
+
+  public int getOutMachineCount() {
+    return 0;
+  }
 
 
-    public String getName() { return "ifcmple"; }
+  public String getName() {
+    return "ifcmple";
+  }
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseIfCmpLeInst(this);
-    }    
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseIfCmpLeInst(this);
+  }
 }
 

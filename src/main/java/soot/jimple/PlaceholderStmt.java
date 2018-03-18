@@ -18,48 +18,50 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
- 
-
-
 
 package soot.jimple;
 
-import soot.*;
-import soot.jimple.internal.*;
+import soot.Unit;
+import soot.UnitPrinter;
+import soot.jimple.internal.AbstractStmt;
 
-public class PlaceholderStmt extends AbstractStmt
-{
-    private Unit source;
+public class PlaceholderStmt extends AbstractStmt {
+  private Unit source;
 
-    public String toString()
-    {
-        return "<placeholder: " + source.toString() + ">";
-    }
-    
-    public void toString( UnitPrinter up ) {
-        up.literal("<placeholder: ");
-        source.toString(up);
-        up.literal(">");
-    }
-    
-    PlaceholderStmt(Unit source)
-    {
-        this.source = source;
-    }
-    
-    public Unit getSource()
-    {
-        return source;
-    }
+  PlaceholderStmt(Unit source) {
+    this.source = source;
+  }
 
-    public boolean fallsThrough() {throw  new RuntimeException(); }
-    public boolean branches() {throw new RuntimeException(); }
-    public Object clone() {throw new RuntimeException();}
+  public String toString() {
+    return "<placeholder: " + source.toString() + ">";
+  }
+
+  public void toString(UnitPrinter up) {
+    up.literal("<placeholder: ");
+    source.toString(up);
+    up.literal(">");
+  }
+
+  public Unit getSource() {
+    return source;
+  }
+
+  public boolean fallsThrough() {
+    throw new RuntimeException();
+  }
+
+  public boolean branches() {
+    throw new RuntimeException();
+  }
+
+  public Object clone() {
+    throw new RuntimeException();
+  }
 
 
 }

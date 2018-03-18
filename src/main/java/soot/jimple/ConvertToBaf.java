@@ -18,21 +18,18 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import java.util.*;
-import soot.*;
+import java.util.List;
 
-public interface ConvertToBaf
-{
-    public void convertToBaf(JimpleToBafContext context, List<Unit> out);
+import soot.Unit;
+
+public interface ConvertToBaf {
+  public void convertToBaf(JimpleToBafContext context, List<Unit> out);
 }

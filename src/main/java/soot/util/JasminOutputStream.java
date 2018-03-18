@@ -18,7 +18,11 @@
  */
 
 package soot.util;
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * An output stream that wraps an existing output stream, and converts Jasmin
@@ -26,19 +30,21 @@ import java.io.*;
  * stream. (Write Jasmin into this stream, and .class will come out.)
  */
 public class JasminOutputStream extends ByteArrayOutputStream {
-    final private OutputStream out;
-    public JasminOutputStream( OutputStream out ) {
-        this.out = out;
-    }
-    public void flush() {
-        ByteArrayInputStream bais = new ByteArrayInputStream(this.toByteArray());
-        jasmin.Main.assemble(bais, out, false);
-    }
+  final private OutputStream out;
 
-    @Override
-    public void close() throws IOException {
-        this.out.close();
-        super.close();
-    }
+  public JasminOutputStream(OutputStream out) {
+    this.out = out;
+  }
+
+  public void flush() {
+    ByteArrayInputStream bais = new ByteArrayInputStream(this.toByteArray());
+    jasmin.Main.assemble(bais, out, false);
+  }
+
+  @Override
+  public void close() throws IOException {
+    this.out.close();
+    super.close();
+  }
 }
 

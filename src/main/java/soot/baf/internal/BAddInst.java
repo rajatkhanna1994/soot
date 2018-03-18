@@ -18,58 +18,51 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.AbstractJasminClass;
+import soot.Type;
+import soot.baf.AddInst;
+import soot.baf.InstSwitch;
+import soot.util.Switch;
 
-public class BAddInst extends AbstractOpTypeInst implements AddInst
-{
-    public BAddInst(Type opType)
-    {
-        super(opType);
-    }
-    
-    public int getInCount()
-    {
-        return 2;
-    }
+public class BAddInst extends AbstractOpTypeInst implements AddInst {
+  public BAddInst(Type opType) {
+    super(opType);
+  }
 
-    public Object clone() 
-    {
-        return new BAddInst(getOpType());
-    }
+  public int getInCount() {
+    return 2;
+  }
 
-    public int getInMachineCount()
-    {
-        return 2 * AbstractJasminClass.sizeOfType(getOpType());
-    }
-    
-    public int getOutCount()
-    {
-        return 1;
-    }
+  public Object clone() {
+    return new BAddInst(getOpType());
+  }
 
-    public int getOutMachineCount()
-    {
-        return 1 * AbstractJasminClass.sizeOfType(getOpType());
-    }
-    
-    public final String getName() { return "add"; }
+  public int getInMachineCount() {
+    return 2 * AbstractJasminClass.sizeOfType(getOpType());
+  }
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseAddInst(this);
-    }
+  public int getOutCount() {
+    return 1;
+  }
+
+  public int getOutMachineCount() {
+    return 1 * AbstractJasminClass.sizeOfType(getOpType());
+  }
+
+  public final String getName() {
+    return "add";
+  }
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseAddInst(this);
+  }
 }
 

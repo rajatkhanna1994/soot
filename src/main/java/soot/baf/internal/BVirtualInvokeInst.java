@@ -19,47 +19,47 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.SootMethodRef;
+import soot.baf.InstSwitch;
+import soot.baf.VirtualInvokeInst;
+import soot.util.Switch;
 
-public class BVirtualInvokeInst extends AbstractInvokeInst implements VirtualInvokeInst
-{
-    public BVirtualInvokeInst(SootMethodRef methodRef) {
-        if( methodRef.isStatic() ) throw new RuntimeException("wrong static-ness");
-        this.methodRef = methodRef;
+public class BVirtualInvokeInst extends AbstractInvokeInst implements VirtualInvokeInst {
+  public BVirtualInvokeInst(SootMethodRef methodRef) {
+    if (methodRef.isStatic()) {
+      throw new RuntimeException("wrong static-ness");
     }
-  
-    public int getInMachineCount()
-    {
-        return super.getInMachineCount() + 1;        
-    }
-  
-  public int getInCount()
-  {
-        return super.getInCount() + 1;        
-    }
-  
-  
-  public Object clone() 
-  {
-    return new  BVirtualInvokeInst(methodRef);
+    this.methodRef = methodRef;
   }
 
-  
-  final public String getName() { return "virtualinvoke"; }
-  
-  public void apply(Switch sw)
-  {
+  public int getInMachineCount() {
+    return super.getInMachineCount() + 1;
+  }
+
+  public int getInCount() {
+    return super.getInCount() + 1;
+  }
+
+
+  public Object clone() {
+    return new BVirtualInvokeInst(methodRef);
+  }
+
+
+  final public String getName() {
+    return "virtualinvoke";
+  }
+
+  public void apply(Switch sw) {
     ((InstSwitch) sw).caseVirtualInvokeInst(this);
-  }   
+  }
 }
 
 

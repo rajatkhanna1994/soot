@@ -18,26 +18,28 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import java.util.*;
+import java.util.List;
 
-public interface LookupSwitchStmt extends SwitchStmt
-{
-    public void setLookupValues(List<IntConstant> lookupValues);
-    public void setLookupValue(int index, int value);
-    public int getLookupValue(int index);
-    public List<IntConstant> getLookupValues();
-    public int getTargetCount();
-    public void setTargets(Unit[] targets);
+import soot.Unit;
+
+public interface LookupSwitchStmt extends SwitchStmt {
+  public void setLookupValue(int index, int value);
+
+  public int getLookupValue(int index);
+
+  public List<IntConstant> getLookupValues();
+
+  public void setLookupValues(List<IntConstant> lookupValues);
+
+  public int getTargetCount();
+
+  public void setTargets(Unit[] targets);
 }

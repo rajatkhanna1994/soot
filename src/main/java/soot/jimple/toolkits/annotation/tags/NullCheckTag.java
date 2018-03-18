@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,45 +26,42 @@
 
 package soot.jimple.toolkits.annotation.tags;
 
-/** NullCheckTag contains the null pointer check information. 
+/**
+ * NullCheckTag contains the null pointer check information.
  * The right third bit of a byte is used to represent whether
  * the null check is needed.
  */
 
-public class NullCheckTag implements OneByteCodeTag
-{
-    private final static String NAME = "NullCheckTag";
-    
-    private byte value = 0;
+public class NullCheckTag implements OneByteCodeTag {
+  private final static String NAME = "NullCheckTag";
 
-    public NullCheckTag(boolean needCheck)
-    {
-    	if (needCheck)
-	    value = 0x04;
-    }
+  private byte value = 0;
 
-    public String getName()
-    {
-	return NAME;
+  public NullCheckTag(boolean needCheck) {
+    if (needCheck) {
+      value = 0x04;
     }
+  }
 
-    public byte[] getValue()
-    {
-        byte[] bv = new byte[1];
-	bv[0] = value;
-	return bv;
-    }
+  public String getName() {
+    return NAME;
+  }
 
-    public boolean needCheck()
-    {
-    	if (value == 0)
-	    return false;
-	else
-	    return true;
-    }
+  public byte[] getValue() {
+    byte[] bv = new byte[1];
+    bv[0] = value;
+    return bv;
+  }
 
-    public String toString()
-    {
-	return ((value==0)?"[not null]":"[unknown]");
+  public boolean needCheck() {
+    if (value == 0) {
+      return false;
+    } else {
+      return true;
     }
+  }
+
+  public String toString() {
+    return ((value == 0) ? "[not null]" : "[unknown]");
+  }
 }

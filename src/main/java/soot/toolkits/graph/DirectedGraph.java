@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -27,43 +27,46 @@
 package soot.toolkits.graph;
 
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
- *   Defines the notion of a directed graph.
- *   @param N node type
+ * Defines the notion of a directed graph.
+ *
+ * @param N node type
  */
-public interface DirectedGraph<N> extends Iterable<N>
-{
-    /** 
-     *  Returns a list of entry points for this graph.
-     */
-    public List<N> getHeads();
+public interface DirectedGraph<N> extends Iterable<N> {
+  /**
+   * Returns a list of entry points for this graph.
+   */
+  public List<N> getHeads();
 
-    /** Returns a list of exit points for this graph. */
-    public List<N> getTails();
+  /**
+   * Returns a list of exit points for this graph.
+   */
+  public List<N> getTails();
 
-    /** 
-     *  Returns a list of predecessors for the given node in the graph.
-     */
-    public List<N> getPredsOf(N s);
+  /**
+   * Returns a list of predecessors for the given node in the graph.
+   */
+  public List<N> getPredsOf(N s);
 
-    /**
-     *  Returns a list of successors for the given node in the graph.
-     */
-    public List<N> getSuccsOf(N s);
+  /**
+   * Returns a list of successors for the given node in the graph.
+   */
+  public List<N> getSuccsOf(N s);
 
-    /**
-     *  Returns the node count for this graph.
-     */
-    public int size();
+  /**
+   * Returns the node count for this graph.
+   */
+  public int size();
 
-    /**
-     *  Returns an iterator for the nodes in this graph. No specific ordering
-     *  of the nodes is guaranteed.
-     */
-    public Iterator<N> iterator();
+  /**
+   * Returns an iterator for the nodes in this graph. No specific ordering
+   * of the nodes is guaranteed.
+   */
+  public Iterator<N> iterator();
 }
 
  

@@ -16,24 +16,25 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.genericutil;
 
 import java.util.Set;
 
-public class ArraySetDupesMultiMap<K,V> extends AbstractMultiMap<K,V> {
+public class ArraySetDupesMultiMap<K, V> extends AbstractMultiMap<K, V> {
 
-    public ArraySetDupesMultiMap(boolean create) {
-        super(create);
-    }
+  public ArraySetDupesMultiMap(boolean create) {
+    super(create);
+  }
 
-    public ArraySetDupesMultiMap() {
-        this(false);
-    }
-                                    
-    @Override
-    protected Set<V> createSet() {
-        return new ArraySet<V>(1,false);
-    }
+  public ArraySetDupesMultiMap() {
+    this(false);
+  }
 
-    
+  @Override
+  protected Set<V> createSet() {
+    return new ArraySet<V>(1, false);
+  }
+
+
 }

@@ -30,18 +30,17 @@ import java.util.Set;
 import org.jf.dexlib2.iface.instruction.Instruction;
 import org.jf.dexlib2.iface.instruction.ReferenceInstruction;
 import org.jf.dexlib2.iface.reference.TypeReference;
-
 import soot.Type;
 import soot.dexpler.DexBody;
 import soot.dexpler.DexType;
 
 public abstract class FilledArrayInstruction extends DexlibAbstractInstruction implements DanglingInstruction {
-    
-    public FilledArrayInstruction(Instruction instruction, int codeAddress) {
-        super(instruction, codeAddress);
-    }
 
-    public void finalize(DexBody body, DexlibAbstractInstruction successor) {
+  public FilledArrayInstruction(Instruction instruction, int codeAddress) {
+    super(instruction, codeAddress);
+  }
+
+  public void finalize(DexBody body, DexlibAbstractInstruction successor) {
 //        // defer final jimplification to move result
 //        if (successor instanceof MoveResultInstruction) {
 //            MoveResultInstruction i = (MoveResultInstruction)successor;
@@ -49,15 +48,15 @@ public abstract class FilledArrayInstruction extends DexlibAbstractInstruction i
 //            if (lineNumber != -1)
 //                i.setTag(new SourceLineNumberTag(lineNumber));
 //        }
-    }
+  }
 
-    @Override
-    public Set<Type> introducedTypes() {
-        ReferenceInstruction i = (ReferenceInstruction) instruction;
+  @Override
+  public Set<Type> introducedTypes() {
+    ReferenceInstruction i = (ReferenceInstruction) instruction;
 
-        Set<Type> types = new HashSet<Type>();
-        types.add(DexType.toSoot((TypeReference) i.getReference()));
-        return types;
-    }
+    Set<Type> types = new HashSet<Type>();
+    types.add(DexType.toSoot((TypeReference) i.getReference()));
+    return types;
+  }
 
 }

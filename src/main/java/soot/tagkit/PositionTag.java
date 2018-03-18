@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,42 +26,38 @@
 
 package soot.tagkit;
 
-public class PositionTag implements Tag
-{
-    /* it is a value representing end offset. */
-    private final int endOffset;
-    
-    /* it is a value representing start offset. */
-    private final int startOffset;
-    
-    public PositionTag(int start, int end)
-    {
-		startOffset = start;
-		endOffset = end;
+public class PositionTag implements Tag {
+  /* it is a value representing end offset. */
+  private final int endOffset;
 
-    }
+  /* it is a value representing start offset. */
+  private final int startOffset;
 
-    public int getEndOffset() {
-    	return endOffset;
-    }
-    public int getStartOffset() {
-    	return startOffset;
-    }
-    
-    public String getName()
-    {
-		return "PositionTag";
-    }
+  public PositionTag(int start, int end) {
+    startOffset = start;
+    endOffset = end;
 
-    public byte[] getValue()
-    {
-	byte[] v = new byte[2];
-	return v;
-    }
+  }
 
-    public String toString()
-    {
-   	return "Jimple pos tag: spos: "+startOffset+" epos: "+endOffset;
-    }
+  public int getEndOffset() {
+    return endOffset;
+  }
+
+  public int getStartOffset() {
+    return startOffset;
+  }
+
+  public String getName() {
+    return "PositionTag";
+  }
+
+  public byte[] getValue() {
+    byte[] v = new byte[2];
+    return v;
+  }
+
+  public String toString() {
+    return "Jimple pos tag: spos: " + startOffset + " epos: " + endOffset;
+  }
 
 }

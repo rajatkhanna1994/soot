@@ -18,86 +18,74 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.AbstractJasminClass;
+import soot.Type;
+import soot.baf.InstSwitch;
+import soot.baf.PopInst;
+import soot.util.Switch;
 
-public class BPopInst extends AbstractInst implements PopInst
-{
-    
-    protected Type mType;
-    
-    public BPopInst(Type aType)
-    {
-        mType = aType;
-    }
+public class BPopInst extends AbstractInst implements PopInst {
 
-    //public interface PopInst extends Inst
+  protected Type mType;
 
-    public int getWordCount()
-    {
-        return getInMachineCount();
-    }
-    
-    public void setWordCount(int count)
-    {
-        throw new RuntimeException("not implemented");
-    }   
-    
+  public BPopInst(Type aType) {
+    mType = aType;
+  }
+
+  //public interface PopInst extends Inst
+
+  public int getWordCount() {
+    return getInMachineCount();
+  }
+
+  public void setWordCount(int count) {
+    throw new RuntimeException("not implemented");
+  }
 
 
-    public Object clone() 
-    {
-        return new  BPopInst(mType);
-    }
+  public Object clone() {
+    return new BPopInst(mType);
+  }
 
 
-    final public String getName() { return "pop"; }
+  final public String getName() {
+    return "pop";
+  }
 
-    final String getParameters()
-    {
-        return ""; 
-    }
+  final String getParameters() {
+    return "";
+  }
 
-    public int getInCount()
-    {
-        return 1;
-    }
+  public int getInCount() {
+    return 1;
+  }
 
-    public int getOutMachineCount()
-    {
-        return 0;
-    }
-    
-    public int getOutCount()
-    {
-        return 0;
-    }
+  public int getOutMachineCount() {
+    return 0;
+  }
 
-    public int getInMachineCount()
-    {
-        return AbstractJasminClass.sizeOfType(mType);
-    }
+  public int getOutCount() {
+    return 0;
+  }
+
+  public int getInMachineCount() {
+    return AbstractJasminClass.sizeOfType(mType);
+  }
 
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).casePopInst(this);
-    }   
-    
-    public Type getType() 
-    {
-      return mType;
-    }
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).casePopInst(this);
+  }
+
+  public Type getType() {
+    return mType;
+  }
 }

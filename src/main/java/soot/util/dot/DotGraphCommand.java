@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -28,12 +28,13 @@
 
 package soot.util.dot;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Encodes general Dot commands.
  */
-public class DotGraphCommand implements Renderable{
+public class DotGraphCommand implements Renderable {
   String command;
 
   /**
@@ -45,8 +46,9 @@ public class DotGraphCommand implements Renderable{
 
   /**
    * Implements Renderable interface.
-   * @param out the output stream
-   * @param indent the number of indent space 
+   *
+   * @param out    the output stream
+   * @param indent the number of indent space
    * @see Renderable
    */
   public void render(OutputStream out, int indent) throws IOException {

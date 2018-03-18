@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,16 +26,23 @@
 
 package soot.jimple.toolkits.scalar;
 
-import soot.*;
-import soot.jimple.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import soot.Local;
+import soot.Type;
+import soot.jimple.Jimple;
 
 /**
  * provides an easy interface to handle new var-names. New names are automatically
  * added to the chain, and the provided locals are guaranteed to have a unique name.
  */
 public class LocalCreation {
-  /** if no prefix is given, this one's used */
+  /**
+   * if no prefix is given, this one's used
+   */
   public static final String DEFAULT_PREFIX = "soot";
   private String prefix;
   private int counter;
@@ -56,7 +63,7 @@ public class LocalCreation {
    * whenever <code>newLocal(type)</code> will be called, the given prefix is
    * used.
    *
-   * @param Chain the locals-chain of a Jimple-body
+   * @param Chain  the locals-chain of a Jimple-body
    * @param String prefix overrides the DEFAULT-PREFIX
    */
   public LocalCreation(Collection<Local> locals, String prefix) {
@@ -64,7 +71,7 @@ public class LocalCreation {
     localChain = locals;
     Iterator<Local> it = locals.iterator();
     while (it.hasNext()) {
-      Local l = (Local)it.next();
+      Local l = (Local) it.next();
       this.locals.add(l.getName());
     }
     this.prefix = prefix;
@@ -92,7 +99,7 @@ public class LocalCreation {
    * <i>X</i> is a number, so the localname is unique).
    *
    * @param prefix the prefix for the now local.
-   * @param type the Type of the now local.
+   * @param type   the Type of the now local.
    * @return a local with the given prefix and the given type.
    */
   public Local newLocal(String prefix, Type type) {
@@ -102,7 +109,9 @@ public class LocalCreation {
       suffix = counter;
     }
 
-    while (locals.contains(prefix + suffix)) suffix++;
+    while (locals.contains(prefix + suffix)) {
+      suffix++;
+    }
 
     if (prefix == this.prefix ||
         prefix.equals(this.prefix)) {

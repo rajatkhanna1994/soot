@@ -25,22 +25,25 @@
 
 package soot.jimple.toolkits.pointer.nativemethods;
 
-import soot.*;
-import soot.jimple.toolkits.pointer.representations.*;
-import soot.jimple.toolkits.pointer.util.*;
+import soot.SootMethod;
+import soot.jimple.toolkits.pointer.representations.Environment;
+import soot.jimple.toolkits.pointer.representations.ReferenceVariable;
+import soot.jimple.toolkits.pointer.util.NativeHelper;
 
 public class JavaLangObjectNative extends NativeMethodClass {
-    public JavaLangObjectNative( NativeHelper helper ) { super(helper); }
+  public JavaLangObjectNative(NativeHelper helper) {
+    super(helper);
+  }
 
   /**
    * Implements the abstract method simulateMethod.
-   * It distributes the request to the corresponding methods 
+   * It distributes the request to the corresponding methods
    * by signatures.
    */
   public void simulateMethod(SootMethod method,
-			     ReferenceVariable thisVar,
-			     ReferenceVariable returnVar,
-			     ReferenceVariable params[]){
+                             ReferenceVariable thisVar,
+                             ReferenceVariable returnVar,
+                             ReferenceVariable params[]) {
     String subSignature = method.getSubSignature();
 
     /* Driver */
@@ -51,8 +54,8 @@ public class JavaLangObjectNative extends NativeMethodClass {
 
     } else if (subSignature.equals("java.lang.Object clone()")) {
       java_lang_Object_clone(method, thisVar, returnVar, params);
-      return; 
-     
+      return;
+
     } else {
       defaultMethod(method, thisVar, returnVar, params);
       return;
@@ -63,13 +66,13 @@ public class JavaLangObjectNative extends NativeMethodClass {
   /**
    * The return variable is assigned an abstract object representing
    * all classes (UnknowClassObject) from environment.
-   *
+   * <p>
    * public final native java.lang.Class getClass();
    */
   public void java_lang_Object_getClass(SootMethod method,
-					       ReferenceVariable thisVar,
-					       ReferenceVariable returnVar,
-					       ReferenceVariable params[]) {
+                                        ReferenceVariable thisVar,
+                                        ReferenceVariable returnVar,
+                                        ReferenceVariable params[]) {
     helper.assignObjectTo(returnVar, Environment.v().getClassObject());
   }
 
@@ -77,37 +80,38 @@ public class JavaLangObjectNative extends NativeMethodClass {
    * Creates and returns a copy of this object. The precise meaning of
    * "copy" may depend on the class of the object. The general intent
    * is that, for any object x, the expression:
-   * 
-   *      x.clone() != x
-   *
+   * <p>
+   * x.clone() != x
+   * <p>
    * will be true, and that the expression:
-   *
-   *      x.clone().getClass() == x.getClass()
-   *
+   * <p>
+   * x.clone().getClass() == x.getClass()
+   * <p>
    * will be true, but these are not absolute requirements. While it is
    * typically the case that:
-   *
-   *      x.clone().equals(x)
-   *
+   * <p>
+   * x.clone().equals(x)
+   * <p>
    * will be true, this is not an absolute requirement. Copying an
    * object will typically entail creating a new instance of its
    * class, but it also may require copying of internal data
    * structures as well. No constructors are called.
-   *
+   * <p>
    * NOTE: it may raise an exception, the decision of cloning made by
-   *       analysis by implementing the ReferneceVariable.cloneObject()
-   *       method.
-   *
-   * protected native java.lang.Object clone() 
-   *                  throws java.lang.CloneNotSupported
+   * analysis by implementing the ReferneceVariable.cloneObject()
+   * method.
+   * <p>
+   * protected native java.lang.Object clone()
+   * throws java.lang.CloneNotSupported
    */
   public void java_lang_Object_clone(SootMethod method,
-					    ReferenceVariable thisVar,
-					    ReferenceVariable returnVar,
-					    ReferenceVariable params[]) {
-	  if (thisVar == null)
-		  throw new RuntimeException("Need a 'this' variable to perform a clone()");
-	  
+                                     ReferenceVariable thisVar,
+                                     ReferenceVariable returnVar,
+                                     ReferenceVariable params[]) {
+    if (thisVar == null) {
+      throw new RuntimeException("Need a 'this' variable to perform a clone()");
+    }
+
     ReferenceVariable newVar = helper.cloneObject(thisVar);
     helper.assign(returnVar, newVar);
   }

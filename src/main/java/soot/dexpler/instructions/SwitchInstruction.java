@@ -1,10 +1,10 @@
 /* Soot - a Java Optimization Framework
  * Copyright (C) 2012 Michael Markert, Frank Hartmann
- * 
+ *
  * (c) 2012 University of Luxembourg - Interdisciplinary Centre for
  * Security Reliability and Trust (SnT) - All rights reserved
  * Alexandre Bartel
- * 
+ *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,6 @@ package soot.dexpler.instructions;
 import org.jf.dexlib2.iface.instruction.Instruction;
 import org.jf.dexlib2.iface.instruction.OffsetInstruction;
 import org.jf.dexlib2.iface.instruction.OneRegisterInstruction;
-
 import soot.Local;
 import soot.Unit;
 import soot.dexpler.DexBody;
@@ -35,33 +34,32 @@ import soot.jimple.Jimple;
 import soot.jimple.Stmt;
 
 public abstract class SwitchInstruction extends PseudoInstruction implements DeferableInstruction {
-    protected Unit markerUnit;
+  protected Unit markerUnit;
 
-    public SwitchInstruction (Instruction instruction, int codeAdress) {
-        super(instruction, codeAdress);
-    }
+  public SwitchInstruction(Instruction instruction, int codeAdress) {
+    super(instruction, codeAdress);
+  }
 
-    /**
-     * Return a switch statement based on given target data on the given key.
-     *
-     */
-    protected abstract Stmt switchStatement(DexBody body, Instruction targetData, Local key);
+  /**
+   * Return a switch statement based on given target data on the given key.
+   */
+  protected abstract Stmt switchStatement(DexBody body, Instruction targetData, Local key);
 
-    public void jimplify(DexBody body) {
-        markerUnit = Jimple.v().newNopStmt();
-        unit = markerUnit;
-        body.add(markerUnit);
-        body.addDeferredJimplification(this);
-    }
-    
-    public void deferredJimplify(DexBody body) {
-        int keyRegister = ((OneRegisterInstruction) instruction).getRegisterA();
-        int offset = ((OffsetInstruction) instruction).getCodeOffset();
-        Local key = body.getRegisterLocal(keyRegister);
-        int targetAddress = codeAddress + offset;
-        Instruction targetData = body.instructionAtAddress(targetAddress).instruction;
-        Stmt stmt = switchStatement(body, targetData, key);
-        body.getBody().getUnits().insertAfter(stmt, markerUnit);
-    }
-    
+  public void jimplify(DexBody body) {
+    markerUnit = Jimple.v().newNopStmt();
+    unit = markerUnit;
+    body.add(markerUnit);
+    body.addDeferredJimplification(this);
+  }
+
+  public void deferredJimplify(DexBody body) {
+    int keyRegister = ((OneRegisterInstruction) instruction).getRegisterA();
+    int offset = ((OffsetInstruction) instruction).getCodeOffset();
+    Local key = body.getRegisterLocal(keyRegister);
+    int targetAddress = codeAddress + offset;
+    Instruction targetData = body.instructionAtAddress(targetAddress).instruction;
+    Stmt stmt = switchStatement(body, targetData, key);
+    body.getBody().getUnits().insertAfter(stmt, markerUnit);
+  }
+
 }

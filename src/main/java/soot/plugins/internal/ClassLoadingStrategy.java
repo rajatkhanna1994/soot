@@ -1,5 +1,5 @@
 /* Soot - a J*va Optimization Framework
- * 
+ *
  * Copyright (C) 2018 Bernhard J. Berger
  *
  * This library is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.plugins.internal;
 
 /**
@@ -26,11 +27,11 @@ package soot.plugins.internal;
  */
 public interface ClassLoadingStrategy {
 
-	/**
-	 * Creates an instance of the given class name.
-	 *
-	 * @param className Name of the class.
-	 * @return The newly created instance.
-	 */
-	public Object create(final String className) throws ClassNotFoundException, InstantiationException;
+  /**
+   * Creates an instance of the given class name.
+   *
+   * @param className Name of the class.
+   * @return The newly created instance.
+   */
+  public Object create(final String className) throws ClassNotFoundException, InstantiationException;
 }

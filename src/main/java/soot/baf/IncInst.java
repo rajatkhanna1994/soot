@@ -18,24 +18,26 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf;
 
-import  soot.jimple.*;
-import soot.*;
+import soot.Local;
+import soot.jimple.Constant;
 
 
-public interface IncInst extends Inst
-{
-    
-    Constant getConstant() ;
-    void setConstant(Constant aConstant); 
-    void setLocal(Local l);
-    Local getLocal();
-    
+public interface IncInst extends Inst {
+
+  Constant getConstant();
+
+  void setConstant(Constant aConstant);
+
+  Local getLocal();
+
+  void setLocal(Local l);
+
 }
 

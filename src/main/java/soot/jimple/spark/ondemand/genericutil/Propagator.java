@@ -16,25 +16,26 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.genericutil;
 
 import java.util.Set;
 
 public class Propagator<T> {
 
-	private final Set<T> marked;
-	
-	private final Stack<T> worklist;
+  private final Set<T> marked;
 
-	public Propagator(Set<T> marked, Stack<T> worklist) {
-		super();
-		this.marked = marked;
-		this.worklist = worklist;
-	}
-	
-	public void prop(T val) {
-		if (marked.add(val)) {
-			worklist.push(val);
-		}
-	}
+  private final Stack<T> worklist;
+
+  public Propagator(Set<T> marked, Stack<T> worklist) {
+    super();
+    this.marked = marked;
+    this.worklist = worklist;
+  }
+
+  public void prop(T val) {
+    if (marked.add(val)) {
+      worklist.push(val);
+    }
+  }
 }

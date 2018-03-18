@@ -18,83 +18,88 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.ArrayType;
+import soot.UnitPrinter;
+import soot.baf.InstSwitch;
+import soot.baf.NewMultiArrayInst;
+import soot.util.Switch;
 
-public class BNewMultiArrayInst extends AbstractInst implements NewMultiArrayInst
-{
-    int dimensionCount;
+public class BNewMultiArrayInst extends AbstractInst implements NewMultiArrayInst {
+  int dimensionCount;
 
-    ArrayType baseType;
+  ArrayType baseType;
 
-    public BNewMultiArrayInst(ArrayType opType, int dimensionCount)
-    {
-        this.dimensionCount = dimensionCount;
-        baseType = opType;
-    }
-
-
-
-    public int getInCount() 
-    {
-        return dimensionCount;
-    }
-
-    public int getOutCount()
-    {
-        return 1; 
-    }
-
-    public int getInMachineCount() 
-    {
-        return dimensionCount;
-    }
-
-    public int getOutMachineCount()
-    {
-        return 1;         
-    }
+  public BNewMultiArrayInst(ArrayType opType, int dimensionCount) {
+    this.dimensionCount = dimensionCount;
+    baseType = opType;
+  }
 
 
-    public Object clone() 
-    {
-        return new  BNewMultiArrayInst(getBaseType(), getDimensionCount());
-    }
+  public int getInCount() {
+    return dimensionCount;
+  }
 
-    final public String getName() { return "newmultiarray"; }
-    final String getParameters()
-        { return " "+dimensionCount; }
-    protected void getParameters(UnitPrinter up) {
-        up.literal(" ");
-        up.literal(new Integer(dimensionCount).toString());
-    }
+  public int getOutCount() {
+    return 1;
+  }
 
-    public ArrayType getBaseType() { return baseType; }
-    public void setBaseType(ArrayType type) { baseType = type; }
+  public int getInMachineCount() {
+    return dimensionCount;
+  }
 
-    public int getDimensionCount() { return dimensionCount; }
-    public void setDimensionCount(int x) { x = dimensionCount; }
+  public int getOutMachineCount() {
+    return 1;
+  }
 
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseNewMultiArrayInst(this);
-    }
+  public Object clone() {
+    return new BNewMultiArrayInst(getBaseType(), getDimensionCount());
+  }
 
-    public boolean containsNewExpr() {
-        return true;
-    }
+  final public String getName() {
+    return "newmultiarray";
+  }
+
+  final String getParameters() {
+    return " " + dimensionCount;
+  }
+
+  protected void getParameters(UnitPrinter up) {
+    up.literal(" ");
+    up.literal(new Integer(dimensionCount).toString());
+  }
+
+  public ArrayType getBaseType() {
+    return baseType;
+  }
+
+  public void setBaseType(ArrayType type) {
+    baseType = type;
+  }
+
+  public int getDimensionCount() {
+    return dimensionCount;
+  }
+
+  public void setDimensionCount(int x) {
+    x = dimensionCount;
+  }
+
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseNewMultiArrayInst(this);
+  }
+
+  public boolean containsNewExpr() {
+    return true;
+  }
 }
 

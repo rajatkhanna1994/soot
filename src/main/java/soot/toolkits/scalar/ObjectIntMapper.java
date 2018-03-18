@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,7 +26,11 @@
 
 package soot.toolkits.scalar;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * gives an injection of Objects to ints. Different instances of
@@ -36,7 +40,7 @@ public class ObjectIntMapper<E> {
   private Vector<E> intToObjects;
   private int counter;
   private Map<E, Integer> objectToInts;
-  
+
   public ObjectIntMapper() {
     intToObjects = new Vector<E>();
     objectToInts = new HashMap<E, Integer>();
@@ -55,8 +59,9 @@ public class ObjectIntMapper<E> {
     intToObjects = new Vector<E>(initSize);
     objectToInts = new HashMap<E, Integer>(initSize);
     counter = 0;
-    while (it.hasNext())
+    while (it.hasNext()) {
       add(it.next());
+    }
   }
 
   /**
@@ -79,7 +84,9 @@ public class ObjectIntMapper<E> {
    */
   public int getInt(E o) {
     Integer i = objectToInts.get(o);
-    if (i != null) return i;
+    if (i != null) {
+      return i;
+    }
     return add(o);
   }
 

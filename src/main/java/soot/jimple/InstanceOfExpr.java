@@ -18,27 +18,31 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import soot.util.*;
+import soot.Type;
+import soot.Value;
+import soot.ValueBox;
+import soot.util.Switch;
 
-public interface InstanceOfExpr extends Expr
-{
-    public Value getOp();
-    public void setOp(Value op);
-    public ValueBox getOpBox();
-    public Type getType();
-    public Type getCheckType();
-    public void setCheckType(Type checkType);
-    public void apply(Switch sw);
+public interface InstanceOfExpr extends Expr {
+  public Value getOp();
+
+  public void setOp(Value op);
+
+  public ValueBox getOpBox();
+
+  public Type getType();
+
+  public Type getCheckType();
+
+  public void setCheckType(Type checkType);
+
+  public void apply(Switch sw);
 }

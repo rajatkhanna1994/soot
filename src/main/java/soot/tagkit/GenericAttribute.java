@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -28,7 +28,8 @@
 
 package soot.tagkit;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import soot.UnitBox;
 
@@ -36,37 +37,38 @@ import soot.UnitBox;
  * Represents a general attribute which can be attached to implementations of
  * Host. It can be directly used to add attributes of class files, fields, and
  * methods.
- * 
+ *
  * @see CodeAttribute
  */
 public class GenericAttribute implements Attribute {
-	private final String mName;
-	private byte[] mValue;
+  private final String mName;
+  private byte[] mValue;
 
-	public GenericAttribute(String name, byte[] value) {
-		if (value == null)
-			value = new byte[0];
-		mName = name;
-		mValue = value;
-	}
+  public GenericAttribute(String name, byte[] value) {
+    if (value == null) {
+      value = new byte[0];
+    }
+    mName = name;
+    mValue = value;
+  }
 
-	public String getName() {
-		return mName;
-	}
+  public String getName() {
+    return mName;
+  }
 
-	public byte[] getValue() {
-		return mValue;
-	}
+  public byte[] getValue() {
+    return mValue;
+  }
 
-	public String toString() {
-		return mName + " " + Base64.encode(mValue).toString();
-	}
+  public void setValue(byte[] value) {
+    mValue = value;
+  }
 
-	public void setValue(byte[] value) {
-		mValue = value;
-	}
+  public String toString() {
+    return mName + " " + Base64.encode(mValue).toString();
+  }
 
-	public List<UnitBox> getUnitBoxes() {
-		return Collections.emptyList();
-	}
+  public List<UnitBox> getUnitBoxes() {
+    return Collections.emptyList();
+  }
 }

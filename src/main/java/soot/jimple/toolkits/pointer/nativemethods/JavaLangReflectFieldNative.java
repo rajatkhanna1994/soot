@@ -26,30 +26,32 @@
 
 package soot.jimple.toolkits.pointer.nativemethods;
 
-import soot.*;
-import soot.jimple.toolkits.pointer.representations.*;
-import soot.jimple.toolkits.pointer.util.*;
+import soot.SootMethod;
+import soot.jimple.toolkits.pointer.representations.ReferenceVariable;
+import soot.jimple.toolkits.pointer.util.NativeHelper;
 
 public class JavaLangReflectFieldNative extends NativeMethodClass {
-    public JavaLangReflectFieldNative( NativeHelper helper ) { super(helper); }
+  public JavaLangReflectFieldNative(NativeHelper helper) {
+    super(helper);
+  }
 
   /**
    * Implements the abstract method simulateMethod.
-   * It distributes the request to the corresponding methods 
+   * It distributes the request to the corresponding methods
    * by signatures.
    */
   public void simulateMethod(SootMethod method,
-			     ReferenceVariable thisVar,
-			     ReferenceVariable returnVar,
-			     ReferenceVariable params[]){
+                             ReferenceVariable thisVar,
+                             ReferenceVariable returnVar,
+                             ReferenceVariable params[]) {
 
     String subSignature = method.getSubSignature();
 
-    if (subSignature.equals("void set(java.lang.Object,java.lang.Object)")){
+    if (subSignature.equals("void set(java.lang.Object,java.lang.Object)")) {
       java_lang_reflect_Field_set(method, thisVar, returnVar, params);
       return;
 
-    } else if (subSignature.equals("java.lang.Object get(java.lang.Object)")){
+    } else if (subSignature.equals("java.lang.Object get(java.lang.Object)")) {
       java_lang_reflect_Field_get(method, thisVar, returnVar, params);
       return;
 
@@ -63,16 +65,15 @@ public class JavaLangReflectFieldNative extends NativeMethodClass {
   /*********************** java.lang.reflect.Field *********************/
   /**
    * NOTE: make all fields pointing to @param1
-   *
-   *     public native void set(java.lang.Object, java.lang.Object) 
-   *                   throws java.lang.IllegalArgumentException, 
-   *                          java.lang.IllegalAccessException;
+   * <p>
+   * public native void set(java.lang.Object, java.lang.Object)
+   * throws java.lang.IllegalArgumentException,
+   * java.lang.IllegalAccessException;
    */
-  public 
-    void java_lang_reflect_Field_set(SootMethod method,
-				     ReferenceVariable thisVar,
-				     ReferenceVariable returnVar,
-				     ReferenceVariable params[]){
+  public void java_lang_reflect_Field_set(SootMethod method,
+                                          ReferenceVariable thisVar,
+                                          ReferenceVariable returnVar,
+                                          ReferenceVariable params[]) {
     /* Warn the user that reflection may not be handle correctly. */
     throw new NativeMethodNotSupportedException(method);
   }
@@ -81,23 +82,22 @@ public class JavaLangReflectFieldNative extends NativeMethodClass {
    * Returns the value of the field represented by this Field, on the
    * specified object. The value is automatically wrapped in an object
    * if it has a primitive type.
-   *
+   * <p>
    * NOTE: this really needs precise info of @this (its name).
-   *       conservative way, makes return value possibly point
-   *       to universal objects. 
-   *
-   *  public native java.lang.Object get(java.lang.Object) 
-   *                throws java.lang.IllegalArgumentException, 
-   *                       java.lang.IllegalAccessException;
+   * conservative way, makes return value possibly point
+   * to universal objects.
+   * <p>
+   * public native java.lang.Object get(java.lang.Object)
+   * throws java.lang.IllegalArgumentException,
+   * java.lang.IllegalAccessException;
    */
-  public 
-    void java_lang_reflect_Field_get(SootMethod method,
-				     ReferenceVariable thisVar,
-				     ReferenceVariable returnVar,
-				     ReferenceVariable params[]){
+  public void java_lang_reflect_Field_get(SootMethod method,
+                                          ReferenceVariable thisVar,
+                                          ReferenceVariable returnVar,
+                                          ReferenceVariable params[]) {
     throw new NativeMethodNotSupportedException(method);
   }
-  
+
   /**
    * All other native methods in this class has no side effects.
    *
@@ -108,7 +108,7 @@ public class JavaLangReflectFieldNative extends NativeMethodClass {
    * public native byte getByte(java.lang.Object) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
-   * 
+   *
    * public native char getChar(java.lang.Object) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
@@ -120,7 +120,7 @@ public class JavaLangReflectFieldNative extends NativeMethodClass {
    * public native int getInt(java.lang.Object) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
-   *     
+   *
    * public native long getLong(java.lang.Object) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
@@ -140,7 +140,7 @@ public class JavaLangReflectFieldNative extends NativeMethodClass {
    * public native void setByte(java.lang.Object, byte) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
-   * 
+   *
    * public native void setChar(java.lang.Object, char) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
@@ -148,7 +148,7 @@ public class JavaLangReflectFieldNative extends NativeMethodClass {
    * public native void setShort(java.lang.Object, short) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;
-   *   
+   *
    * public native void setInt(java.lang.Object, int) 
    *                       throws java.lang.IllegalArgumentException, 
    *                              java.lang.IllegalAccessException;

@@ -16,33 +16,34 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.genericutil;
 
 import java.util.Iterator;
 
-public class IteratorMapper<T,U> implements Iterator<U> {
+public class IteratorMapper<T, U> implements Iterator<U> {
 
-    private final Mapper<T,U> mapper;
-    
-    private final Iterator<T> delegate;
-    
-    
-    public IteratorMapper(final Mapper<T,U> mapper, final Iterator<T> delegate) {
-        this.mapper = mapper;
-        this.delegate = delegate;
-    }
+  private final Mapper<T, U> mapper;
 
-    public boolean hasNext() {
-        return delegate.hasNext();
-    }
+  private final Iterator<T> delegate;
 
-    public U next() {
-        // TODO Auto-generated method stub
-        return mapper.map(delegate.next());
-    }
 
-    public void remove() {
-        delegate.remove();
-    }
+  public IteratorMapper(final Mapper<T, U> mapper, final Iterator<T> delegate) {
+    this.mapper = mapper;
+    this.delegate = delegate;
+  }
+
+  public boolean hasNext() {
+    return delegate.hasNext();
+  }
+
+  public U next() {
+    // TODO Auto-generated method stub
+    return mapper.map(delegate.next());
+  }
+
+  public void remove() {
+    delegate.remove();
+  }
 
 }

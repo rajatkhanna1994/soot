@@ -19,14 +19,10 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
-
-
-
-
 
 
 package soot.jimple.internal;
@@ -43,81 +39,73 @@ import soot.ValueBox;
 import soot.jimple.InvokeExpr;
 
 @SuppressWarnings("serial")
-abstract public class AbstractInvokeExpr implements InvokeExpr
-{
-    protected SootMethodRef methodRef;
-    final protected ValueBox[] argBoxes;
-    
-    protected AbstractInvokeExpr(SootMethodRef methodRef, ValueBox[] argBoxes) {
-        this.methodRef = methodRef;
-    	this.argBoxes = argBoxes.length == 0 ? null : argBoxes;
+abstract public class AbstractInvokeExpr implements InvokeExpr {
+  final protected ValueBox[] argBoxes;
+  protected SootMethodRef methodRef;
+
+  protected AbstractInvokeExpr(SootMethodRef methodRef, ValueBox[] argBoxes) {
+    this.methodRef = methodRef;
+    this.argBoxes = argBoxes.length == 0 ? null : argBoxes;
+  }
+
+  public SootMethodRef getMethodRef() {
+    return methodRef;
+  }
+
+  public void setMethodRef(SootMethodRef methodRef) {
+    this.methodRef = methodRef;
+  }
+
+  public SootMethod getMethod() {
+    return methodRef.resolve();
+  }
+
+  public abstract Object clone();
+
+  public Value getArg(int index) {
+    return argBoxes[index].getValue();
+  }
+
+  public List<Value> getArgs() {
+    List<Value> l = new ArrayList<>();
+    if (argBoxes != null) {
+      for (ValueBox element : argBoxes) {
+        l.add(element.getValue());
+      }
+    }
+    return l;
+  }
+
+  public int getArgCount() {
+    return argBoxes == null ? 0 : argBoxes.length;
+  }
+
+  public void setArg(int index, Value arg) {
+    argBoxes[index].setValue(arg);
+  }
+
+  public ValueBox getArgBox(int index) {
+    return argBoxes[index];
+  }
+
+  public Type getType() {
+    return methodRef.returnType();
+  }
+
+  @Override
+  public List<ValueBox> getUseBoxes() {
+    if (argBoxes == null) {
+      return Collections.emptyList();
     }
 
-	public void setMethodRef(SootMethodRef methodRef) {
-		this.methodRef = methodRef;
-	}
-	
-    public SootMethodRef getMethodRef()
-    {
-        return methodRef;
+    List<ValueBox> list = new ArrayList<ValueBox>();
+    Collections.addAll(list, argBoxes);
+
+    for (ValueBox element : argBoxes) {
+      list.addAll(element.getValue().getUseBoxes());
     }
 
-    public SootMethod getMethod()
-    {
-        return methodRef.resolve();
-    }
-
-    public abstract Object clone();
-    
-    public Value getArg(int index)
-    {
-        return argBoxes[index].getValue();
-    }
-
-    public List<Value> getArgs()
-    {
-        List<Value> l = new ArrayList<>();
-        if (argBoxes != null) {
-            for (ValueBox element : argBoxes)
-                l.add(element.getValue());
-        }
-        return l;
-    }
-
-    public int getArgCount()
-    {
-        return argBoxes == null ? 0 : argBoxes.length;
-    }
-
-    public void setArg(int index, Value arg)
-    {
-        argBoxes[index].setValue(arg);
-    }
-
-    public ValueBox getArgBox(int index)
-    {
-        return argBoxes[index];
-    }
-
-    public Type getType()
-    {
-        return methodRef.returnType();
-    }
-    
-    @Override
-    public List<ValueBox> getUseBoxes()
-    {    	
-    	if (argBoxes == null)
-    		return Collections.emptyList();
-    	
-    	List<ValueBox> list = new ArrayList<ValueBox>();      
-        Collections.addAll(list, argBoxes);
-        
-        for (ValueBox element : argBoxes) {
-            list.addAll(element.getValue().getUseBoxes());
-        }
-
-        return list;
-    }
+    return list;
+  }
 
 }

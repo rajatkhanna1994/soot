@@ -18,42 +18,40 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf;
 
-import soot.util.*;
-import soot.*;
+import soot.G;
+import soot.Singletons;
+import soot.Type;
+import soot.util.Switch;
 
-public class DoubleWordType extends Type
-{
-    public DoubleWordType( Singletons.Global g ) {}
-    public static DoubleWordType v() { return G.v().soot_baf_DoubleWordType(); }
+public class DoubleWordType extends Type {
+  public DoubleWordType(Singletons.Global g) {
+  }
 
-    public boolean equals(Object t)
-    {
-        return this == t;
-    }
-    
-    public int hashCode()
-    {
-        return 0xA247839F;
-    }
-    
-    public String toString()
-    {
-        return "dword";
-    }
-    
-    public void apply(Switch sw)
-    {
-        throw new RuntimeException("invalid switch case");
-    }
+  public static DoubleWordType v() {
+    return G.v().soot_baf_DoubleWordType();
+  }
+
+  public boolean equals(Object t) {
+    return this == t;
+  }
+
+  public int hashCode() {
+    return 0xA247839F;
+  }
+
+  public String toString() {
+    return "dword";
+  }
+
+  public void apply(Switch sw) {
+    throw new RuntimeException("invalid switch case");
+  }
 }

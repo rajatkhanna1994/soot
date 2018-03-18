@@ -25,16 +25,24 @@
 
 
 package soot.jimple.toolkits.graph;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import soot.options.*;
-
-
-import soot.*;
-import soot.util.*;
-import java.util.*;
-
-import soot.jimple.*;
+import soot.Body;
+import soot.BodyTransformer;
+import soot.G;
+import soot.Singletons;
+import soot.Unit;
+import soot.UnitBox;
+import soot.jimple.Jimple;
+import soot.options.Options;
+import soot.util.Chain;
 
 /**
  * removes all critical edges.<br>
@@ -49,22 +57,13 @@ import soot.jimple.*;
  * Exceptions will be ignored.
  */
 public class CriticalEdgeRemover extends BodyTransformer {
-    private static final Logger logger = LoggerFactory.getLogger(CriticalEdgeRemover.class);
-    public CriticalEdgeRemover( Singletons.Global g ) {}
-    public static CriticalEdgeRemover v() { return G.v().soot_jimple_toolkits_graph_CriticalEdgeRemover(); }
+  private static final Logger logger = LoggerFactory.getLogger(CriticalEdgeRemover.class);
 
-  /**
-   * performs critical edge-removing.
-   */
-  protected void internalTransform(Body b, String phaseName, Map<String, String> options) {
-    if(Options.v().verbose())
-      logger.debug("[" + b.getMethod().getName() +
-                         "]     Removing Critical Edges...");
-    removeCriticalEdges(b);
-    if(Options.v().verbose())
-      logger.debug("[" + b.getMethod().getName() +
-                         "]     Removing Critical Edges done.");
+  public CriticalEdgeRemover(Singletons.Global g) {
+  }
 
+  public static CriticalEdgeRemover v() {
+    return G.v().soot_jimple_toolkits_graph_CriticalEdgeRemover();
   }
 
   /**
@@ -73,8 +72,8 @@ public class CriticalEdgeRemover extends BodyTransformer {
    * As we use <code>JGoto</code> the chain must contain Jimple-stmts.
    *
    * @param unitChain the Chain where we will insert the <code>Goto</code>.
-   * @param node the <code>Goto</code> will be inserted just after this node.
-   * @param target is the Unit the <code>goto</code> will jump to.
+   * @param node      the <code>Goto</code> will be inserted just after this node.
+   * @param target    is the Unit the <code>goto</code> will jump to.
    * @return the newly inserted <code>Goto</code>
    */
   private static Unit insertGotoAfter(Chain<Unit> unitChain, Unit node, Unit target) {
@@ -89,13 +88,12 @@ public class CriticalEdgeRemover extends BodyTransformer {
    * As we use <code>JGoto</code> the chain must contain Jimple-stmts.
    *
    * @param unitChain the Chain where we will insert the <code>Goto</code>.
-   * @param node the <code>Goto</code> will be inserted just before this node.
-   * @param target is the Unit the <code>goto</code> will jump to.
+   * @param node      the <code>Goto</code> will be inserted just before this node.
+   * @param target    is the Unit the <code>goto</code> will jump to.
    * @return the newly inserted <code>Goto</code>
    */
   /*note, that this method has slightly more overhead than the insertGotoAfter*/
-  private static Unit insertGotoBefore(Chain<Unit> unitChain, Unit node, Unit target)
-  {
+  private static Unit insertGotoBefore(Chain<Unit> unitChain, Unit node, Unit target) {
     Unit newGoto = Jimple.v().newGotoStmt(target);
     unitChain.insertBefore(newGoto, node);
     newGoto.redirectJumpsToThisTo(node);
@@ -106,16 +104,33 @@ public class CriticalEdgeRemover extends BodyTransformer {
    * takes <code>node</code> and redirects all branches to <code>oldTarget</code>
    * to <code>newTarget</code>.
    *
-   * @param node the Unit where we redirect
+   * @param node      the Unit where we redirect
    * @param oldTarget
    * @param newTarget
    */
   private static void redirectBranch(Unit node, Unit oldTarget, Unit newTarget) {
     for (UnitBox targetBox : node.getUnitBoxes()) {
       Unit target = targetBox.getUnit();
-      if (target == oldTarget)
+      if (target == oldTarget) {
         targetBox.setUnit(newTarget);
+      }
     }
+  }
+
+  /**
+   * performs critical edge-removing.
+   */
+  protected void internalTransform(Body b, String phaseName, Map<String, String> options) {
+    if (Options.v().verbose()) {
+      logger.debug("[" + b.getMethod().getName() +
+          "]     Removing Critical Edges...");
+    }
+    removeCriticalEdges(b);
+    if (Options.v().verbose()) {
+      logger.debug("[" + b.getMethod().getName() +
+          "]     Removing Critical Edges done.");
+    }
+
   }
 
   /**
@@ -143,7 +158,7 @@ public class CriticalEdgeRemover extends BodyTransformer {
     {
       Iterator<Unit> unitIt = unitChain.snapshotIterator();
       while (unitIt.hasNext()) {
-        Unit currentUnit = (Unit)unitIt.next();
+        Unit currentUnit = (Unit) unitIt.next();
 
         Iterator<UnitBox> succsIt = currentUnit.getUnitBoxes().iterator();
         while (succsIt.hasNext()) {
@@ -153,8 +168,9 @@ public class CriticalEdgeRemover extends BodyTransformer {
             predList = new ArrayList<Unit>();
             predList.add(currentUnit);
             predecessors.put(target, predList);
-          } else
+          } else {
             predList.add(currentUnit);
+          }
         }
       }
     }
@@ -174,16 +190,17 @@ public class CriticalEdgeRemover extends BodyTransformer {
         currentUnit = unitIt.next();
 
         List<Unit> predList = predecessors.get(currentUnit);
-        int nbPreds = (predList == null)? 0: predList.size();
-        if (directPredecessor != null && directPredecessor.fallsThrough())
+        int nbPreds = (predList == null) ? 0 : predList.size();
+        if (directPredecessor != null && directPredecessor.fallsThrough()) {
           nbPreds++;
+        }
 
         if (nbPreds >= 2) {
           /* redirect the directPredecessor (if it falls through), so we can
            * easily insert the synthetic nodes. This redirection might not be
            * necessary, but is pleasant anyways (see the Javadoc for this
            * method)*/
-          if (directPredecessor != null && 
+          if (directPredecessor != null &&
               directPredecessor.fallsThrough()) {
             directPredecessor = insertGotoAfter(unitChain, directPredecessor,
                 currentUnit);
@@ -197,16 +214,17 @@ public class CriticalEdgeRemover extends BodyTransformer {
             /* Although in Jimple there should be only two ways of having more
              * than one successor (If and Case) we'll do it the hard way:) */
             int nbSuccs = predecessor.getUnitBoxes().size();
-            nbSuccs += predecessor.fallsThrough()? 1: 0;
+            nbSuccs += predecessor.fallsThrough() ? 1 : 0;
             if (nbSuccs >= 2) {
               /* insert synthetic node (insertGotoAfter should be slightly
                * faster)*/
-              if (directPredecessor == null)
+              if (directPredecessor == null) {
                 directPredecessor = insertGotoBefore(unitChain, currentUnit,
                     currentUnit);
-              else
+              } else {
                 directPredecessor = insertGotoAfter(unitChain,
                     directPredecessor, currentUnit);
+              }
               /* update the branch */
               redirectBranch(predecessor, currentUnit, directPredecessor);
             }

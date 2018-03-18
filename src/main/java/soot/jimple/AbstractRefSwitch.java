@@ -18,51 +18,40 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-public abstract class AbstractRefSwitch implements RefSwitch
-{
-    public void caseArrayRef(ArrayRef v)
-    {
-        defaultCase(v);
-    }
+public abstract class AbstractRefSwitch implements RefSwitch {
+  public void caseArrayRef(ArrayRef v) {
+    defaultCase(v);
+  }
 
-    public void caseStaticFieldRef(StaticFieldRef v)
-    {
-        defaultCase(v);
-    }
+  public void caseStaticFieldRef(StaticFieldRef v) {
+    defaultCase(v);
+  }
 
-    public void caseInstanceFieldRef(InstanceFieldRef v)
-    {
-        defaultCase(v);
-    }
+  public void caseInstanceFieldRef(InstanceFieldRef v) {
+    defaultCase(v);
+  }
 
-    public void caseParameterRef(ParameterRef v)
-    {
-        defaultCase(v);
-    }
+  public void caseParameterRef(ParameterRef v) {
+    defaultCase(v);
+  }
 
-    public void caseCaughtExceptionRef(CaughtExceptionRef v)
-    {
-        defaultCase(v);
-    }
+  public void caseCaughtExceptionRef(CaughtExceptionRef v) {
+    defaultCase(v);
+  }
 
-    public void caseThisRef(ThisRef v)
-    {
-        defaultCase(v);
-    }
+  public void caseThisRef(ThisRef v) {
+    defaultCase(v);
+  }
 
-    public void defaultCase(Object obj)
-    {
-    }
+  public void defaultCase(Object obj) {
+  }
 }
 

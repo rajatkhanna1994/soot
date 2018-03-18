@@ -16,25 +16,25 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.toolkits.graph.pdg;
 
 import soot.Body;
 import soot.toolkits.graph.BlockGraph;
 
 
-public class EnhancedBlockGraph extends BlockGraph 
-{
-   
-    public  EnhancedBlockGraph(Body body) {
-        this(new EnhancedUnitGraph(body));
-    }
+public class EnhancedBlockGraph extends BlockGraph {
+
+  public EnhancedBlockGraph(Body body) {
+    this(new EnhancedUnitGraph(body));
+  }
 
 
-    public  EnhancedBlockGraph(EnhancedUnitGraph unitGraph) {
-        super(unitGraph);
+  public EnhancedBlockGraph(EnhancedUnitGraph unitGraph) {
+    super(unitGraph);
 
-        soot.util.PhaseDumper.v().dumpGraph(this, mBody);
-    }
+    soot.util.PhaseDumper.v().dumpGraph(this, mBody);
+  }
 }
 
 

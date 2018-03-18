@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand;
 
 import soot.jimple.spark.internal.TypeManager;
@@ -23,22 +24,23 @@ import soot.jimple.spark.pag.SparkField;
 
 public class ManualAndInnerHeuristic implements FieldCheckHeuristic {
 
-    final ManualFieldCheckHeuristic manual = new ManualFieldCheckHeuristic();
-    final InnerTypesIncrementalHeuristic inner;
-    
-    public ManualAndInnerHeuristic(TypeManager tm, int maxPasses) {
-        inner = new InnerTypesIncrementalHeuristic(tm, maxPasses); 
-    }
-    public boolean runNewPass() {
-        return inner.runNewPass();
-    }
+  final ManualFieldCheckHeuristic manual = new ManualFieldCheckHeuristic();
+  final InnerTypesIncrementalHeuristic inner;
 
-    public boolean validateMatchesForField(SparkField field) {        
-        return manual.validateMatchesForField(field) || inner.validateMatchesForField(field);
-    }
+  public ManualAndInnerHeuristic(TypeManager tm, int maxPasses) {
+    inner = new InnerTypesIncrementalHeuristic(tm, maxPasses);
+  }
 
-    public boolean validFromBothEnds(SparkField field) {
-        return inner.validFromBothEnds(field);
-    }
+  public boolean runNewPass() {
+    return inner.runNewPass();
+  }
+
+  public boolean validateMatchesForField(SparkField field) {
+    return manual.validateMatchesForField(field) || inner.validateMatchesForField(field);
+  }
+
+  public boolean validFromBothEnds(SparkField field) {
+    return inner.validFromBothEnds(field);
+  }
 
 }

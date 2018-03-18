@@ -26,22 +26,24 @@
 
 package soot.jimple.toolkits.pointer.nativemethods;
 
-import soot.*;
-import soot.jimple.toolkits.pointer.representations.*;
-import soot.jimple.toolkits.pointer.util.*;
+import soot.SootMethod;
+import soot.jimple.toolkits.pointer.representations.ReferenceVariable;
+import soot.jimple.toolkits.pointer.util.NativeHelper;
 
 public class JavaLangStrictMathNative extends NativeMethodClass {
-    public JavaLangStrictMathNative( NativeHelper helper ) { super(helper); }
+  public JavaLangStrictMathNative(NativeHelper helper) {
+    super(helper);
+  }
 
   /**
    * Implements the abstract method simulateMethod.
-   * It distributes the request to the corresponding methods 
+   * It distributes the request to the corresponding methods
    * by signatures.
    */
   public void simulateMethod(SootMethod method,
-			     ReferenceVariable thisVar,
-			     ReferenceVariable returnVar,
-			     ReferenceVariable params[]){
+                             ReferenceVariable thisVar,
+                             ReferenceVariable returnVar,
+                             ReferenceVariable params[]) {
 
     String subSignature = method.getSubSignature();
 

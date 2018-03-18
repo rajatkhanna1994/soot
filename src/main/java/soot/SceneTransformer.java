@@ -18,39 +18,44 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-/** An abstract class which acts on the whole Scene. */
-public abstract class SceneTransformer extends Transformer
-{
-    /** Performs the transformation on the Scene, under the given phaseName. */
-    public final void transform(String phaseName, Map<String, String> options)
-    {
-        if (!PhaseOptions.getBoolean(options, "enabled"))
-            return;
-
-        internalTransform(phaseName, options);
-    }
-    public final void transform(String phaseName)
-    {
-        HashMap<String, String> dummyOptions = new HashMap<String, String>();
-        dummyOptions.put( "enabled", "true" );
-        transform(phaseName, dummyOptions);
+/**
+ * An abstract class which acts on the whole Scene.
+ */
+public abstract class SceneTransformer extends Transformer {
+  /**
+   * Performs the transformation on the Scene, under the given phaseName.
+   */
+  public final void transform(String phaseName, Map<String, String> options) {
+    if (!PhaseOptions.getBoolean(options, "enabled")) {
+      return;
     }
 
-    public final void transform()
-    {
-        transform("");
-    }
-    
-    /** Performs the transformation on the Scene, under the given phaseName and with the given Options. */
-    protected abstract void internalTransform(String phaseName, Map<String, String> options);
+    internalTransform(phaseName, options);
+  }
+
+  public final void transform(String phaseName) {
+    HashMap<String, String> dummyOptions = new HashMap<String, String>();
+    dummyOptions.put("enabled", "true");
+    transform(phaseName, dummyOptions);
+  }
+
+  public final void transform() {
+    transform("");
+  }
+
+  /**
+   * Performs the transformation on the Scene, under the given phaseName and with the given Options.
+   */
+  protected abstract void internalTransform(String phaseName, Map<String, String> options);
 
 }

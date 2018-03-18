@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,24 +26,31 @@
 
 package soot;
 
-import java.io.*;
-import soot.tagkit.*;
+import java.io.Serializable;
 
-/** A box which can contain values. 
+import soot.tagkit.Host;
+
+/**
+ * A box which can contain values.
  *
  * @see Value
  */
-public interface ValueBox extends Host, Serializable
-{
-    /** Sets the value contained in this box as given.  Subject to canContainValue() checks. */
-    public void setValue(Value value);
+public interface ValueBox extends Host, Serializable {
+  /**
+   * Returns the value contained in this box.
+   */
+  public Value getValue();
 
-    /** Returns the value contained in this box. */
-    public Value getValue();
+  /**
+   * Sets the value contained in this box as given.  Subject to canContainValue() checks.
+   */
+  public void setValue(Value value);
 
-    /** Returns true if the given Value fits in this box. */
-    public boolean canContainValue(Value value);
+  /**
+   * Returns true if the given Value fits in this box.
+   */
+  public boolean canContainValue(Value value);
 
-    public void toString( UnitPrinter up );
+  public void toString(UnitPrinter up);
 
 }

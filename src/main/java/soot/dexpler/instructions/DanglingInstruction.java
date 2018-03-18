@@ -1,10 +1,10 @@
 /* Soot - a Java Optimization Framework
  * Copyright (C) 2012 Michael Markert, Frank Hartmann
- * 
+ *
  * (c) 2012 University of Luxembourg - Interdisciplinary Centre for
  * Security Reliability and Trust (SnT) - All rights reserved
  * Alexandre Bartel
- * 
+ *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,12 +32,12 @@ import soot.dexpler.DexBody;
  *
  * @author Michael Markert <michael.markert@googlemail.com>
  */
-public interface DanglingInstruction  {
-    /**
-     * Finalize this instruction taking the successor into consideration.
-     *
-     * @param body to finalize into
-     * @param successor the direct successor of this instruction
-     */
-    public void finalize(DexBody body, DexlibAbstractInstruction successor);
+public interface DanglingInstruction {
+  /**
+   * Finalize this instruction taking the successor into consideration.
+   *
+   * @param body      to finalize into
+   * @param successor the direct successor of this instruction
+   */
+  public void finalize(DexBody body, DexlibAbstractInstruction successor);
 }

@@ -18,13 +18,10 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
-
-
-
 
 
 package soot;
@@ -32,22 +29,18 @@ package soot;
 import java.util.AbstractMap;
 import java.util.Set;
 
-public class AbstractUnitAllMapTo<K,V> extends AbstractMap<K,V>
-{
-    V dest;
-    
-    public AbstractUnitAllMapTo(V dest)
-    {
-        this.dest = dest;
-    }
-    
-    public V get(Object key)
-    {
-        return dest;
-    }
-    
-    public Set<Entry<K,V>> entrySet()
-    {
-        throw new UnsupportedOperationException();
-    }
+public class AbstractUnitAllMapTo<K, V> extends AbstractMap<K, V> {
+  V dest;
+
+  public AbstractUnitAllMapTo(V dest) {
+    this.dest = dest;
+  }
+
+  public V get(Object key) {
+    return dest;
+  }
+
+  public Set<Entry<K, V>> entrySet() {
+    throw new UnsupportedOperationException();
+  }
 }

@@ -16,8 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-package soot.toolkits.graph.pdg;
 
+package soot.toolkits.graph.pdg;
 
 
 import soot.toolkits.graph.DominatorTree;
@@ -25,20 +25,19 @@ import soot.toolkits.graph.DominatorsFinder;
 
 /**
  * Constructs a multi-headed dominator tree. This is mostly the same as the DominatorTree
- * but the buildTree method is changed to allow mutilple heads. This can be used for 
+ * but the buildTree method is changed to allow mutilple heads. This can be used for
  * graphs that are multi-headed and cannot be augmented to become single-headed.
- * 
+ * <p>
  * March 2014: Pulled this code into the original {@link DominatorTree}. This class now
  * became a stub (Steven Arzt).
  *
  * @author Hossein Sadat-Mohtasham
  * March 2009
- * 
  **/
 public class MHGDominatorTree<N> extends DominatorTree<N> {
-	
-    public MHGDominatorTree(DominatorsFinder<N> dominators) {
-        super(dominators);
-    }
-    
+
+  public MHGDominatorTree(DominatorsFinder<N> dominators) {
+    super(dominators);
+  }
+
 }

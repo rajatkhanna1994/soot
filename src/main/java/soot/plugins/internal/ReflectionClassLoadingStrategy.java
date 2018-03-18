@@ -1,5 +1,5 @@
 /* Soot - a J*va Optimization Framework
- * 
+ *
  * Copyright (C) 2018 Bernhard J. Berger
  *
  * This library is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.plugins.internal;
 
 /**
@@ -26,14 +27,14 @@ package soot.plugins.internal;
  */
 public class ReflectionClassLoadingStrategy implements ClassLoadingStrategy {
 
-	@Override
-	public Object create(final String className) throws ClassNotFoundException, InstantiationException {
-		final Class<?> clazz = Class.forName(className);
+  @Override
+  public Object create(final String className) throws ClassNotFoundException, InstantiationException {
+    final Class<?> clazz = Class.forName(className);
 
-		try {
-			return clazz.newInstance();
-		} catch (final IllegalAccessException e) {
-			throw new InstantiationException("Failed to create instance of " + className + " due to access restrictions.");
-		}
-	}
+    try {
+      return clazz.newInstance();
+    } catch (final IllegalAccessException e) {
+      throw new InstantiationException("Failed to create instance of " + className + " due to access restrictions.");
+    }
+  }
 }

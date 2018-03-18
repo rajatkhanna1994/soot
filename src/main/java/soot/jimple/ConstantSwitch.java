@@ -18,26 +18,30 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-public interface ConstantSwitch extends soot.util.Switch
-{
-    public abstract void caseDoubleConstant(DoubleConstant v);
-    public abstract void caseFloatConstant(FloatConstant v);
-    public abstract void caseIntConstant(IntConstant v);
-    public abstract void caseLongConstant(LongConstant v);
-    public abstract void caseNullConstant(NullConstant v);
-    public abstract void caseStringConstant(StringConstant v);
-    public abstract void caseClassConstant(ClassConstant v);
-    public abstract void caseMethodHandle(MethodHandle handle);
-    public abstract void defaultCase(Object object);
+public interface ConstantSwitch extends soot.util.Switch {
+  public abstract void caseDoubleConstant(DoubleConstant v);
+
+  public abstract void caseFloatConstant(FloatConstant v);
+
+  public abstract void caseIntConstant(IntConstant v);
+
+  public abstract void caseLongConstant(LongConstant v);
+
+  public abstract void caseNullConstant(NullConstant v);
+
+  public abstract void caseStringConstant(StringConstant v);
+
+  public abstract void caseClassConstant(ClassConstant v);
+
+  public abstract void caseMethodHandle(MethodHandle handle);
+
+  public abstract void defaultCase(Object object);
 }

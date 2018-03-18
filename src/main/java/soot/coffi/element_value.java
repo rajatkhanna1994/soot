@@ -18,24 +18,21 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
-
 package soot.coffi;
 
-/** There can be many element_value pairs in each annotation 
- * @see attribute_info
+/**
+ * There can be many element_value pairs in each annotation
+ *
  * @author Jennifer Lhotak
+ * @see attribute_info
  */
 public class element_value extends attribute_info {
-    int name_index;
-    char tag;
+  int name_index;
+  char tag;
 }

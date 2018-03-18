@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.genericutil;
 
 import java.util.AbstractSet;
@@ -30,17 +31,10 @@ public class ArraySet<T> extends AbstractSet<T> {
       throw new RuntimeException();
     }
   };
-
-  @SuppressWarnings("all")
-  public static final <T> ArraySet<T> empty() {
-    return (ArraySet<T>) EMPTY;
-  }
-
+  private final boolean checkDupes;
   private T[] _elems;
 
   private int _curIndex = 0;
-
-  private final boolean checkDupes;
 
   @SuppressWarnings("all")
   public ArraySet(int numElems_, boolean checkDupes) {
@@ -66,16 +60,22 @@ public class ArraySet<T> extends AbstractSet<T> {
     addAll(other);
   }
 
+  @SuppressWarnings("all")
+  public static final <T> ArraySet<T> empty() {
+    return (ArraySet<T>) EMPTY;
+  }
+
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see AAA.util.AAASet#add(java.lang.Object)
    */
   @SuppressWarnings("all")
   public boolean add(T obj_) {
     assert obj_ != null;
-    if (checkDupes && this.contains(obj_))
+    if (checkDupes && this.contains(obj_)) {
       return false;
+    }
     if (_curIndex == _elems.length) {
       // lengthen array
       Object[] tmp = _elems;
@@ -98,28 +98,30 @@ public class ArraySet<T> extends AbstractSet<T> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see AAA.util.AAASet#contains(java.lang.Object)
    */
   public boolean contains(Object obj_) {
     for (int i = 0; i < _curIndex; i++) {
-      if (_elems[i].equals(obj_))
+      if (_elems[i].equals(obj_)) {
         return true;
+      }
     }
     return false;
   }
 
   public boolean intersects(ArraySet<T> other) {
     for (int i = 0; i < other.size(); i++) {
-      if (contains(other.get(i)))
+      if (contains(other.get(i))) {
         return true;
+      }
     }
     return false;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see AAA.util.AAASet#forall(AAA.util.ObjectVisitor)
    */
   public void forall(ObjectVisitor<T> visitor_) {
@@ -141,8 +143,9 @@ public class ArraySet<T> extends AbstractSet<T> {
     for (ind = 0; ind < _curIndex && !_elems[ind].equals(obj_); ind++) {
     }
     // check if object was never there
-    if (ind == _curIndex)
+    if (ind == _curIndex) {
       return false;
+    }
     return remove(ind);
   }
 
@@ -180,7 +183,7 @@ public class ArraySet<T> extends AbstractSet<T> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.Set#toArray()
    */
   public Object[] toArray() {
@@ -189,7 +192,7 @@ public class ArraySet<T> extends AbstractSet<T> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.Set#addAll(java.util.Collection)
    */
   public boolean addAll(Collection<? extends T> c) {
@@ -203,7 +206,7 @@ public class ArraySet<T> extends AbstractSet<T> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.Set#iterator()
    */
   public Iterator<T> iterator() {
@@ -212,7 +215,7 @@ public class ArraySet<T> extends AbstractSet<T> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.Set#toArray(java.lang.Object[])
    */
   @SuppressWarnings("unchecked")
@@ -229,19 +232,18 @@ public class ArraySet<T> extends AbstractSet<T> {
    */
   public class ArraySetIterator implements Iterator<T> {
 
+    final int setSize = size();
     int ind = 0;
 
-    final int setSize = size();
-
     /**
-     * 
+     *
      */
     public ArraySetIterator() {
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.Iterator#remove()
      */
     public void remove() {
@@ -250,7 +252,7 @@ public class ArraySet<T> extends AbstractSet<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.Iterator#hasNext()
      */
     public boolean hasNext() {
@@ -259,7 +261,7 @@ public class ArraySet<T> extends AbstractSet<T> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.util.Iterator#next()
      */
     public T next() {

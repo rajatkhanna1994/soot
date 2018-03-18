@@ -18,31 +18,24 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.grimp.internal;
 
-import soot.*;
-import soot.grimp.*;
-import soot.jimple.internal.*;
+import soot.Value;
+import soot.grimp.Grimp;
+import soot.jimple.internal.JInvokeStmt;
 
-public class GInvokeStmt extends JInvokeStmt
-{
-    public GInvokeStmt(Value c)
-    {
-        super(Grimp.v().newInvokeExprBox(c));
-    }
-    
-    public Object clone() 
-    {
-        return new GInvokeStmt(Grimp.cloneIfNecessary(getInvokeExpr()));
-    }
+public class GInvokeStmt extends JInvokeStmt {
+  public GInvokeStmt(Value c) {
+    super(Grimp.v().newInvokeExprBox(c));
+  }
+
+  public Object clone() {
+    return new GInvokeStmt(Grimp.cloneIfNecessary(getInvokeExpr()));
+  }
 }

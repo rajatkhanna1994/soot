@@ -18,62 +18,54 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.Type;
+import soot.baf.CmpInst;
+import soot.baf.InstSwitch;
+import soot.util.Switch;
 
-public class BCmpInst extends AbstractOpTypeInst implements CmpInst
-{
-    public BCmpInst(Type opType)
-    {
-        super(opType);
-        
-    }
-    
-    public int getInCount()
-    {
-        return 2;
-    }
+public class BCmpInst extends AbstractOpTypeInst implements CmpInst {
+  public BCmpInst(Type opType) {
+    super(opType);
+
+  }
+
+  public int getInCount() {
+    return 2;
+  }
 
 
-    public int getInMachineCount()
-    {
-      return 4;
-    }
+  public int getInMachineCount() {
+    return 4;
+  }
 
 
-    public Object clone() 
-    {
-        return new BCmpInst(getOpType());
-    }
+  public Object clone() {
+    return new BCmpInst(getOpType());
+  }
 
-    
-    public int getOutCount()
-    {
-        return 1;
-    }
 
-    public int getOutMachineCount()
-    {
-        return 1;
-    }
+  public int getOutCount() {
+    return 1;
+  }
 
-    public final String getName() { return "cmp"; }
+  public int getOutMachineCount() {
+    return 1;
+  }
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseCmpInst(this);
-    }
+  public final String getName() {
+    return "cmp";
+  }
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseCmpInst(this);
+  }
 }
 

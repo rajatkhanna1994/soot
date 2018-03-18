@@ -18,33 +18,39 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.grimp.internal;
 
-import soot.*;
-import soot.grimp.*;
-import soot.jimple.*;
-import soot.util.*;
+import soot.Value;
+import soot.grimp.Grimp;
+import soot.jimple.CmpgExpr;
+import soot.jimple.ExprSwitch;
+import soot.util.Switch;
 
-public class GCmpgExpr extends AbstractGrimpIntBinopExpr implements CmpgExpr
-{
-    public GCmpgExpr(Value op1, Value op2) { super(op1, op2); }
-    public final String getSymbol() { return " cmpg "; }
-    public final int getPrecedence() { return 600; }
-    public void apply(Switch sw) { ((ExprSwitch) sw).caseCmpgExpr(this); }
-    
-    public Object clone() 
-    {
-        return new GCmpgExpr(Grimp.cloneIfNecessary(getOp1()), Grimp.cloneIfNecessary(getOp2()));
-    }
+public class GCmpgExpr extends AbstractGrimpIntBinopExpr implements CmpgExpr {
+  public GCmpgExpr(Value op1, Value op2) {
+    super(op1, op2);
+  }
+
+  public final String getSymbol() {
+    return " cmpg ";
+  }
+
+  public final int getPrecedence() {
+    return 600;
+  }
+
+  public void apply(Switch sw) {
+    ((ExprSwitch) sw).caseCmpgExpr(this);
+  }
+
+  public Object clone() {
+    return new GCmpgExpr(Grimp.cloneIfNecessary(getOp1()), Grimp.cloneIfNecessary(getOp2()));
+  }
 
 }

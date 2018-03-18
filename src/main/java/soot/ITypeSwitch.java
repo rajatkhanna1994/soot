@@ -18,33 +18,49 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
 package soot;
 
-/** Describes a switch on internal types. */
-interface ITypeSwitch extends soot.util.Switch
-{
-    void caseArrayType(ArrayType t);
-    void caseBooleanType(BooleanType t);
-    void caseByteType(ByteType t);
-    void caseCharType(CharType t);
-    void caseDoubleType(DoubleType t);
-    void caseFloatType(FloatType t);
-    void caseIntType(IntType t);
-    void caseLongType(LongType t);
-    void caseRefType(RefType t);
-    void caseShortType(ShortType t);
-    void caseStmtAddressType(StmtAddressType t);
-    void caseUnknownType(UnknownType t);
-    void caseVoidType(VoidType t);
-    void caseAnySubType(AnySubType t);
-    void caseNullType(NullType t);
-    void caseErroneousType(ErroneousType t);
-    void caseDefault(Type t);
+/**
+ * Describes a switch on internal types.
+ */
+interface ITypeSwitch extends soot.util.Switch {
+  void caseArrayType(ArrayType t);
+
+  void caseBooleanType(BooleanType t);
+
+  void caseByteType(ByteType t);
+
+  void caseCharType(CharType t);
+
+  void caseDoubleType(DoubleType t);
+
+  void caseFloatType(FloatType t);
+
+  void caseIntType(IntType t);
+
+  void caseLongType(LongType t);
+
+  void caseRefType(RefType t);
+
+  void caseShortType(ShortType t);
+
+  void caseStmtAddressType(StmtAddressType t);
+
+  void caseUnknownType(UnknownType t);
+
+  void caseVoidType(VoidType t);
+
+  void caseAnySubType(AnySubType t);
+
+  void caseNullType(NullType t);
+
+  void caseErroneousType(ErroneousType t);
+
+  void caseDefault(Type t);
 }

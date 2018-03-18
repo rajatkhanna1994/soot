@@ -18,91 +18,92 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
+import soot.AbstractUnit;
+import soot.UnitPrinter;
+import soot.baf.Inst;
 
-public abstract class AbstractInst extends AbstractUnit implements Inst
-{
-    
-    public String toString()
-    {
-        return getName() + getParameters();
-    }
-    
-    public void toString(UnitPrinter up) {
-        up.literal(getName());
-        getParameters(up);
-    }
+public abstract class AbstractInst extends AbstractUnit implements Inst {
 
+  public String toString() {
+    return getName() + getParameters();
+  }
 
-    public int getInCount()
-    {
-        throw new RuntimeException("undefined "+ toString() + "!" );
-    }
-    
-    public int getOutCount()
-    {
-        throw new RuntimeException("undefined " + toString() + "!");
-    }
-    
-    public int getNetCount()
-    {
-        return getOutCount() - getInCount();
-    }
-
-  
-
-    public boolean fallsThrough()
-    {
-        return true;
-    }
-    public boolean branches()
-    {
-        return false;
-    }
-    
+  public void toString(UnitPrinter up) {
+    up.literal(getName());
+    getParameters(up);
+  }
 
 
-   
-    public int getInMachineCount() 
-    {
-        throw new RuntimeException("undefined"+ toString() + "!" );
-    }
-    
-    public int getOutMachineCount()
-    {
-        throw new RuntimeException("undefined" + toString() + "!");
-    }
+  public int getInCount() {
+    throw new RuntimeException("undefined " + toString() + "!");
+  }
 
-    public int getNetMachineCount()
-    {
-        return getOutMachineCount() - getInMachineCount();
-    }
+  public int getOutCount() {
+    throw new RuntimeException("undefined " + toString() + "!");
+  }
 
-    
-    public  Object clone()
-    {
-        throw new RuntimeException("undefined clone for: " + this.toString());
-    }
-   
-    
-    public abstract String getName();
-    String getParameters() { return ""; }
-    protected void getParameters(UnitPrinter up) {}
+  public int getNetCount() {
+    return getOutCount() - getInCount();
+  }
 
-    public boolean containsInvokeExpr() { return false; }
-    public boolean containsArrayRef() { return false; }
-    public boolean containsFieldRef() { return false; }
-    public boolean containsNewExpr() { return false; }
+
+  public boolean fallsThrough() {
+    return true;
+  }
+
+  public boolean branches() {
+    return false;
+  }
+
+
+  public int getInMachineCount() {
+    throw new RuntimeException("undefined" + toString() + "!");
+  }
+
+  public int getOutMachineCount() {
+    throw new RuntimeException("undefined" + toString() + "!");
+  }
+
+  public int getNetMachineCount() {
+    return getOutMachineCount() - getInMachineCount();
+  }
+
+
+  public Object clone() {
+    throw new RuntimeException("undefined clone for: " + this.toString());
+  }
+
+
+  public abstract String getName();
+
+  String getParameters() {
+    return "";
+  }
+
+  protected void getParameters(UnitPrinter up) {
+  }
+
+  public boolean containsInvokeExpr() {
+    return false;
+  }
+
+  public boolean containsArrayRef() {
+    return false;
+  }
+
+  public boolean containsFieldRef() {
+    return false;
+  }
+
+  public boolean containsNewExpr() {
+    return false;
+  }
 }

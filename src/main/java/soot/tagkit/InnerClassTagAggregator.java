@@ -18,44 +18,55 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
 package soot.tagkit;
 
 
-import soot.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
-/** The aggregator for LineNumberTable attribute. */
+import soot.G;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.Singletons;
+import soot.SootClass;
+
+/**
+ * The aggregator for LineNumberTable attribute.
+ */
 public class InnerClassTagAggregator extends SceneTransformer {
-    
-    public InnerClassTagAggregator( Singletons.Global g ) {}
-    public static InnerClassTagAggregator v() { return G.v().soot_tagkit_InnerClassTagAggregator(); }
 
-    
-    public String aggregatedName()
-    {
-        return "InnerClasses";
-    }
+  public InnerClassTagAggregator(Singletons.Global g) {
+  }
 
-    public void internalTransform(String phaseName, Map<String,String> options){
-        Iterator<SootClass> it = Scene.v().getApplicationClasses().iterator();
-        while (it.hasNext()){
-            ArrayList<InnerClassTag> list = new ArrayList<InnerClassTag>();
-            SootClass nextSc = it.next();
-            for (Tag t : nextSc.getTags()){
-                if (t instanceof InnerClassTag){
-                    list.add((InnerClassTag) t);
-                }
-            }
-            if (!list.isEmpty()){
-                nextSc.addTag(new InnerClassAttribute(list)); 
-            }
+  public static InnerClassTagAggregator v() {
+    return G.v().soot_tagkit_InnerClassTagAggregator();
+  }
+
+
+  public String aggregatedName() {
+    return "InnerClasses";
+  }
+
+  public void internalTransform(String phaseName, Map<String, String> options) {
+    Iterator<SootClass> it = Scene.v().getApplicationClasses().iterator();
+    while (it.hasNext()) {
+      ArrayList<InnerClassTag> list = new ArrayList<InnerClassTag>();
+      SootClass nextSc = it.next();
+      for (Tag t : nextSc.getTags()) {
+        if (t instanceof InnerClassTag) {
+          list.add((InnerClassTag) t);
         }
+      }
+      if (!list.isEmpty()) {
+        nextSc.addTag(new InnerClassAttribute(list));
+      }
     }
+  }
 }

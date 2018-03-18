@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,8 +26,6 @@
 /* Reference Version: $SootVersion: 1.2.5.dev.5 $ */
 
 package soot.jimple.toolkits.base;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.G;
@@ -62,293 +62,307 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
 
 public class Aggregator extends BodyTransformer {
-    private static final Logger logger = LoggerFactory.getLogger(Aggregator.class);
-	public Aggregator(Singletons.Global g) {
-	}
+  private static final Logger logger = LoggerFactory.getLogger(Aggregator.class);
 
-	public static Aggregator v() {
-		return G.v().soot_jimple_toolkits_base_Aggregator();
-	}
+  public Aggregator(Singletons.Global g) {
+  }
 
-	/**
-	 * Traverse the statements in the given body, looking for aggregation
-	 * possibilities; that is, given a def d and a use u, d has no other uses, u
-	 * has no other defs, collapse d and u.
-	 * 
-	 * option: only-stack-locals; if this is true, only aggregate variables
-	 * starting with $
-	 */
-	protected void internalTransform(Body b, String phaseName, Map<String, String> options) {
-		StmtBody body = (StmtBody) b;
-		boolean onlyStackVars = PhaseOptions.getBoolean(options, "only-stack-locals");
+  public static Aggregator v() {
+    return G.v().soot_jimple_toolkits_base_Aggregator();
+  }
 
-		if (Options.v().time())
-			Timers.v().aggregationTimer.start();
+  private static boolean internalAggregate(StmtBody body, Map<ValueBox, Zone> boxToZone, boolean onlyStackVars) {
+    boolean hadAggregation = false;
+    Chain<Unit> units = body.getUnits();
 
-		int aggregateCount = 1;
+    ExceptionalUnitGraph graph = new ExceptionalUnitGraph(body);
+    LocalDefs localDefs = LocalDefs.Factory.newLocalDefs(graph);
+    LocalUses localUses = LocalUses.Factory.newLocalUses(body, localDefs);
 
-		boolean changed = false;
+    List<Unit> unitList = new PseudoTopologicalOrderer<Unit>().newList(graph, false);
+    for (Unit u : unitList) {
+      if (!(u instanceof AssignStmt)) {
+        continue;
+      }
+      AssignStmt s = (AssignStmt) u;
 
-		Map<ValueBox, Zone> boxToZone = new HashMap<ValueBox, Zone>(body.getUnits().size() * 2 + 1, 0.7f);
+      Value lhs = s.getLeftOp();
+      if (!(lhs instanceof Local)) {
+        continue;
+      }
+      Local lhsLocal = (Local) lhs;
 
-		// Determine the zone of every box
-		{
-			Zonation zonation = new Zonation(body);
+      if (onlyStackVars && !lhsLocal.getName().startsWith("$")) {
+        continue;
+      }
 
-			for (Unit u : body.getUnits()) {
-				Zone zone = zonation.getZoneOf(u);
+      List<UnitValueBoxPair> lu = localUses.getUsesOf(s);
+      if (lu.size() != 1) {
+        continue;
+      }
 
-				for (ValueBox box : u.getUseBoxes()) {
-					boxToZone.put(box, zone);
-				}
+      UnitValueBoxPair usepair = lu.get(0);
+      Unit use = usepair.unit;
+      ValueBox useBox = usepair.valueBox;
 
-				for (ValueBox box : u.getDefBoxes()) {
-					boxToZone.put(box, zone);
-				}
-			}
-		}
+      List<Unit> ld = localDefs.getDefsOfAt(lhsLocal, use);
+      if (ld.size() != 1) {
+        continue;
+      }
 
-		do {
-			if (Options.v().verbose())
-				logger.debug(""+
-						"[" + body.getMethod().getName() + "] Aggregating iteration " + aggregateCount + "...");
+      // Check to make sure aggregation pair in the same zone
+      if (boxToZone.get(s.getRightOpBox()) != boxToZone.get(usepair.valueBox)) {
+        continue;
+      }
 
-			// body.printTo(new java.io.PrintWriter(G.v().out, true));
+      /* we need to check the path between def and use */
+      /* to see if there are any intervening re-defs of RHS */
+      /* in fact, we should check that this path is unique. */
+      /*
+       * if the RHS uses only locals, then we know what to do; if RHS has
+       * a method invocation f(a, b, c) or field access, we must ban field
+       * writes, other method calls and (as usual) writes to a, b, c.
+       */
 
-			changed = internalAggregate(body, boxToZone, onlyStackVars);
+      boolean cantAggr = false;
+      boolean propagatingInvokeExpr = false;
+      boolean propagatingFieldRef = false;
+      boolean propagatingArrayRef = false;
+      List<FieldRef> fieldRefList = new ArrayList<FieldRef>();
 
-			aggregateCount++;
-		} while (changed);
+      List<Value> localsUsed = new ArrayList<Value>();
+      for (ValueBox vb : s.getUseBoxes()) {
+        Value v = vb.getValue();
+        if (v instanceof Local) {
+          localsUsed.add(v);
+        } else if (v instanceof InvokeExpr) {
+          propagatingInvokeExpr = true;
+        } else if (v instanceof ArrayRef) {
+          propagatingArrayRef = true;
+        } else if (v instanceof FieldRef) {
+          propagatingFieldRef = true;
+          fieldRefList.add((FieldRef) v);
+        }
+      }
 
-		if (Options.v().time())
-			Timers.v().aggregationTimer.end();
+      // look for a path from s to use in graph.
+      // only look in an extended basic block, though.
 
-	}
+      List<Unit> path = graph.getExtendedBasicBlockPathBetween(s, use);
 
-	private static boolean internalAggregate(StmtBody body, Map<ValueBox, Zone> boxToZone, boolean onlyStackVars) {
-		boolean hadAggregation = false;
-		Chain<Unit> units = body.getUnits();
+      if (path == null) {
+        continue;
+      }
 
-		ExceptionalUnitGraph graph = new ExceptionalUnitGraph(body);
-		LocalDefs localDefs = LocalDefs.Factory.newLocalDefs(graph);
-		LocalUses localUses = LocalUses.Factory.newLocalUses(body, localDefs);
+      Iterator<Unit> pathIt = path.iterator();
 
-		List<Unit> unitList = new PseudoTopologicalOrderer<Unit>().newList(graph, false);
-		for (Unit u : unitList) {
-			if (!(u instanceof AssignStmt))
-				continue;
-			AssignStmt s = (AssignStmt) u;
+      // skip s.
+      if (pathIt.hasNext()) {
+        pathIt.next();
+      }
 
-			Value lhs = s.getLeftOp();
-			if (!(lhs instanceof Local))
-				continue;
-			Local lhsLocal = (Local) lhs;
+      while (pathIt.hasNext() && !cantAggr) {
+        Stmt between = (Stmt) (pathIt.next());
 
-			if (onlyStackVars && !lhsLocal.getName().startsWith("$"))
-				continue;
+        if (between != use) {
+          // Check for killing definitions
 
-			List<UnitValueBoxPair> lu = localUses.getUsesOf(s);
-			if (lu.size() != 1)
-				continue;
+          for (ValueBox vb : between.getDefBoxes()) {
+            Value v = vb.getValue();
+            if (localsUsed.contains(v)) {
+              cantAggr = true;
+              break;
+            }
 
-			UnitValueBoxPair usepair = lu.get(0);
-			Unit use = usepair.unit;
-			ValueBox useBox = usepair.valueBox;
+            if (propagatingInvokeExpr || propagatingFieldRef || propagatingArrayRef) {
+              if (v instanceof FieldRef) {
+                if (propagatingInvokeExpr) {
+                  cantAggr = true;
+                  break;
+                } else if (propagatingFieldRef) {
+                  // Can't aggregate a field access if passing
+                  // a definition of a field
+                  // with the same name, because they might be
+                  // aliased
+                  for (FieldRef fieldRef : fieldRefList) {
+                    if (isSameField((FieldRef) v, fieldRef)) {
+                      cantAggr = true;
+                      break;
+                    }
+                  }
+                }
+              } else if (v instanceof ArrayRef) {
+                if (propagatingInvokeExpr) {
+                  // Cannot aggregate an invoke expr past an
+                  // array write
+                  cantAggr = true;
+                  break;
+                } else if (propagatingArrayRef) {
+                  // cannot aggregate an array read past a
+                  // write
+                  // this is somewhat conservative
+                  // (if types differ they may not be aliased)
 
-			List<Unit> ld = localDefs.getDefsOfAt(lhsLocal, use);
-			if (ld.size() != 1)
-				continue;
+                  cantAggr = true;
+                  break;
+                }
+              }
+            }
+          }
 
-			// Check to make sure aggregation pair in the same zone
-			if (boxToZone.get(s.getRightOpBox()) != boxToZone.get(usepair.valueBox)) {
-				continue;
-			}
+          // Make sure not propagating past a {enter,exit}Monitor
+          if (propagatingInvokeExpr && between instanceof MonitorStmt) {
+            cantAggr = true;
+          }
+        }
 
-			/* we need to check the path between def and use */
-			/* to see if there are any intervening re-defs of RHS */
-			/* in fact, we should check that this path is unique. */
-			/*
-			 * if the RHS uses only locals, then we know what to do; if RHS has
-			 * a method invocation f(a, b, c) or field access, we must ban field
-			 * writes, other method calls and (as usual) writes to a, b, c.
-			 */
+        // Check for intervening side effects due to method calls
+        if (propagatingInvokeExpr || propagatingFieldRef || propagatingArrayRef) {
+          for (final ValueBox box : between.getUseBoxes()) {
+            if (between == use && box == useBox) {
+              // Reached use point, stop looking for
+              // side effects
+              break;
+            }
 
-			boolean cantAggr = false;
-			boolean propagatingInvokeExpr = false;
-			boolean propagatingFieldRef = false;
-			boolean propagatingArrayRef = false;
-			List<FieldRef> fieldRefList = new ArrayList<FieldRef>();
+            Value v = box.getValue();
 
-			List<Value> localsUsed = new ArrayList<Value>();
-			for (ValueBox vb : s.getUseBoxes()) {
-				Value v = vb.getValue();
-				if (v instanceof Local) {
-					localsUsed.add(v);
-				} else if (v instanceof InvokeExpr) {
-					propagatingInvokeExpr = true;
-				} else if (v instanceof ArrayRef) {
-					propagatingArrayRef = true;
-				} else if (v instanceof FieldRef) {
-					propagatingFieldRef = true;
-					fieldRefList.add((FieldRef) v);
-				}
-			}
+            if (v instanceof InvokeExpr
+                || (propagatingInvokeExpr && (v instanceof FieldRef || v instanceof ArrayRef))) {
+              cantAggr = true;
+              break;
+            }
 
-			// look for a path from s to use in graph.
-			// only look in an extended basic block, though.
+          }
+        }
+      }
 
-			List<Unit> path = graph.getExtendedBasicBlockPathBetween(s, use);
+      // we give up: can't aggregate.
+      if (cantAggr) {
+        continue;
+      }
+      /* assuming that the d-u chains are correct, */
+      /* we need not check the actual contents of ld */
 
-			if (path == null)
-				continue;
+      Value aggregatee = s.getRightOp();
 
-			Iterator<Unit> pathIt = path.iterator();
+      if (usepair.valueBox.canContainValue(aggregatee)) {
+        boolean wasSimpleCopy = isSimpleCopy(usepair.unit);
+        usepair.valueBox.setValue(aggregatee);
+        units.remove(s);
+        hadAggregation = true;
+        // clean up the tags. If s was not a simple copy, the new
+        // statement should get
+        // the tags of s.
+        // OK, this fix was wrong. The condition should not be
+        // "If s was not a simple copy", but rather "If usepair.unit
+        // was a simple copy". This way, when there's a load of a
+        // constant
+        // followed by an invoke, the invoke gets the tags.
+        if (wasSimpleCopy) {
+          // usepair.unit.removeAllTags();
+          usepair.unit.addAllTagsOf(s);
+        }
+      } else {/*
+       * if(Options.v().verbose()) {
+       * logger.debug("[debug] failed aggregation");
+       * logger.debug("[debug] tried to put "+aggregatee+
+       * " into "+usepair.stmt +
+       * ": in particular, "+usepair.valueBox);
+       * logger.debug("[debug] aggregatee instanceof Expr: "
+       * +(aggregatee instanceof Expr)); }
+       */
+      }
+    }
+    return hadAggregation;
+  }
 
-			// skip s.
-			if (pathIt.hasNext())
-				pathIt.next();
+  /**
+   * Checks whether two field references point to the same field
+   *
+   * @param ref1 The first field reference
+   * @param ref2 The second reference
+   * @return True if the two references point to the same field, otherwise
+   * false
+   */
+  private static boolean isSameField(FieldRef ref1, FieldRef ref2) {
+    if (ref1 == ref2) {
+      return true;
+    }
 
-			while (pathIt.hasNext() && !cantAggr) {
-				Stmt between = (Stmt) (pathIt.next());
+    return ref1.getFieldRef().equals(ref2.getFieldRef());
+  }
 
-				if (between != use) {
-					// Check for killing definitions
+  private static boolean isSimpleCopy(Unit u) {
+    if (!(u instanceof DefinitionStmt)) {
+      return false;
+    }
+    DefinitionStmt defstmt = (DefinitionStmt) u;
+    if (!(defstmt.getRightOp() instanceof Local)) {
+      return false;
+    }
+    if (!(defstmt.getLeftOp() instanceof Local)) {
+      return false;
+    }
+    return true;
+  }
 
-					for (ValueBox vb : between.getDefBoxes()) {
-						Value v = vb.getValue();
-						if (localsUsed.contains(v)) {
-							cantAggr = true;
-							break;
-						}
+  /**
+   * Traverse the statements in the given body, looking for aggregation
+   * possibilities; that is, given a def d and a use u, d has no other uses, u
+   * has no other defs, collapse d and u.
+   * <p>
+   * option: only-stack-locals; if this is true, only aggregate variables
+   * starting with $
+   */
+  protected void internalTransform(Body b, String phaseName, Map<String, String> options) {
+    StmtBody body = (StmtBody) b;
+    boolean onlyStackVars = PhaseOptions.getBoolean(options, "only-stack-locals");
 
-						if (propagatingInvokeExpr || propagatingFieldRef || propagatingArrayRef) {
-							if (v instanceof FieldRef) {
-								if (propagatingInvokeExpr) {
-									cantAggr = true;
-									break;
-								} else if (propagatingFieldRef) {
-									// Can't aggregate a field access if passing
-									// a definition of a field
-									// with the same name, because they might be
-									// aliased
-									for (FieldRef fieldRef : fieldRefList) {
-										if (isSameField((FieldRef) v, fieldRef)) {
-											cantAggr = true;
-											break;
-										}
-									}
-								}
-							} else if (v instanceof ArrayRef) {
-								if (propagatingInvokeExpr) {
-									// Cannot aggregate an invoke expr past an
-									// array write
-									cantAggr = true;
-									break;
-								} else if (propagatingArrayRef) {
-									// cannot aggregate an array read past a
-									// write
-									// this is somewhat conservative
-									// (if types differ they may not be aliased)
+    if (Options.v().time()) {
+      Timers.v().aggregationTimer.start();
+    }
 
-									cantAggr = true;
-									break;
-								}
-							}
-						}
-					}
+    int aggregateCount = 1;
 
-					// Make sure not propagating past a {enter,exit}Monitor
-					if (propagatingInvokeExpr && between instanceof MonitorStmt)
-						cantAggr = true;
-				}
+    boolean changed = false;
 
-				// Check for intervening side effects due to method calls
-				if (propagatingInvokeExpr || propagatingFieldRef || propagatingArrayRef) {
-					for (final ValueBox box : between.getUseBoxes()) {
-						if (between == use && box == useBox) {
-							// Reached use point, stop looking for
-							// side effects
-							break;
-						}
+    Map<ValueBox, Zone> boxToZone = new HashMap<ValueBox, Zone>(body.getUnits().size() * 2 + 1, 0.7f);
 
-						Value v = box.getValue();
+    // Determine the zone of every box
+    {
+      Zonation zonation = new Zonation(body);
 
-						if (v instanceof InvokeExpr
-								|| (propagatingInvokeExpr && (v instanceof FieldRef || v instanceof ArrayRef))) {
-							cantAggr = true;
-							break;
-						}
+      for (Unit u : body.getUnits()) {
+        Zone zone = zonation.getZoneOf(u);
 
-					}
-				}
-			}
+        for (ValueBox box : u.getUseBoxes()) {
+          boxToZone.put(box, zone);
+        }
 
-			// we give up: can't aggregate.
-			if (cantAggr) {
-				continue;
-			}
-			/* assuming that the d-u chains are correct, */
-			/* we need not check the actual contents of ld */
+        for (ValueBox box : u.getDefBoxes()) {
+          boxToZone.put(box, zone);
+        }
+      }
+    }
 
-			Value aggregatee = s.getRightOp();
+    do {
+      if (Options.v().verbose()) {
+        logger.debug("" +
+            "[" + body.getMethod().getName() + "] Aggregating iteration " + aggregateCount + "...");
+      }
 
-			if (usepair.valueBox.canContainValue(aggregatee)) {
-				boolean wasSimpleCopy = isSimpleCopy(usepair.unit);
-				usepair.valueBox.setValue(aggregatee);
-				units.remove(s);
-				hadAggregation = true;
-				// clean up the tags. If s was not a simple copy, the new
-				// statement should get
-				// the tags of s.
-				// OK, this fix was wrong. The condition should not be
-				// "If s was not a simple copy", but rather "If usepair.unit
-				// was a simple copy". This way, when there's a load of a
-				// constant
-				// followed by an invoke, the invoke gets the tags.
-				if (wasSimpleCopy) {
-					// usepair.unit.removeAllTags();
-					usepair.unit.addAllTagsOf(s);
-				}
-			} else {/*
-					 * if(Options.v().verbose()) {
-					 * logger.debug("[debug] failed aggregation");
-					 * logger.debug("[debug] tried to put "+aggregatee+
-					 * " into "+usepair.stmt +
-					 * ": in particular, "+usepair.valueBox);
-					 * logger.debug("[debug] aggregatee instanceof Expr: "
-					 * +(aggregatee instanceof Expr)); }
-					 */
-			}
-		}
-		return hadAggregation;
-	}
+      // body.printTo(new java.io.PrintWriter(G.v().out, true));
 
-	/**
-	 * Checks whether two field references point to the same field
-	 * 
-	 * @param ref1
-	 *            The first field reference
-	 * @param ref2
-	 *            The second reference
-	 * @return True if the two references point to the same field, otherwise
-	 *         false
-	 */
-	private static boolean isSameField(FieldRef ref1, FieldRef ref2) {
-		if (ref1 == ref2)
-			return true;
+      changed = internalAggregate(body, boxToZone, onlyStackVars);
 
-		return ref1.getFieldRef().equals(ref2.getFieldRef());
-	}
+      aggregateCount++;
+    } while (changed);
 
-	private static boolean isSimpleCopy(Unit u) {
-		if (!(u instanceof DefinitionStmt))
-			return false;
-		DefinitionStmt defstmt = (DefinitionStmt) u;
-		if (!(defstmt.getRightOp() instanceof Local))
-			return false;
-		if (!(defstmt.getLeftOp() instanceof Local))
-			return false;
-		return true;
-	}
+    if (Options.v().time()) {
+      Timers.v().aggregationTimer.end();
+    }
+
+  }
 
 }

@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.pautil;
 
 import soot.jimple.spark.pag.VarNode;
@@ -25,83 +26,80 @@ import soot.jimple.spark.pag.VarNode;
  */
 public final class AssignEdge {
 
-	private static final int PARAM_MASK = 0x00000001;
-	
-	private static final int RETURN_MASK = 0x00000002;
+  private static final int PARAM_MASK = 0x00000001;
 
-	private static final int CALL_MASK = PARAM_MASK | RETURN_MASK;
-    
-    private Integer callSite = null;
-	
-    private final VarNode src;
+  private static final int RETURN_MASK = 0x00000002;
 
-    private int scratch;
-    
-    private final VarNode dst;
+  private static final int CALL_MASK = PARAM_MASK | RETURN_MASK;
+  private final VarNode src;
+  private final VarNode dst;
+  private Integer callSite = null;
+  private int scratch;
 
-    /**
-     * @param from
-     * @param to
-     */
-    public AssignEdge(final VarNode from, final VarNode to) {
-        this.src = from;
-        this.dst = to;
-    }
-    
-	public boolean isParamEdge() {
-		return (scratch & PARAM_MASK) != 0;
-	}
-	
-	public void setParamEdge() {
-		scratch |= PARAM_MASK;
-	}
-	
-	public boolean isReturnEdge() {
-		return (scratch & RETURN_MASK) != 0;
-	}
-	
-	public void setReturnEdge() {
-		scratch |= RETURN_MASK;
-	}
-	
-	public boolean isCallEdge() {
-		return (scratch & CALL_MASK) != 0;
-	}
-	
-	public void clearCallEdge() {
-		scratch = 0;
-	}
-    
-    /**
-     * @return
-     */
-    public Integer getCallSite() {
-        assert callSite != null : this + " is not a call edge!";
-        return callSite;
-    }
+  /**
+   * @param from
+   * @param to
+   */
+  public AssignEdge(final VarNode from, final VarNode to) {
+    this.src = from;
+    this.dst = to;
+  }
 
-    /**
-     * @param i
-     */
-    public void setCallSite(Integer i) {
-        callSite = i;
-    }
+  public boolean isParamEdge() {
+    return (scratch & PARAM_MASK) != 0;
+  }
 
-    public String toString() {
-    	String ret = src + " -> " + dst;
-    	if (isReturnEdge()) {
-    		ret += "(* return" + callSite + " *)";
-    	} else if (isParamEdge()) {
-			ret += "(* param" + callSite + " *)";
-    		
-    	}
-    	return ret;
+  public void setParamEdge() {
+    scratch |= PARAM_MASK;
+  }
+
+  public boolean isReturnEdge() {
+    return (scratch & RETURN_MASK) != 0;
+  }
+
+  public void setReturnEdge() {
+    scratch |= RETURN_MASK;
+  }
+
+  public boolean isCallEdge() {
+    return (scratch & CALL_MASK) != 0;
+  }
+
+  public void clearCallEdge() {
+    scratch = 0;
+  }
+
+  /**
+   * @return
+   */
+  public Integer getCallSite() {
+    assert callSite != null : this + " is not a call edge!";
+    return callSite;
+  }
+
+  /**
+   * @param i
+   */
+  public void setCallSite(Integer i) {
+    callSite = i;
+  }
+
+  public String toString() {
+    String ret = src + " -> " + dst;
+    if (isReturnEdge()) {
+      ret += "(* return" + callSite + " *)";
+    } else if (isParamEdge()) {
+      ret += "(* param" + callSite + " *)";
+
     }
-    
-    public VarNode getSrc() {
-        return src;
-    }
-    public VarNode getDst() {
-        return dst;
-    }
+    return ret;
+  }
+
+  public VarNode getSrc() {
+    return src;
+  }
+
+  public VarNode getDst() {
+    return dst;
+  }
 }

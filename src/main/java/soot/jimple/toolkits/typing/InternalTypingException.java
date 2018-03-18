@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,12 +26,11 @@
 
 package soot.jimple.toolkits.typing;
 
-class InternalTypingException extends RuntimeException
-{
+class InternalTypingException extends RuntimeException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8336012847501378889L;
+  /**
+   *
+   */
+  private static final long serialVersionUID = 8336012847501378889L;
 }
 

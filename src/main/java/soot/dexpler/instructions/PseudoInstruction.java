@@ -21,20 +21,19 @@
 package soot.dexpler.instructions;
 
 import org.jf.dexlib2.iface.instruction.Instruction;
-
 import soot.dexpler.DexBody;
 
 public abstract class PseudoInstruction extends DexlibAbstractInstruction {
-
-  public PseudoInstruction(Instruction instruction, int codeAddress) {
-    super(instruction, codeAddress);
-  }
 
   int dataFirstByte = -1;
   int dataLastByte = -1;
   int dataSize = -1;
   byte[] data = null;
   boolean loaded = false;
+
+  public PseudoInstruction(Instruction instruction, int codeAddress) {
+    super(instruction, codeAddress);
+  }
 
   public boolean isLoaded() {
     return loaded;
@@ -53,8 +52,9 @@ public abstract class PseudoInstruction extends DexlibAbstractInstruction {
   }
 
   public int getDataFirstByte() {
-    if (dataFirstByte == -1)
+    if (dataFirstByte == -1) {
       throw new RuntimeException("Error: dataFirstByte was not set!");
+    }
     return dataFirstByte;
   }
 
@@ -63,8 +63,9 @@ public abstract class PseudoInstruction extends DexlibAbstractInstruction {
   }
 
   public int getDataLastByte() {
-    if (dataLastByte == -1)
+    if (dataLastByte == -1) {
       throw new RuntimeException("Error: dataLastByte was not set!");
+    }
     return dataLastByte;
   }
 
@@ -73,8 +74,9 @@ public abstract class PseudoInstruction extends DexlibAbstractInstruction {
   }
 
   public int getDataSize() {
-    if (dataSize == -1)
+    if (dataSize == -1) {
       throw new RuntimeException("Error: dataFirstByte was not set!");
+    }
     return dataSize;
   }
 
@@ -84,8 +86,5 @@ public abstract class PseudoInstruction extends DexlibAbstractInstruction {
 
   public abstract void computeDataOffsets(DexBody body);
 
-  
-  
-  
-  
+
 }

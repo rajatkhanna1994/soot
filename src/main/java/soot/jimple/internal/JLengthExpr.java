@@ -18,41 +18,39 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.jimple.internal;
 
-import soot.*;
+import java.util.List;
 
-import soot.jimple.*;
-import soot.baf.*;
-import java.util.*;
+import soot.Unit;
+import soot.Value;
+import soot.baf.Baf;
+import soot.jimple.ConvertToBaf;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleToBafContext;
 
-public class JLengthExpr extends AbstractLengthExpr implements ConvertToBaf
-{
-    public JLengthExpr(Value op) { super(Jimple.v().newImmediateBox(op)); }
+public class JLengthExpr extends AbstractLengthExpr implements ConvertToBaf {
+  public JLengthExpr(Value op) {
+    super(Jimple.v().newImmediateBox(op));
+  }
 
 
-    public void convertToBaf(JimpleToBafContext context, List<Unit> out)
-    {
-        ((ConvertToBaf)(getOp())).convertToBaf(context, out);
-	
-        Unit u = Baf.v().newArrayLengthInst();
-        u.addAllTagsOf(context.getCurrentUnit());
-        out.add(u);
-    }
-  
+  public void convertToBaf(JimpleToBafContext context, List<Unit> out) {
+    ((ConvertToBaf) (getOp())).convertToBaf(context, out);
 
-  public Object clone() 
-  {
+    Unit u = Baf.v().newArrayLengthInst();
+    u.addAllTagsOf(context.getCurrentUnit());
+    out.add(u);
+  }
+
+
+  public Object clone() {
     return new JLengthExpr(Jimple.cloneIfNecessary(getOp()));
   }
 

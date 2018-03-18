@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-2003.  
+ * Modified by the Sable Research Group and others 1997-2003.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -27,47 +27,50 @@
 package soot.toolkits.graph;
 
 
-import soot.*;
+import java.util.HashMap;
+import java.util.List;
 
-import java.util.*;
-
+import soot.Body;
+import soot.Timers;
+import soot.Unit;
 import soot.options.Options;
 
 
 /**
- *  Represents a CFG where the nodes are Unit instances, and 
- *  where no edges are included to account for  control flow
- *  associated with exceptions.
+ * Represents a CFG where the nodes are Unit instances, and
+ * where no edges are included to account for  control flow
+ * associated with exceptions.
  *
- *  @see Unit
- *  @see UnitGraph
+ * @see Unit
+ * @see UnitGraph
  */
-public class BriefUnitGraph extends UnitGraph
-{
-    /**
-     *   Constructs a BriefUnitGraph given a Body instance.
-     *   @param body The underlying body we want to make a 
-     *               graph for.
-     */
-    public BriefUnitGraph(Body body)
-    {
-        super(body);
-	int size = unitChain.size();
+public class BriefUnitGraph extends UnitGraph {
+  /**
+   * Constructs a BriefUnitGraph given a Body instance.
+   *
+   * @param body The underlying body we want to make a
+   *             graph for.
+   */
+  public BriefUnitGraph(Body body) {
+    super(body);
+    int size = unitChain.size();
 
-        if(Options.v().time())
-            Timers.v().graphTimer.start();
-
-	unitToSuccs = new HashMap<Unit, List<Unit>>(size * 2 + 1, 0.7f);
-	unitToPreds = new HashMap<Unit, List<Unit>>(size * 2 + 1, 0.7f);
-	buildUnexceptionalEdges(unitToSuccs, unitToPreds);
-
-	buildHeadsAndTails();
-
-        if(Options.v().time())
-            Timers.v().graphTimer.end();
-
-	soot.util.PhaseDumper.v().dumpGraph(this, body);
+    if (Options.v().time()) {
+      Timers.v().graphTimer.start();
     }
+
+    unitToSuccs = new HashMap<Unit, List<Unit>>(size * 2 + 1, 0.7f);
+    unitToPreds = new HashMap<Unit, List<Unit>>(size * 2 + 1, 0.7f);
+    buildUnexceptionalEdges(unitToSuccs, unitToPreds);
+
+    buildHeadsAndTails();
+
+    if (Options.v().time()) {
+      Timers.v().graphTimer.end();
+    }
+
+    soot.util.PhaseDumper.v().dumpGraph(this, body);
+  }
 }
 
 

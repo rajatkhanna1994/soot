@@ -18,23 +18,25 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.coffi;
 
-/** There should be exactly one BootstrapMethods attribute in every class file.
+/**
+ * There should be exactly one BootstrapMethods attribute in every class file.
+ *
  * @author Eric Bodden
  * @see http://www.xiebiao.com/docs/javase/7/api/java/lang/invoke/package-summary.html#bsmattr
  */
 class BootstrapMethods_attribute extends attribute_info {
 
-	//indices to method handles
-	public short[] method_handles;
-	
-	//arguments to method handles, in same order as above, i.e., arg_indices[i] holds the arguments to method_handles[i]
-	public short[][] arg_indices;
+  //indices to method handles
+  public short[] method_handles;
+
+  //arguments to method handles, in same order as above, i.e., arg_indices[i] holds the arguments to method_handles[i]
+  public short[][] arg_indices;
 
 }

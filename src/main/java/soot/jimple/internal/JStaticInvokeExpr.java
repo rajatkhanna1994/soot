@@ -19,44 +19,41 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.jimple.internal;
 
-import soot.*;
-import soot.jimple.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import soot.SootMethodRef;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.Jimple;
 
-public class JStaticInvokeExpr extends AbstractStaticInvokeExpr 
-{	
-    public JStaticInvokeExpr(SootMethodRef methodRef, List<? extends Value> args)
-    {
-        super(methodRef, new ValueBox[args.size()]);
+public class JStaticInvokeExpr extends AbstractStaticInvokeExpr {
+  public JStaticInvokeExpr(SootMethodRef methodRef, List<? extends Value> args) {
+    super(methodRef, new ValueBox[args.size()]);
 
-        for(int i = 0; i < args.size(); i++)
-            this.argBoxes[i] = Jimple.v().newImmediateBox(args.get(i));
-        
+    for (int i = 0; i < args.size(); i++) {
+      this.argBoxes[i] = Jimple.v().newImmediateBox(args.get(i));
     }
 
-    public Object clone() 
-    {
-        List<Value> clonedArgs = new ArrayList<Value>(getArgCount());
+  }
 
-        for(int i = 0; i < getArgCount(); i++) {
-            clonedArgs.add(i, getArg(i));
-        }
-        
-        return new JStaticInvokeExpr(methodRef, clonedArgs);
+  public Object clone() {
+    List<Value> clonedArgs = new ArrayList<Value>(getArgCount());
+
+    for (int i = 0; i < getArgCount(); i++) {
+      clonedArgs.add(i, getArg(i));
     }
+
+    return new JStaticInvokeExpr(methodRef, clonedArgs);
+  }
 }
 
 

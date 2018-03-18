@@ -30,7 +30,6 @@ import java.util.List;
 import org.jf.dexlib2.iface.instruction.Instruction;
 import org.jf.dexlib2.iface.instruction.SwitchElement;
 import org.jf.dexlib2.iface.instruction.formats.SparseSwitchPayload;
-
 import soot.IntType;
 import soot.Local;
 import soot.Unit;
@@ -44,39 +43,39 @@ import soot.jimple.Stmt;
 
 public class SparseSwitchInstruction extends SwitchInstruction {
 
-    public SparseSwitchInstruction (Instruction instruction, int codeAdress) {
-        super(instruction, codeAdress);
+  public SparseSwitchInstruction(Instruction instruction, int codeAdress) {
+    super(instruction, codeAdress);
+  }
+
+  @Override
+  protected Stmt switchStatement(DexBody body, Instruction targetData, Local key) {
+    SparseSwitchPayload i = (SparseSwitchPayload) targetData;
+    List<? extends SwitchElement> seList = i.getSwitchElements();
+
+    // the default target always follows the switch statement
+    int defaultTargetAddress = codeAddress + instruction.getCodeUnits();
+    Unit defaultTarget = body.instructionAtAddress(defaultTargetAddress).getUnit();
+
+    List<IntConstant> lookupValues = new ArrayList<IntConstant>();
+    List<Unit> targets = new ArrayList<Unit>();
+    for (SwitchElement se : seList) {
+      lookupValues.add(IntConstant.v(se.getKey()));
+      int offset = se.getOffset();
+      targets.add(body.instructionAtAddress(codeAddress + offset).getUnit());
+    }
+    LookupSwitchStmt switchStmt = Jimple.v().newLookupSwitchStmt(key, lookupValues, targets, defaultTarget);
+    setUnit(switchStmt);
+    addTags(switchStmt);
+
+    if (IDalvikTyper.ENABLE_DVKTYPER) {
+      DalvikTyper.v().setType(switchStmt.getKeyBox(), IntType.v(), true);
     }
 
-    @Override
-	protected Stmt switchStatement(DexBody body, Instruction targetData, Local key) {
-        SparseSwitchPayload i = (SparseSwitchPayload) targetData;
-        List<? extends SwitchElement> seList = i.getSwitchElements();
+    return switchStmt;
+  }
 
-        // the default target always follows the switch statement
-        int defaultTargetAddress = codeAddress + instruction.getCodeUnits();
-        Unit defaultTarget = body.instructionAtAddress(defaultTargetAddress).getUnit();
-
-        List<IntConstant> lookupValues = new ArrayList<IntConstant>();
-        List<Unit> targets = new ArrayList<Unit>();
-        for(SwitchElement se: seList) {
-          lookupValues.add(IntConstant.v(se.getKey()));
-          int offset = se.getOffset();
-          targets.add(body.instructionAtAddress(codeAddress + offset).getUnit());
-        }
-        LookupSwitchStmt switchStmt = Jimple.v().newLookupSwitchStmt(key, lookupValues, targets, defaultTarget);
-        setUnit(switchStmt);
-        addTags(switchStmt);
-        
-        if (IDalvikTyper.ENABLE_DVKTYPER) {
-            DalvikTyper.v().setType(switchStmt.getKeyBox(), IntType.v(), true);
-        }
-        
-        return switchStmt;
-    }
-
-    @Override
-    public void computeDataOffsets(DexBody body) {
+  @Override
+  public void computeDataOffsets(DexBody body) {
 //        System.out.println("class of instruction: "+ instruction.getClass());
 //        int offset = ((OffsetInstruction) instruction).getCodeOffset();
 //        int targetAddress = codeAddress + offset;
@@ -107,7 +106,7 @@ public class SparseSwitchInstruction extends SwitchInstruction {
 //          data[i-2] = outa[i];
 //        }
 //        setData (data);
-    }
+  }
 
 
 }

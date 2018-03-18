@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,50 +26,52 @@
 
 package soot.jimple.internal;
 
-import soot.*;
-import soot.jimple.*;
-import soot.util.*;
+import soot.IntType;
+import soot.Type;
+import soot.UnitPrinter;
+import soot.ValueBox;
+import soot.jimple.ExprSwitch;
+import soot.jimple.Jimple;
+import soot.jimple.LengthExpr;
+import soot.util.Switch;
 
 @SuppressWarnings("serial")
-public abstract class AbstractLengthExpr extends AbstractUnopExpr implements LengthExpr
-{
-    protected AbstractLengthExpr(ValueBox opBox) { super(opBox); }
+public abstract class AbstractLengthExpr extends AbstractUnopExpr implements LengthExpr {
+  protected AbstractLengthExpr(ValueBox opBox) {
+    super(opBox);
+  }
 
-    public boolean equivTo(Object o)
-    {
-        if (o instanceof AbstractLengthExpr)
-        {
-            return opBox.getValue().equivTo(((AbstractLengthExpr)o).opBox.getValue());
-        }
-        return false;
+  public boolean equivTo(Object o) {
+    if (o instanceof AbstractLengthExpr) {
+      return opBox.getValue().equivTo(((AbstractLengthExpr) o).opBox.getValue());
     }
+    return false;
+  }
 
-    /** Returns a hash code for this object, consistent with structural equality. */
-    public int equivHashCode() 
-    {
-        return opBox.getValue().equivHashCode();
-    }
+  /**
+   * Returns a hash code for this object, consistent with structural equality.
+   */
+  public int equivHashCode() {
+    return opBox.getValue().equivHashCode();
+  }
 
-    public abstract Object clone();
+  public abstract Object clone();
 
-    public String toString()
-    {
-        return Jimple.LENGTHOF + " " + opBox.getValue().toString();
-    }
-    
-    public void toString(UnitPrinter up) {
-        up.literal(Jimple.LENGTHOF);
-        up.literal(" ");
-        opBox.toString(up);
-    }
+  public String toString() {
+    return Jimple.LENGTHOF + " " + opBox.getValue().toString();
+  }
 
-    public Type getType()
-    {
-        return IntType.v();
-    }
+  public void toString(UnitPrinter up) {
+    up.literal(Jimple.LENGTHOF);
+    up.literal(" ");
+    opBox.toString(up);
+  }
 
-    public void apply(Switch sw)
-    {
-        ((ExprSwitch) sw).caseLengthExpr(this);
-    }
+  public Type getType() {
+    return IntType.v();
+  }
+
+  public void apply(Switch sw) {
+    ((ExprSwitch) sw).caseLengthExpr(this);
+  }
 }

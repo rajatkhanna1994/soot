@@ -18,31 +18,32 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
-
 package soot.coffi;
 
-/** There should be exactly one Exceptions attribute in every method,
+/**
+ * There should be exactly one Exceptions attribute in every method,
  * indicating the types of exceptions the method might throw.
+ *
+ * @author Clark Verbrugge
  * @see attribute_info
  * @see method_info#attributes
- * @author Clark Verbrugge
  */
 public class Exception_attribute extends attribute_info {
-   /** Length of exception table array. */
-   public int number_of_exceptions;
-   /** Constant pool indices of CONSTANT_Class types representing exceptions
-    * the associated method might throw.
-    * @see CONSTANT_Class_info
-    */
-   public int exception_index_table[];
+  /**
+   * Length of exception table array.
+   */
+  public int number_of_exceptions;
+  /**
+   * Constant pool indices of CONSTANT_Class types representing exceptions
+   * the associated method might throw.
+   *
+   * @see CONSTANT_Class_info
+   */
+  public int exception_index_table[];
 }

@@ -18,43 +18,37 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
- 
-
-
 
 package soot.baf;
 
-import soot.*;
+import soot.Unit;
+import soot.baf.internal.AbstractInst;
 
-import soot.baf.internal.*;
+public class PlaceholderInst extends AbstractInst {
+  private Unit source;
 
-public class PlaceholderInst extends AbstractInst
-{
-    private Unit source;
+  PlaceholderInst(Unit source) {
+    this.source = source;
+  }
 
-    public final String getName() { return "<placeholder>"; }
+  public final String getName() {
+    return "<placeholder>";
+  }
 
-    public String toString()
-    {
-        return "<placeholder: " + source.toString() + ">";
-    }
-    
-    PlaceholderInst(Unit source)
-    {
-        this.source = source;
-    }
+  public String toString() {
+    return "<placeholder: " + source.toString() + ">";
+  }
 
-    public Object clone() 
-    {
-        return new PlaceholderInst(getSource());
-    }
-    public Unit getSource()
-    {
-        return source;
-    }
+  public Object clone() {
+    return new PlaceholderInst(getSource());
+  }
+
+  public Unit getSource() {
+    return source;
+  }
 }

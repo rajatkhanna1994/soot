@@ -18,27 +18,31 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import soot.util.*;
+import soot.Type;
+import soot.Value;
+import soot.ValueBox;
+import soot.util.Switch;
 
-public interface NewArrayExpr extends Expr, AnyNewExpr
-{
-    public Type getBaseType();
-    public void setBaseType(Type type);
-    public ValueBox getSizeBox();
-    public Value getSize();
-    public void setSize(Value size);
-    public Type getType();
-    public void apply(Switch sw);
+public interface NewArrayExpr extends Expr, AnyNewExpr {
+  public Type getBaseType();
+
+  public void setBaseType(Type type);
+
+  public ValueBox getSizeBox();
+
+  public Value getSize();
+
+  public void setSize(Value size);
+
+  public Type getType();
+
+  public void apply(Switch sw);
 }

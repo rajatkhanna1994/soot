@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.javaToJimple;
 
 import java.util.HashSet;
@@ -26,17 +27,18 @@ import soot.SootClass;
 import soot.Type;
 
 public interface IInitialResolver {
-	
-	public void formAst(String fullPath, List<String> locations, String className);
-	
-	public Dependencies resolveFromJavaFile(SootClass sc);
-	
-	public class Dependencies {
-		public final Set<Type> typesToHierarchy, typesToSignature;
-		public Dependencies() {
-			typesToHierarchy = new HashSet<Type>();
-			typesToSignature = new HashSet<Type>();
-		}
-	}
+
+  public void formAst(String fullPath, List<String> locations, String className);
+
+  public Dependencies resolveFromJavaFile(SootClass sc);
+
+  public class Dependencies {
+    public final Set<Type> typesToHierarchy, typesToSignature;
+
+    public Dependencies() {
+      typesToHierarchy = new HashSet<Type>();
+      typesToSignature = new HashSet<Type>();
+    }
+  }
 
 }

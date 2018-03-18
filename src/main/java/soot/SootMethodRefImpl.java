@@ -18,6 +18,7 @@
  */
 
 package soot;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import soot.javaToJimple.LocalGenerator;
 import soot.jimple.AssignStmt;
 import soot.jimple.InvokeStmt;
@@ -45,292 +45,317 @@ import soot.util.NumberedString;
  */
 
 public class SootMethodRefImpl implements SootMethodRef {
-    private static final Logger logger = LoggerFactory.getLogger(SootMethodRefImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(SootMethodRefImpl.class);
+  private final SootClass declaringClass;
+  private final String name;
+  private final Type returnType;
+  private final boolean isStatic;
+  protected List<Type> parameterTypes;
+  private NumberedString subsig;
 
-	public SootMethodRefImpl(SootClass declaringClass, String name, List<Type> parameterTypes, Type returnType,
-			boolean isStatic) {
-		this.declaringClass = declaringClass;
-		this.name = name;
+  public SootMethodRefImpl(SootClass declaringClass, String name, List<Type> parameterTypes, Type returnType,
+                           boolean isStatic) {
+    this.declaringClass = declaringClass;
+    this.name = name;
 
-		if (parameterTypes == null)
-			this.parameterTypes = null;
-		else {
-			List<Type> l = new ArrayList<Type>();
-			l.addAll(parameterTypes);
-			this.parameterTypes = Collections.unmodifiableList(l);
-		}
+    if (parameterTypes == null) {
+      this.parameterTypes = null;
+    } else {
+      List<Type> l = new ArrayList<Type>();
+      l.addAll(parameterTypes);
+      this.parameterTypes = Collections.unmodifiableList(l);
+    }
 
-		this.returnType = returnType;
-		this.isStatic = isStatic;
-		if (declaringClass == null)
-			throw new RuntimeException("Attempt to create SootMethodRef with null class");
-		if (name == null)
-			throw new RuntimeException("Attempt to create SootMethodRef with null name");
-		if (returnType == null)
-			throw new RuntimeException("Attempt to create SootMethodRef with null returnType");
-	}
+    this.returnType = returnType;
+    this.isStatic = isStatic;
+    if (declaringClass == null) {
+      throw new RuntimeException("Attempt to create SootMethodRef with null class");
+    }
+    if (name == null) {
+      throw new RuntimeException("Attempt to create SootMethodRef with null name");
+    }
+    if (returnType == null) {
+      throw new RuntimeException("Attempt to create SootMethodRef with null returnType");
+    }
+  }
 
-	private final SootClass declaringClass;
-	private final String name;
-	protected List<Type> parameterTypes;
-	private final Type returnType;
-	private final boolean isStatic;
+  @Override
+  public SootClass declaringClass() {
+    return declaringClass;
+  }
 
-	private NumberedString subsig;
+  @Override
+  public String name() {
+    return name;
+  }
 
-	@Override
-	public SootClass declaringClass() {
-		return declaringClass;
-	}
+  @Override
+  public List<Type> parameterTypes() {
+    return parameterTypes == null ? Collections.<Type>emptyList() : parameterTypes;
+  }
 
-	@Override
-	public String name() {
-		return name;
-	}
+  @Override
+  public Type returnType() {
+    return returnType;
+  }
 
-	@Override
-	public List<Type> parameterTypes() {
-		return parameterTypes == null ? Collections.<Type>emptyList() : parameterTypes;
-	}
+  @Override
+  public boolean isStatic() {
+    return isStatic;
+  }
 
-	@Override
-	public Type returnType() {
-		return returnType;
-	}
+  @Override
+  public NumberedString getSubSignature() {
+    if (subsig == null) {
+      subsig = Scene.v().getSubSigNumberer()
+          .findOrAdd(SootMethod.getSubSignature(name, parameterTypes, returnType));
+    }
+    return subsig;
+  }
 
-	@Override
-	public boolean isStatic() {
-		return isStatic;
-	}
+  @Override
+  public String getSignature() {
+    return SootMethod.getSignature(declaringClass, name, parameterTypes, returnType);
+  }
 
-	@Override
-	public NumberedString getSubSignature() {
-		if (subsig == null) {
-			subsig = Scene.v().getSubSigNumberer()
-					.findOrAdd(SootMethod.getSubSignature(name, parameterTypes, returnType));
-		}
-		return subsig;
-	}
+  @Override
+  public Type parameterType(int i) {
+    return parameterTypes.get(i);
+  }
 
-	@Override
-	public String getSignature() {
-		return SootMethod.getSignature(declaringClass, name, parameterTypes, returnType);
-	}
+  @Override
+  public SootMethod resolve() {
+    return resolve(null);
+  }
 
-	@Override
-	public Type parameterType(int i) {
-		return parameterTypes.get(i);
-	}
+  @Override
+  public SootMethod tryResolve() {
+    return tryResolve(null);
+  }
 
-	public class ClassResolutionFailedException extends ResolutionFailedException {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 5430199603403917938L;
+  private SootMethod checkStatic(SootMethod ret) {
+    if (ret.isStatic() != isStatic()) {
+      if (Options.v().wrong_staticness() != Options.wrong_staticness_ignore
+          && Options.v().wrong_staticness() != Options.wrong_staticness_fixstrict) {
+        throw new ResolutionFailedException("Resolved " + this + " to " + ret + " which has wrong static-ness");
+      }
+    }
+    return ret;
+  }
 
-		public ClassResolutionFailedException() {
-			super("Class " + declaringClass + " doesn't have method " + name + "("
-					+ (parameterTypes == null ? "" : parameterTypes) + ")" + " : " + returnType
-					+ "; failed to resolve in superclasses and interfaces");
-		}
+  private SootMethod tryResolve(StringBuffer trace) {
+    if (declaringClass.getName().equals("java.dyn.InvokeDynamic")) {
+      throw new IllegalStateException("Cannot resolve invokedynamic method references at compile time!");
+    }
+    SootClass cl = declaringClass;
+    while (true) {
+      if (trace != null) {
+        trace.append("Looking in " + cl + " which has methods " + cl.getMethods() + "\n");
+      }
+      SootMethod sm = cl.getMethodUnsafe(getSubSignature());
+      if (sm != null) {
+        return checkStatic(sm);
+      }
+      if (Scene.v().allowsPhantomRefs() && (cl.isPhantom() || Options.v().ignore_resolution_errors())) {
+        SootMethod m = Scene.v().makeSootMethod(name, parameterTypes, returnType,
+            isStatic() ? Modifier.STATIC : 0);
+        m.setPhantom(true);
+        m = cl.getOrAddMethod(m);
+        return checkStatic(m);
+      }
+      if (cl.hasSuperclass()) {
+        cl = cl.getSuperclass();
+      } else {
+        break;
+      }
+    }
+    cl = declaringClass;
+    while (true) {
+      ArrayDeque<SootClass> queue = new ArrayDeque<SootClass>();
+      queue.addAll(cl.getInterfaces());
+      while (true) {
+        SootClass iface = queue.poll();
+        if (iface == null) {
+          break;
+        }
+        if (trace != null) {
+          trace.append("Looking in " + iface + " which has methods " + iface.getMethods() + "\n");
+        }
+        SootMethod sm = iface.getMethodUnsafe(getSubSignature());
+        if (sm != null) {
+          return checkStatic(sm);
+        }
+        queue.addAll(iface.getInterfaces());
+      }
+      if (cl.hasSuperclass()) {
+        cl = cl.getSuperclass();
+      } else {
+        break;
+      }
+    }
+    return null;
+  }
 
-		@Override
-		public String toString() {
-			StringBuffer ret = new StringBuffer();
-			ret.append(super.toString());
-			resolve(ret);
-			return ret.toString();
-		}
-	}
+  private SootMethod resolve(StringBuffer trace) {
+    SootMethod resolved = tryResolve(trace);
+    if (resolved != null) {
+      return resolved;
+    }
 
-	@Override
-	public SootMethod resolve() {
-		return resolve(null);
-	}
+    // when allowing phantom refs we also allow for references to
+    // non-existing methods;
+    // we simply create the methods on the fly; the method body will throw
+    // an appropriate
+    // error just in case the code *is* actually reached at runtime
+    if (Options.v().allow_phantom_refs()) {
+      return createUnresolvedErrorMethod(declaringClass);
+    }
 
-	@Override
-	public SootMethod tryResolve() {
-		return tryResolve(null);
-	}
+    if (trace == null) {
+      ClassResolutionFailedException e = new ClassResolutionFailedException();
+      if (Options.v().ignore_resolution_errors()) {
+        logger.debug("" + e.getMessage());
+      } else {
+        throw e;
+      }
+    }
 
-	private SootMethod checkStatic(SootMethod ret) {
-		if (ret.isStatic() != isStatic()) {
-			if (Options.v().wrong_staticness() != Options.wrong_staticness_ignore
-					&& Options.v().wrong_staticness() != Options.wrong_staticness_fixstrict) {
-				throw new ResolutionFailedException("Resolved " + this + " to " + ret + " which has wrong static-ness");
-			}
-		}
-		return ret;
-	}
+    return null;
+  }
 
-	private SootMethod tryResolve(StringBuffer trace) {
-		if (declaringClass.getName().equals("java.dyn.InvokeDynamic")) {
-			throw new IllegalStateException("Cannot resolve invokedynamic method references at compile time!");
-		}
-		SootClass cl = declaringClass;
-		while (true) {
-			if (trace != null)
-				trace.append("Looking in " + cl + " which has methods " + cl.getMethods() + "\n");
-			SootMethod sm = cl.getMethodUnsafe(getSubSignature());
-			if (sm != null)
-				return checkStatic(sm);
-			if (Scene.v().allowsPhantomRefs() && (cl.isPhantom() || Options.v().ignore_resolution_errors())) {
-				SootMethod m = Scene.v().makeSootMethod(name, parameterTypes, returnType,
-						isStatic() ? Modifier.STATIC : 0);
-				m.setPhantom(true);
-				m = cl.getOrAddMethod(m);
-				return checkStatic(m);
-			}
-			if (cl.hasSuperclass())
-				cl = cl.getSuperclass();
-			else
-				break;
-		}
-		cl = declaringClass;
-		while (true) {
-			ArrayDeque<SootClass> queue = new ArrayDeque<SootClass>();
-			queue.addAll(cl.getInterfaces());
-			while (true) {
-				SootClass iface = queue.poll();
-				if (iface == null)
-					break;
-				if (trace != null)
-					trace.append("Looking in " + iface + " which has methods " + iface.getMethods() + "\n");
-				SootMethod sm = iface.getMethodUnsafe(getSubSignature());
-				if (sm != null)
-					return checkStatic(sm);
-				queue.addAll(iface.getInterfaces());
-			}
-			if (cl.hasSuperclass())
-				cl = cl.getSuperclass();
-			else
-				break;
-		}
-		return null;
-	}
+  /**
+   * Creates a method body that throws an "unresolved compilation error" message
+   *
+   * @param declaringClass The class that was supposed to contain the method
+   * @return The created SootMethod
+   */
+  private SootMethod createUnresolvedErrorMethod(SootClass declaringClass) {
+    SootMethod m = Scene.v().makeSootMethod(name, parameterTypes, returnType, isStatic() ? Modifier.STATIC : 0);
+    int modifiers = Modifier.PUBLIC; // we don't know who will be calling us
+    if (isStatic()) {
+      modifiers |= Modifier.STATIC;
+    }
+    m.setModifiers(modifiers);
+    JimpleBody body = Jimple.v().newBody(m);
+    m.setActiveBody(body);
 
-	private SootMethod resolve(StringBuffer trace) {
-		SootMethod resolved = tryResolve(trace);
-		if (resolved != null)
-			return resolved;
+    final LocalGenerator lg = new LocalGenerator(body);
 
-		// when allowing phantom refs we also allow for references to
-		// non-existing methods;
-		// we simply create the methods on the fly; the method body will throw
-		// an appropriate
-		// error just in case the code *is* actually reached at runtime
-		if (Options.v().allow_phantom_refs())
-			return createUnresolvedErrorMethod(declaringClass);
+    // For producing valid Jimple code, we need to access all parameters.
+    // Otherwise, methods like "getThisLocal()" will fail.
+    body.insertIdentityStmts(declaringClass);
 
-		if (trace == null) {
-			ClassResolutionFailedException e = new ClassResolutionFailedException();
-			if (Options.v().ignore_resolution_errors())
-				logger.debug(""+e.getMessage());
-			else
-				throw e;
-		}
+    // exc = new Error
+    RefType runtimeExceptionType = RefType.v("java.lang.Error");
+    NewExpr newExpr = Jimple.v().newNewExpr(runtimeExceptionType);
+    Local exceptionLocal = lg.generateLocal(runtimeExceptionType);
+    AssignStmt assignStmt = Jimple.v().newAssignStmt(exceptionLocal, newExpr);
+    body.getUnits().add(assignStmt);
 
-		return null;
-	}
+    // exc.<init>(message)
+    SootMethodRef cref = Scene.v().makeConstructorRef(runtimeExceptionType.getSootClass(),
+        Collections.<Type>singletonList(RefType.v("java.lang.String")));
+    SpecialInvokeExpr constructorInvokeExpr = Jimple.v().newSpecialInvokeExpr(exceptionLocal, cref,
+        StringConstant.v("Unresolved compilation error: Method " + getSignature() + " does not exist!"));
+    InvokeStmt initStmt = Jimple.v().newInvokeStmt(constructorInvokeExpr);
+    body.getUnits().insertAfter(initStmt, assignStmt);
 
-	/**
-	 * Creates a method body that throws an "unresolved compilation error" message
-	 * 
-	 * @param declaringClass
-	 *            The class that was supposed to contain the method
-	 * @return The created SootMethod
-	 */
-	private SootMethod createUnresolvedErrorMethod(SootClass declaringClass) {
-		SootMethod m = Scene.v().makeSootMethod(name, parameterTypes, returnType, isStatic() ? Modifier.STATIC : 0);
-		int modifiers = Modifier.PUBLIC; // we don't know who will be calling us
-		if (isStatic())
-			modifiers |= Modifier.STATIC;
-		m.setModifiers(modifiers);
-		JimpleBody body = Jimple.v().newBody(m);
-		m.setActiveBody(body);
+    // throw exc
+    body.getUnits().insertAfter(Jimple.v().newThrowStmt(exceptionLocal), initStmt);
 
-		final LocalGenerator lg = new LocalGenerator(body);
+    return declaringClass.getOrAddMethod(m);
+  }
 
-		// For producing valid Jimple code, we need to access all parameters.
-		// Otherwise, methods like "getThisLocal()" will fail.
-		body.insertIdentityStmts(declaringClass);
+  @Override
+  public String toString() {
+    return getSignature();
+  }
 
-		// exc = new Error
-		RefType runtimeExceptionType = RefType.v("java.lang.Error");
-		NewExpr newExpr = Jimple.v().newNewExpr(runtimeExceptionType);
-		Local exceptionLocal = lg.generateLocal(runtimeExceptionType);
-		AssignStmt assignStmt = Jimple.v().newAssignStmt(exceptionLocal, newExpr);
-		body.getUnits().add(assignStmt);
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((declaringClass == null) ? 0 : declaringClass.hashCode());
+    result = prime * result + (isStatic ? 1231 : 1237);
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((parameterTypes == null) ? 0 : parameterTypes.hashCode());
+    result = prime * result + ((returnType == null) ? 0 : returnType.hashCode());
+    result = prime * result + ((subsig == null) ? 0 : subsig.hashCode());
+    return result;
+  }
 
-		// exc.<init>(message)
-		SootMethodRef cref = Scene.v().makeConstructorRef(runtimeExceptionType.getSootClass(),
-				Collections.<Type>singletonList(RefType.v("java.lang.String")));
-		SpecialInvokeExpr constructorInvokeExpr = Jimple.v().newSpecialInvokeExpr(exceptionLocal, cref,
-				StringConstant.v("Unresolved compilation error: Method " + getSignature() + " does not exist!"));
-		InvokeStmt initStmt = Jimple.v().newInvokeStmt(constructorInvokeExpr);
-		body.getUnits().insertAfter(initStmt, assignStmt);
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    SootMethodRefImpl other = (SootMethodRefImpl) obj;
+    if (declaringClass == null) {
+      if (other.declaringClass != null) {
+        return false;
+      }
+    } else if (!declaringClass.equals(other.declaringClass)) {
+      return false;
+    }
+    if (isStatic != other.isStatic) {
+      return false;
+    }
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
+    }
+    if (parameterTypes == null) {
+      if (other.parameterTypes != null) {
+        return false;
+      }
+    } else if (!parameterTypes.equals(other.parameterTypes)) {
+      return false;
+    }
+    if (returnType == null) {
+      if (other.returnType != null) {
+        return false;
+      }
+    } else if (!returnType.equals(other.returnType)) {
+      return false;
+    }
+    if (subsig == null) {
+      if (other.subsig != null) {
+        return false;
+      }
+    } else if (!subsig.equals(other.subsig)) {
+      return false;
+    }
+    return true;
+  }
 
-		// throw exc
-		body.getUnits().insertAfter(Jimple.v().newThrowStmt(exceptionLocal), initStmt);
+  public class ClassResolutionFailedException extends ResolutionFailedException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 5430199603403917938L;
 
-		return declaringClass.getOrAddMethod(m);
-	}
+    public ClassResolutionFailedException() {
+      super("Class " + declaringClass + " doesn't have method " + name + "("
+          + (parameterTypes == null ? "" : parameterTypes) + ")" + " : " + returnType
+          + "; failed to resolve in superclasses and interfaces");
+    }
 
-	@Override
-	public String toString() {
-		return getSignature();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((declaringClass == null) ? 0 : declaringClass.hashCode());
-		result = prime * result + (isStatic ? 1231 : 1237);
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((parameterTypes == null) ? 0 : parameterTypes.hashCode());
-		result = prime * result + ((returnType == null) ? 0 : returnType.hashCode());
-		result = prime * result + ((subsig == null) ? 0 : subsig.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SootMethodRefImpl other = (SootMethodRefImpl) obj;
-		if (declaringClass == null) {
-			if (other.declaringClass != null)
-				return false;
-		} else if (!declaringClass.equals(other.declaringClass))
-			return false;
-		if (isStatic != other.isStatic)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (parameterTypes == null) {
-			if (other.parameterTypes != null)
-				return false;
-		} else if (!parameterTypes.equals(other.parameterTypes))
-			return false;
-		if (returnType == null) {
-			if (other.returnType != null)
-				return false;
-		} else if (!returnType.equals(other.returnType))
-			return false;
-		if (subsig == null) {
-			if (other.subsig != null)
-				return false;
-		} else if (!subsig.equals(other.subsig))
-			return false;
-		return true;
-	}
+    @Override
+    public String toString() {
+      StringBuffer ret = new StringBuffer();
+      ret.append(super.toString());
+      resolve(ret);
+      return ret.toString();
+    }
+  }
 
 }

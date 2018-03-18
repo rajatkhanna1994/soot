@@ -18,33 +18,43 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf;
 
-import java.util.*;
+import java.util.List;
 
-import soot.*;
+import soot.Unit;
+import soot.UnitBox;
 import soot.jimple.IntConstant;
 
-public interface LookupSwitchInst extends Inst
-{
-    public Unit getDefaultTarget();
-    public void setDefaultTarget(Unit defTarget);
-    public UnitBox getDefaultTargetBox();
+public interface LookupSwitchInst extends Inst {
+  public Unit getDefaultTarget();
 
-    public void setLookupValue(int index, int value);
-    public int getLookupValue(int index);
-    public List<IntConstant> getLookupValues();
-    public void setLookupValues(List<IntConstant> values);
-    
-    public int getTargetCount();
-    public Unit getTarget(int index);
-    public UnitBox getTargetBox(int index);
-    public void setTarget(int index, Unit target);
-    public List<Unit> getTargets();
-    public void setTargets(List<Unit> targets);
+  public void setDefaultTarget(Unit defTarget);
+
+  public UnitBox getDefaultTargetBox();
+
+  public void setLookupValue(int index, int value);
+
+  public int getLookupValue(int index);
+
+  public List<IntConstant> getLookupValues();
+
+  public void setLookupValues(List<IntConstant> values);
+
+  public int getTargetCount();
+
+  public Unit getTarget(int index);
+
+  public UnitBox getTargetBox(int index);
+
+  public void setTarget(int index, Unit target);
+
+  public List<Unit> getTargets();
+
+  public void setTargets(List<Unit> targets);
 }

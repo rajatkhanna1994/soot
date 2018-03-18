@@ -16,9 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.pautil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,9 +31,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import soot.ArrayType;
 import soot.CompilationDeathException;
-import soot.G;
 import soot.PointsToAnalysis;
 import soot.RefType;
 import soot.Scene;
@@ -68,77 +68,12 @@ import soot.util.queue.ChunkedQueue;
 
 /**
  * Utility methods for dealing with Soot.
- * 
+ *
  * @author manu_s
- * 
  */
 public class SootUtil {
-    private static final Logger logger = LoggerFactory.getLogger(SootUtil.class);
-
-  public final static class CallSiteAndContext extends Pair<Integer, ImmutableStack<Integer>> {
-
-    public CallSiteAndContext(Integer callSite, ImmutableStack<Integer> callingContext) {
-      super(callSite, callingContext);
-    }
-  }
-
-  public static final class FieldAccessMap extends ArraySetMultiMap<SparkField, Pair<FieldRefNode, LocalVarNode>> {
-  }
-
-  public static FieldAccessMap buildStoreMap(PAG pag) {
-    FieldAccessMap ret = new FieldAccessMap();
-    Iterator frNodeIter = pag.storeInvSourcesIterator();
-    while (frNodeIter.hasNext()) {
-      FieldRefNode frNode = (FieldRefNode) frNodeIter.next();
-      SparkField field = frNode.getField();
-      Node[] targets = pag.storeInvLookup(frNode);
-      for (int i = 0; i < targets.length; i++) {
-        VarNode target = (VarNode) targets[i];
-        if (target instanceof GlobalVarNode)
-          continue;
-        ret.put(field, new Pair<FieldRefNode, LocalVarNode>(frNode, (LocalVarNode) target));
-      }
-    }
-    return ret;
-  }
-
-  /**
-   * 
-   * @param node
-   * @return <code>true</code> if <code>node</code> represents the return
-   *         value of a method; <code>false</code> otherwise
-   */
-  public static boolean isRetNode(VarNode node) {
-    if (node.getVariable() instanceof Parm) {
-      Parm parm = (Parm) node.getVariable();
-      return (parm.getIndex() == PointsToAnalysis.RETURN_NODE);
-    }
-    return false;
-  }
-
-  public static boolean isParamNode(VarNode node) {
-    if (node.getVariable() instanceof soot.toolkits.scalar.Pair) {
-      soot.toolkits.scalar.Pair pair = (soot.toolkits.scalar.Pair) node.getVariable();
-      return (pair.getO1() instanceof SootMethod && (pair.getO2() instanceof Integer || pair.getO2() == PointsToAnalysis.THIS_NODE));
-    }
-    return false;
-  }
-
-  /**
-   * 
-   * @param node
-   * @return <code>true</code> if <code>node</code> represents the this
-   *         parameter of a method; <code>false</code> otherwise
-   */
-  public static boolean isThisNode(VarNode node) {
-    if (node.getVariable() instanceof soot.toolkits.scalar.Pair) {
-      soot.toolkits.scalar.Pair pair = (soot.toolkits.scalar.Pair) node.getVariable();
-      return (pair.getO1() instanceof SootMethod) && (pair.getO2() == PointsToAnalysis.THIS_NODE);
-    }
-    return false;
-  }
-
-  private static final String[] lib13Packages = { "java.applet", "java.awt", "java.awt.color", "java.awt.datatransfer",
+  private static final Logger logger = LoggerFactory.getLogger(SootUtil.class);
+  private static final String[] lib13Packages = {"java.applet", "java.awt", "java.awt.color", "java.awt.datatransfer",
       "java.awt.dnd", "java.awt.dnd.peer", "java.awt.event", "java.awt.font", "java.awt.geom", "java.awt.im", "java.awt.im.spi",
       "java.awt.image", "java.awt.image.renderable", "java.awt.peer", "java.awt.print", "java.beans", "java.beans.beancontext",
       "java.io", "java.lang", "java.lang.ref", "java.lang.reflect", "java.math", "java.net", "java.rmi", "java.rmi.activation",
@@ -172,7 +107,59 @@ public class SootUtil {
       "com.sun.jndi.url.iiop", "com.sun.jndi.url.iiopname", "com.sun.jndi.url.ldap", "com.sun.jndi.url.rmi", "com.sun.media.sound",
       "com.sun.naming.internal", "com.sun.org.omg.CORBA", "com.sun.org.omg.CORBA.ValueDefPackage",
       "com.sun.org.omg.CORBA.portable", "com.sun.org.omg.SendingContext", "com.sun.org.omg.SendingContext.CodeBasePackage",
-      "com.sun.rmi.rmid", "com.sun.rsajca", "com.sun.rsasign" };
+      "com.sun.rmi.rmid", "com.sun.rsajca", "com.sun.rsasign"};
+
+  public static FieldAccessMap buildStoreMap(PAG pag) {
+    FieldAccessMap ret = new FieldAccessMap();
+    Iterator frNodeIter = pag.storeInvSourcesIterator();
+    while (frNodeIter.hasNext()) {
+      FieldRefNode frNode = (FieldRefNode) frNodeIter.next();
+      SparkField field = frNode.getField();
+      Node[] targets = pag.storeInvLookup(frNode);
+      for (int i = 0; i < targets.length; i++) {
+        VarNode target = (VarNode) targets[i];
+        if (target instanceof GlobalVarNode) {
+          continue;
+        }
+        ret.put(field, new Pair<FieldRefNode, LocalVarNode>(frNode, (LocalVarNode) target));
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * @param node
+   * @return <code>true</code> if <code>node</code> represents the return
+   * value of a method; <code>false</code> otherwise
+   */
+  public static boolean isRetNode(VarNode node) {
+    if (node.getVariable() instanceof Parm) {
+      Parm parm = (Parm) node.getVariable();
+      return (parm.getIndex() == PointsToAnalysis.RETURN_NODE);
+    }
+    return false;
+  }
+
+  public static boolean isParamNode(VarNode node) {
+    if (node.getVariable() instanceof soot.toolkits.scalar.Pair) {
+      soot.toolkits.scalar.Pair pair = (soot.toolkits.scalar.Pair) node.getVariable();
+      return (pair.getO1() instanceof SootMethod && (pair.getO2() instanceof Integer || pair.getO2() == PointsToAnalysis.THIS_NODE));
+    }
+    return false;
+  }
+
+  /**
+   * @param node
+   * @return <code>true</code> if <code>node</code> represents the this
+   * parameter of a method; <code>false</code> otherwise
+   */
+  public static boolean isThisNode(VarNode node) {
+    if (node.getVariable() instanceof soot.toolkits.scalar.Pair) {
+      soot.toolkits.scalar.Pair pair = (soot.toolkits.scalar.Pair) node.getVariable();
+      return (pair.getO1() instanceof SootMethod) && (pair.getO2() == PointsToAnalysis.THIS_NODE);
+    }
+    return false;
+  }
 
   /**
    * @param outerType
@@ -181,8 +168,9 @@ public class SootUtil {
   public static boolean inLibrary(String className) {
     for (int i = 0; i < lib13Packages.length; i++) {
       String libPackage = lib13Packages[i];
-      if (className.startsWith(libPackage))
+      if (className.startsWith(libPackage)) {
         return true;
+      }
 
     }
     return false;
@@ -213,9 +201,6 @@ public class SootUtil {
       return global.getVariable() == PointsToAnalysis.EXCEPTION_NODE;
     }
     return false;
-  }
-
-  public static final class FieldToEdgesMap extends ArraySetMultiMap<SparkField, Pair<VarNode, VarNode>> {
   }
 
   public static FieldToEdgesMap storesOnField(PAG pag) {
@@ -262,14 +247,15 @@ public class SootUtil {
 
   @SuppressWarnings("unused")
   private static void checkSetsEqual(final HybridPointsToSet intersection, final PointsToSetInternal set1,
-      final PointsToSetInternal set2, PAG pag) {
+                                     final PointsToSetInternal set2, PAG pag) {
     final PointsToSetInternal ret = new HybridPointsToSet(Scene.v().getObjectType(), pag);
     set1.forall(new P2SetVisitor() {
 
       @Override
       public void visit(Node n) {
-        if (set2.contains(n))
+        if (set2.contains(n)) {
           ret.add(n);
+        }
       }
 
     });
@@ -279,11 +265,11 @@ public class SootUtil {
       public void visit(Node n) {
         // TODO Auto-generated method stub
         if (!intersection.contains(n)) {
-          logger.debug(""+n + " missing from intersection");
-          logger.debug(""+set1);
-          logger.debug(""+set2);
-          logger.debug(""+intersection);
-          logger.debug(""+ret);
+          logger.debug("" + n + " missing from intersection");
+          logger.debug("" + set1);
+          logger.debug("" + set2);
+          logger.debug("" + intersection);
+          logger.debug("" + ret);
           throw new RuntimeException("intersection too small");
         }
       }
@@ -295,11 +281,11 @@ public class SootUtil {
       public void visit(Node n) {
         // TODO Auto-generated method stub
         if (!ret.contains(n)) {
-          logger.debug(""+n + " missing from ret");
-          logger.debug(""+set1);
-          logger.debug(""+set2);
-          logger.debug(""+intersection);
-          logger.debug(""+ret);
+          logger.debug("" + n + " missing from ret");
+          logger.debug("" + set1);
+          logger.debug("" + set2);
+          logger.debug("" + intersection);
+          logger.debug("" + ret);
           throw new RuntimeException("old way too small???");
         }
       }
@@ -327,17 +313,13 @@ public class SootUtil {
     return false;
   }
 
-  // private static final NumberedString sigStart =
-  // Scene.v().getSubSigNumberer().
-  // findOrAdd( "void start()" );
-
   public static boolean isThreadStartMethod(SootMethod method) {
     return method.toString().equals("<java.lang.Thread: void start()>");
   }
 
   public static boolean hasRecursiveField(SootClass sootClass) {
     Chain fields = sootClass.getFields();
-    for (Iterator iter = fields.iterator(); iter.hasNext();) {
+    for (Iterator iter = fields.iterator(); iter.hasNext(); ) {
       SootField sootField = (SootField) iter.next();
       Type type = sootField.getType();
       if (type instanceof RefType) {
@@ -359,7 +341,7 @@ public class SootUtil {
       logger.error(e.getMessage(), e);
     }
 
-    for (Iterator iter = pag.getVarNodeNumberer().iterator(); iter.hasNext();) {
+    for (Iterator iter = pag.getVarNodeNumberer().iterator(); iter.hasNext(); ) {
       VarNode varNode = (VarNode) iter.next();
       varNodeWriter.println(varNode.getNumber() + " " + varNode);
 
@@ -368,10 +350,15 @@ public class SootUtil {
     varNodeWriter.close();
   }
 
+  // private static final NumberedString sigStart =
+  // Scene.v().getSubSigNumberer().
+  // findOrAdd( "void start()" );
+
   @SuppressWarnings("unchecked")
   public static boolean noRefTypeParameters(SootMethod method) {
-    if (!method.isStatic())
+    if (!method.isStatic()) {
       return false;
+    }
     Predicate<Type> notRefTypePred = new Predicate<Type>() {
 
       @Override
@@ -389,10 +376,12 @@ public class SootUtil {
 
   public static boolean isResolvableCall(SootMethod invokedMethod) {
     // TODO make calls through invokespecial resolvable
-    if (invokedMethod.isStatic())
+    if (invokedMethod.isStatic()) {
       return true;
-    if (isConstructor(invokedMethod))
+    }
+    if (isConstructor(invokedMethod)) {
       return true;
+    }
     return false;
   }
 
@@ -405,7 +394,7 @@ public class SootUtil {
     Iterator iter = chunkedQueue.reader();
     VirtualCalls.v().resolve(type, receiverType, invokedMethod.getNumberedSubSignature(), null, chunkedQueue);
     Set<SootMethod> ret = new ArraySet<SootMethod>();
-    for (; iter.hasNext();) {
+    for (; iter.hasNext(); ) {
       SootMethod target = (SootMethod) iter.next();
       ret.add(target);
     }
@@ -443,7 +432,7 @@ public class SootUtil {
     try {
       PrintWriter pw = new PrintWriter(new FileOutputStream(fileName));
 
-      for (Iterator iter = pag.getVarNodeNumberer().iterator(); iter.hasNext();) {
+      for (Iterator iter = pag.getVarNodeNumberer().iterator(); iter.hasNext(); ) {
         VarNode vn = (VarNode) iter.next();
         pw.println(vn.getNumber() + "\t" + vn);
       }
@@ -465,7 +454,7 @@ public class SootUtil {
 
   /**
    * This method should be removed soon.
-   * 
+   *
    * @param qualifiedName
    * @return
    */
@@ -485,5 +474,18 @@ public class SootUtil {
 
   public static boolean isNewInstanceMethod(SootMethod method) {
     return method.toString().equals("<java.lang.Class: java.lang.Object newInstance()>");
+  }
+
+  public final static class CallSiteAndContext extends Pair<Integer, ImmutableStack<Integer>> {
+
+    public CallSiteAndContext(Integer callSite, ImmutableStack<Integer> callingContext) {
+      super(callSite, callingContext);
+    }
+  }
+
+  public static final class FieldAccessMap extends ArraySetMultiMap<SparkField, Pair<FieldRefNode, LocalVarNode>> {
+  }
+
+  public static final class FieldToEdgesMap extends ArraySetMultiMap<SparkField, Pair<VarNode, VarNode>> {
   }
 }

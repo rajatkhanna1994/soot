@@ -46,380 +46,397 @@ import soot.toolkits.graph.UnitGraph;
  * Analysis that provides an implementation of the LocalDefs interface.
  */
 public class SimpleLocalDefs implements LocalDefs {
-	static private class StaticSingleAssignment implements LocalDefs {
-		final Map<Local, List<Unit>> result;
+  private LocalDefs def;
 
-		StaticSingleAssignment(Local[] locals, List<Unit>[] unitList) {
-			assert locals.length == unitList.length;
+  /**
+   * @param graph
+   */
+  public SimpleLocalDefs(UnitGraph graph) {
+    this(graph, FlowAnalysisMode.Automatic);
+  }
 
-			final int N = locals.length;
-			result = new HashMap<Local, List<Unit>>((N * 3) / 2 + 7);
+  public SimpleLocalDefs(UnitGraph graph, FlowAnalysisMode mode) {
+    this(graph, graph.getBody().getLocals(), mode);
+  }
 
-			for (int i = 0; i < N; i++) {
-				if (unitList[i].isEmpty())
-					continue;
-				assert unitList[i].size() == 1;
-				result.put(locals[i], unitList[i]);
-			}
-		}
+  SimpleLocalDefs(DirectedGraph<Unit> graph, Collection<Local> locals,
+                  FlowAnalysisMode mode) {
+    this(graph, locals.toArray(new Local[locals.size()]), mode);
+  }
 
-		@Override
-		public List<Unit> getDefsOfAt(Local l, Unit s) {
-			List<Unit> lst = result.get(l);
-			if (lst == null)
-				return emptyList();
+  SimpleLocalDefs(DirectedGraph<Unit> graph, Local[] locals, boolean omitSSA) {
+    this(graph, locals, omitSSA ? FlowAnalysisMode.OmitSSA : FlowAnalysisMode.Automatic);
+  }
 
-			// singleton-lists are immutable
-			return lst;
-		}
+  SimpleLocalDefs(DirectedGraph<Unit> graph, Local[] locals, FlowAnalysisMode mode) {
+    final Options options = Options.v();
+    if (options.time()) {
+      Timers.v().defsTimer.start();
+    }
 
-		@Override
-		public List<Unit> getDefsOf(Local l) {
-			return getDefsOfAt(l, null);
-		}
-		
-	}
+    final int N = locals.length;
 
-	static private class FlowAssignment extends
-			ForwardFlowAnalysis<Unit, FlowAssignment.FlowBitSet> implements
-			LocalDefs {
-		class FlowBitSet extends BitSet {
-			private static final long serialVersionUID = -8348696077189400377L;
+    // reassign local numbers
+    int[] oldNumbers = new int[N];
+    for (int i = 0; i < N; i++) {
+      oldNumbers[i] = locals[i].getNumber();
+      locals[i].setNumber(i);
+    }
 
-			FlowBitSet() {
-				super(universe.length);
-			}
+    init(graph, locals, mode);
 
-			List<Unit> asList(int fromIndex, int toIndex) {
-				BitSet bits = this;
-				if (universe.length < toIndex || toIndex < fromIndex
-						|| fromIndex < 0)
-					throw new IndexOutOfBoundsException();
+    // restore local numbering
+    for (int i = 0; i < N; i++) {
+      locals[i].setNumber(oldNumbers[i]);
+    }
 
-				if (fromIndex == toIndex) {
-					return emptyList();
-				}
+    if (options.time()) {
+      Timers.v().defsTimer.end();
+    }
+  }
 
-				if (fromIndex == toIndex - 1) {
-					if (bits.get(fromIndex)) {
-						return singletonList(universe[fromIndex]);
-					}
-					return emptyList();
-				}
+  private void init(DirectedGraph<Unit> graph, Local[] locals, FlowAnalysisMode mode) {
+    @SuppressWarnings("unchecked")
+    List<Unit>[] unitList = new List[locals.length];
 
-				int i = bits.nextSetBit(fromIndex);
-				if (i < 0 || i >= toIndex)
-					return emptyList();
+    Arrays.fill(unitList, emptyList());
 
-				if (i == toIndex - 1)
-					return singletonList(universe[i]);
+    boolean omitSSA = mode == FlowAnalysisMode.OmitSSA;
+    boolean doFlowAnalsis = omitSSA;
 
-				List<Unit> elements = new ArrayList<Unit>(toIndex - i);
+    int units = 0;
 
-				for (;;) {
-					int endOfRun = Math.min(toIndex, bits.nextClearBit(i + 1));
-					do {
-						elements.add(universe[i++]);
-					} while (i < endOfRun);
-					if (i >= toIndex)
-						break;
-					i = bits.nextSetBit(i + 1);
-					if (i < 0 || i >= toIndex)
-						break;
-				}
-				return elements;
-			}
-		}
+    // collect all def points
+    for (Unit unit : graph) {
+      for (ValueBox box : unit.getDefBoxes()) {
+        Value v = box.getValue();
+        if (v instanceof Local) {
+          Local l = (Local) v;
+          int lno = l.getNumber();
 
-		final Map<Local, Integer> locals;
-		final List<Unit>[] unitList;
-		final int[] localRange;
-		final Unit[] universe;
+          switch (unitList[lno].size()) {
+            case 0:
+              unitList[lno] = singletonList(unit);
+              if (omitSSA) {
+                units++;
+              }
+              break;
+            case 1:
+              if (!omitSSA) {
+                units++;
+              }
+              unitList[lno] = new ArrayList<Unit>(unitList[lno]);
+              doFlowAnalsis = true;
+              // fallthrough
+            default:
+              unitList[lno].add(unit);
+              units++;
+              break;
+          }
+        }
+      }
+    }
 
-		private Map<Unit, Integer> indexOfUnit;
+    if (doFlowAnalsis && mode != FlowAnalysisMode.FlowInsensitive) {
+      def = new FlowAssignment(graph, locals, unitList, units, omitSSA);
+    } else {
+      def = new StaticSingleAssignment(locals, unitList);
+    }
+  }
 
-		FlowAssignment(DirectedGraph<Unit> graph, Local[] locals,
-				List<Unit>[] unitList, int units, boolean omitSSA) {
-			super(graph);
+  @Override
+  public List<Unit> getDefsOfAt(Local l, Unit s) {
+    return def.getDefsOfAt(l, s);
+  }
 
-			final int N = locals.length;
+  @Override
+  public List<Unit> getDefsOf(Local l) {
+    return def.getDefsOf(l);
+  }
 
-			this.locals = new HashMap<Local, Integer>((N * 3) / 2 + 7);
-			this.unitList = unitList;
+  /**
+   * The different modes in which the flow analysis can run
+   */
+  enum FlowAnalysisMode {
+    /**
+     * Automatically detect the mode to use
+     */
+    Automatic,
+    /**
+     * Never use the SSA form, even if the unit graph would allow for a
+     * flow-insensitive analysis without losing precision
+     */
+    OmitSSA,
+    /**
+     * Always conduct a flow-insensitive analysis
+     */
+    FlowInsensitive
+  }
 
-			universe = new Unit[units];
-			indexOfUnit = new HashMap<Unit, Integer>(units);
+  static private class StaticSingleAssignment implements LocalDefs {
+    final Map<Local, List<Unit>> result;
 
-			localRange = new int[N + 1];
-			for (int j = 0, i = 0; i < N; localRange[++i] = j) {
-				if (unitList[i].isEmpty())
-					continue;
+    StaticSingleAssignment(Local[] locals, List<Unit>[] unitList) {
+      assert locals.length == unitList.length;
 
-				this.locals.put(locals[i], i);
+      final int N = locals.length;
+      result = new HashMap<Local, List<Unit>>((N * 3) / 2 + 7);
 
-				if (unitList[i].size() >= 2) {
-					for (Unit u : unitList[i]) {
-						indexOfUnit.put(u, j);
-						universe[j++] = u;
-					}
-				} else if (omitSSA) {
-					universe[j++] = unitList[i].get(0);
-				}
-			}
-			assert localRange[N] == units;
+      for (int i = 0; i < N; i++) {
+        if (unitList[i].isEmpty()) {
+          continue;
+        }
+        assert unitList[i].size() == 1;
+        result.put(locals[i], unitList[i]);
+      }
+    }
 
-			doAnalysis();
+    @Override
+    public List<Unit> getDefsOfAt(Local l, Unit s) {
+      List<Unit> lst = result.get(l);
+      if (lst == null) {
+        return emptyList();
+      }
 
-			indexOfUnit.clear();
-			indexOfUnit = null;
-		}
+      // singleton-lists are immutable
+      return lst;
+    }
 
-		@Override
-		public List<Unit> getDefsOfAt(Local l, Unit s) {
-			Integer lno = locals.get(l);
-			if (lno == null)
-				return emptyList();
+    @Override
+    public List<Unit> getDefsOf(Local l) {
+      return getDefsOfAt(l, null);
+    }
 
-			int from = localRange[lno];
-			int to = localRange[lno + 1];
-			assert from <= to;
+  }
 
-			if (from == to) {
-				assert unitList[lno].size() == 1;
-				// both singletonList is immutable
-				return unitList[lno];
-			}
+  static private class FlowAssignment extends
+      ForwardFlowAnalysis<Unit, FlowAssignment.FlowBitSet> implements
+      LocalDefs {
+    final Map<Local, Integer> locals;
+    final List<Unit>[] unitList;
+    final int[] localRange;
+    final Unit[] universe;
+    private Map<Unit, Integer> indexOfUnit;
 
-			return getFlowBefore(s).asList(from, to);
-		}
+    FlowAssignment(DirectedGraph<Unit> graph, Local[] locals,
+                   List<Unit>[] unitList, int units, boolean omitSSA) {
+      super(graph);
 
-		@Override
-		protected boolean omissible(Unit u) {
-			// avoids temporary creation of iterators (more like micro-tuning)
-			if (u.getDefBoxes().isEmpty())
-				return true;
-			for (ValueBox vb : u.getDefBoxes()) {
-				Value v = vb.getValue();
-				if (v instanceof Local) {
-					Local l = (Local) v;
-					int lno = l.getNumber();
-					return (localRange[lno] == localRange[lno + 1]);
-				}
-			}
-			return true;
-		}
+      final int N = locals.length;
 
-		@Override
-		protected Flow getFlow(Unit from, Unit to) {
-			// QND
-			if (to instanceof IdentityUnit) {
-				if (graph instanceof ExceptionalGraph) {
-					ExceptionalGraph<Unit> g = (ExceptionalGraph<Unit>) graph;
-					if (!g.getExceptionalPredsOf(to).isEmpty()) {
-						// look if there is a real exception edge
-						for (ExceptionDest<Unit> exd : g
-								.getExceptionDests(from)) {
-							Trap trap = exd.getTrap();
-							if (null == trap)
-								continue;
+      this.locals = new HashMap<Local, Integer>((N * 3) / 2 + 7);
+      this.unitList = unitList;
 
-							if (trap.getHandlerUnit() == to)
-								return Flow.IN;
-						}
-					}
-				}
-			}
-			return Flow.OUT;
-		}
+      universe = new Unit[units];
+      indexOfUnit = new HashMap<Unit, Integer>(units);
 
-		@Override
-		protected void flowThrough(FlowBitSet in, Unit unit, FlowBitSet out) {
-			copy(in, out);
+      localRange = new int[N + 1];
+      for (int j = 0, i = 0; i < N; localRange[++i] = j) {
+        if (unitList[i].isEmpty()) {
+          continue;
+        }
 
-			// reassign all definitions
-			for (ValueBox vb : unit.getDefBoxes()) {
-				Value v = vb.getValue();
-				if (v instanceof Local) {
-					Local l = (Local) v;
-					int lno = l.getNumber();
+        this.locals.put(locals[i], i);
 
-					int from = localRange[lno];
-					int to = localRange[1 + lno];
+        if (unitList[i].size() >= 2) {
+          for (Unit u : unitList[i]) {
+            indexOfUnit.put(u, j);
+            universe[j++] = u;
+          }
+        } else if (omitSSA) {
+          universe[j++] = unitList[i].get(0);
+        }
+      }
+      assert localRange[N] == units;
 
-					if (from == to)
-						continue;
+      doAnalysis();
 
-					assert from <= to;
+      indexOfUnit.clear();
+      indexOfUnit = null;
+    }
 
-					if (to - from == 1) {
-						// special case: this local has only one def point
-						out.set(from);
-					} else {
-						out.clear(from, to);
-						out.set(indexOfUnit.get(unit));
-					}
-				}
-			}
-		}
+    @Override
+    public List<Unit> getDefsOfAt(Local l, Unit s) {
+      Integer lno = locals.get(l);
+      if (lno == null) {
+        return emptyList();
+      }
 
-		@Override
-		protected void copy(FlowBitSet source, FlowBitSet dest) {
-			if (dest == source)
-				return;
-			dest.clear();
-			dest.or(source);
-		}
+      int from = localRange[lno];
+      int to = localRange[lno + 1];
+      assert from <= to;
 
-		@Override
-		protected FlowBitSet newInitialFlow() {
-			return new FlowBitSet();
-		}
+      if (from == to) {
+        assert unitList[lno].size() == 1;
+        // both singletonList is immutable
+        return unitList[lno];
+      }
 
-		@Override
-		protected void mergeInto(Unit succNode, FlowBitSet inout, FlowBitSet in) {
-			inout.or(in);
-		}
+      return getFlowBefore(s).asList(from, to);
+    }
 
-		@Override
-		protected void merge(FlowBitSet in1, FlowBitSet in2, FlowBitSet out) {
-			throw new UnsupportedOperationException("should never be called");
-		}
+    @Override
+    protected boolean omissible(Unit u) {
+      // avoids temporary creation of iterators (more like micro-tuning)
+      if (u.getDefBoxes().isEmpty()) {
+        return true;
+      }
+      for (ValueBox vb : u.getDefBoxes()) {
+        Value v = vb.getValue();
+        if (v instanceof Local) {
+          Local l = (Local) v;
+          int lno = l.getNumber();
+          return (localRange[lno] == localRange[lno + 1]);
+        }
+      }
+      return true;
+    }
 
-		@Override
-		public List<Unit> getDefsOf(Local l) {
-			List<Unit> defs = new ArrayList<Unit>();
-			for (Unit u : graph) {
-				List<Unit> defsOf = getDefsOfAt(l, u);
-				if (defsOf != null)
-					defs.addAll(defsOf);
-			}
-			return defs;
-		}
-		
-	}
+    @Override
+    protected Flow getFlow(Unit from, Unit to) {
+      // QND
+      if (to instanceof IdentityUnit) {
+        if (graph instanceof ExceptionalGraph) {
+          ExceptionalGraph<Unit> g = (ExceptionalGraph<Unit>) graph;
+          if (!g.getExceptionalPredsOf(to).isEmpty()) {
+            // look if there is a real exception edge
+            for (ExceptionDest<Unit> exd : g
+                .getExceptionDests(from)) {
+              Trap trap = exd.getTrap();
+              if (null == trap) {
+                continue;
+              }
 
-	private LocalDefs def;
+              if (trap.getHandlerUnit() == to) {
+                return Flow.IN;
+              }
+            }
+          }
+        }
+      }
+      return Flow.OUT;
+    }
 
-	/**
-	 * 
-	 * @param graph
-	 */
-	public SimpleLocalDefs(UnitGraph graph) {
-		this(graph, FlowAnalysisMode.Automatic);
-	}
+    @Override
+    protected void flowThrough(FlowBitSet in, Unit unit, FlowBitSet out) {
+      copy(in, out);
 
-	public SimpleLocalDefs(UnitGraph graph, FlowAnalysisMode mode) {
-		this(graph, graph.getBody().getLocals(), mode);
-	}
-	
-	SimpleLocalDefs(DirectedGraph<Unit> graph, Collection<Local> locals,
-			FlowAnalysisMode mode) {
-		this(graph, locals.toArray(new Local[locals.size()]), mode);
-	}
+      // reassign all definitions
+      for (ValueBox vb : unit.getDefBoxes()) {
+        Value v = vb.getValue();
+        if (v instanceof Local) {
+          Local l = (Local) v;
+          int lno = l.getNumber();
 
-	SimpleLocalDefs(DirectedGraph<Unit> graph, Local[] locals, boolean omitSSA) {
-		this(graph, locals, omitSSA ? FlowAnalysisMode.OmitSSA : FlowAnalysisMode.Automatic);
-	}
-	
-	/**
-	 * The different modes in which the flow analysis can run
-	 */
-	enum FlowAnalysisMode {
-		/**
-		 * Automatically detect the mode to use
-		 */
-		Automatic,
-		/**
-		 * Never use the SSA form, even if the unit graph would allow for a
-		 * flow-insensitive analysis without losing precision
-		 */
-		OmitSSA,
-		/**
-		 * Always conduct a flow-insensitive analysis
-		 */
-		FlowInsensitive
-	}
-	
-	SimpleLocalDefs(DirectedGraph<Unit> graph, Local[] locals, FlowAnalysisMode mode) {
-		final Options options = Options.v();
-		if (options.time())
-			Timers.v().defsTimer.start();
+          int from = localRange[lno];
+          int to = localRange[1 + lno];
 
-		final int N = locals.length;
+          if (from == to) {
+            continue;
+          }
 
-		// reassign local numbers
-		int[] oldNumbers = new int[N];
-		for (int i = 0; i < N; i++) {
-			oldNumbers[i] = locals[i].getNumber();
-			locals[i].setNumber(i);
-		}
+          assert from <= to;
 
-		init(graph, locals, mode);
+          if (to - from == 1) {
+            // special case: this local has only one def point
+            out.set(from);
+          } else {
+            out.clear(from, to);
+            out.set(indexOfUnit.get(unit));
+          }
+        }
+      }
+    }
 
-		// restore local numbering
-		for (int i = 0; i < N; i++) {
-			locals[i].setNumber(oldNumbers[i]);
-		}
+    @Override
+    protected void copy(FlowBitSet source, FlowBitSet dest) {
+      if (dest == source) {
+        return;
+      }
+      dest.clear();
+      dest.or(source);
+    }
 
-		if (options.time())
-			Timers.v().defsTimer.end();
-	}
+    @Override
+    protected FlowBitSet newInitialFlow() {
+      return new FlowBitSet();
+    }
 
-	private void init(DirectedGraph<Unit> graph, Local[] locals, FlowAnalysisMode mode) {
-		@SuppressWarnings("unchecked")
-		List<Unit>[] unitList = new List[locals.length];
+    @Override
+    protected void mergeInto(Unit succNode, FlowBitSet inout, FlowBitSet in) {
+      inout.or(in);
+    }
 
-		Arrays.fill(unitList, emptyList());
+    @Override
+    protected void merge(FlowBitSet in1, FlowBitSet in2, FlowBitSet out) {
+      throw new UnsupportedOperationException("should never be called");
+    }
 
-		boolean omitSSA = mode == FlowAnalysisMode.OmitSSA;
-		boolean doFlowAnalsis = omitSSA;
+    @Override
+    public List<Unit> getDefsOf(Local l) {
+      List<Unit> defs = new ArrayList<Unit>();
+      for (Unit u : graph) {
+        List<Unit> defsOf = getDefsOfAt(l, u);
+        if (defsOf != null) {
+          defs.addAll(defsOf);
+        }
+      }
+      return defs;
+    }
 
-		int units = 0;
+    class FlowBitSet extends BitSet {
+      private static final long serialVersionUID = -8348696077189400377L;
 
-		// collect all def points
-		for (Unit unit : graph) {
-			for (ValueBox box : unit.getDefBoxes()) {
-				Value v = box.getValue();
-				if (v instanceof Local) {
-					Local l = (Local) v;
-					int lno = l.getNumber();
+      FlowBitSet() {
+        super(universe.length);
+      }
 
-					switch (unitList[lno].size()) {
-					case 0:
-						unitList[lno] = singletonList(unit);
-						if (omitSSA)
-							units++;
-						break;
-					case 1:
-						if (!omitSSA)
-							units++;
-						unitList[lno] = new ArrayList<Unit>(unitList[lno]);
-						doFlowAnalsis = true;
-						// fallthrough
-					default:
-						unitList[lno].add(unit);
-						units++;
-						break;
-					}
-				}
-			}
-		}
+      List<Unit> asList(int fromIndex, int toIndex) {
+        BitSet bits = this;
+        if (universe.length < toIndex || toIndex < fromIndex
+            || fromIndex < 0) {
+          throw new IndexOutOfBoundsException();
+        }
 
-		if (doFlowAnalsis && mode != FlowAnalysisMode.FlowInsensitive) {
-			def = new FlowAssignment(graph, locals, unitList, units, omitSSA);
-		} else {
-			def = new StaticSingleAssignment(locals, unitList);
-		}
-	}
+        if (fromIndex == toIndex) {
+          return emptyList();
+        }
 
-	@Override
-	public List<Unit> getDefsOfAt(Local l, Unit s) {
-		return def.getDefsOfAt(l, s);
-	}
+        if (fromIndex == toIndex - 1) {
+          if (bits.get(fromIndex)) {
+            return singletonList(universe[fromIndex]);
+          }
+          return emptyList();
+        }
 
-	@Override
-	public List<Unit> getDefsOf(Local l) {
-		return def.getDefsOf(l);
-	}
-	
+        int i = bits.nextSetBit(fromIndex);
+        if (i < 0 || i >= toIndex) {
+          return emptyList();
+        }
+
+        if (i == toIndex - 1) {
+          return singletonList(universe[i]);
+        }
+
+        List<Unit> elements = new ArrayList<Unit>(toIndex - i);
+
+        for (; ; ) {
+          int endOfRun = Math.min(toIndex, bits.nextClearBit(i + 1));
+          do {
+            elements.add(universe[i++]);
+          } while (i < endOfRun);
+          if (i >= toIndex) {
+            break;
+          }
+          i = bits.nextSetBit(i + 1);
+          if (i < 0 || i >= toIndex) {
+            break;
+          }
+        }
+        return elements;
+      }
+    }
+
+  }
+
 }

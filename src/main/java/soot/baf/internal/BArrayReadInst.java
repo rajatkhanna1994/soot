@@ -18,58 +18,53 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.Type;
+import soot.baf.ArrayReadInst;
+import soot.baf.InstSwitch;
+import soot.util.Switch;
 
-public class BArrayReadInst extends AbstractOpTypeInst implements ArrayReadInst
-{
-    public BArrayReadInst(Type opType)
-    {
-        super(opType);
-    }
+public class BArrayReadInst extends AbstractOpTypeInst implements ArrayReadInst {
+  public BArrayReadInst(Type opType) {
+    super(opType);
+  }
 
 
-    public int getInCount()
-    {
-        return 2;
-    }
+  public int getInCount() {
+    return 2;
+  }
 
-    
-    public Object clone() 
-    {
-        return new BArrayReadInst(getOpType());
-    }
 
-    public int getInMachineCount()
-    {
-        return 2;
-    }
-    
-    public int getOutCount()
-    {
-        return 1;
-    }
+  public Object clone() {
+    return new BArrayReadInst(getOpType());
+  }
 
-    
+  public int getInMachineCount() {
+    return 2;
+  }
 
-    final public String getName() { return "arrayread"; }
+  public int getOutCount() {
+    return 1;
+  }
 
-    
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseArrayReadInst(this);
-    }   
-    public boolean containsArrayRef() { return true; }
+
+  final public String getName() {
+    return "arrayread";
+  }
+
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseArrayReadInst(this);
+  }
+
+  public boolean containsArrayRef() {
+    return true;
+  }
 }

@@ -18,30 +18,41 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
 package soot.jimple.toolkits.scalar;
-import soot.*;
-import java.util.*;
-import soot.util.*;
 
-/** Provides an user-interface for the AvailableExpressionsAnalysis class.
- * Returns, for each statement, the list of expressions available before and after it. */
-public interface AvailableExpressions
-{
-    /** Returns a List containing the UnitValueBox pairs corresponding to expressions available before u. */
-    public List getAvailablePairsBefore(Unit u);
+import java.util.List;
 
-    /** Returns a List containing the UnitValueBox pairs corresponding to expressions available after u. */
-    public List getAvailablePairsAfter(Unit u);
+import soot.Unit;
+import soot.util.Chain;
 
-    /** Returns a Chain containing the EquivalentValue objects corresponding to expressions available before u. */
-    public Chain getAvailableEquivsBefore(Unit u);
+/**
+ * Provides an user-interface for the AvailableExpressionsAnalysis class.
+ * Returns, for each statement, the list of expressions available before and after it.
+ */
+public interface AvailableExpressions {
+  /**
+   * Returns a List containing the UnitValueBox pairs corresponding to expressions available before u.
+   */
+  public List getAvailablePairsBefore(Unit u);
 
-    /** Returns a Chain containing the EquivalentValue objects corresponding to expressions available after u. */
-    public Chain getAvailableEquivsAfter(Unit u);
+  /**
+   * Returns a List containing the UnitValueBox pairs corresponding to expressions available after u.
+   */
+  public List getAvailablePairsAfter(Unit u);
+
+  /**
+   * Returns a Chain containing the EquivalentValue objects corresponding to expressions available before u.
+   */
+  public Chain getAvailableEquivsBefore(Unit u);
+
+  /**
+   * Returns a Chain containing the EquivalentValue objects corresponding to expressions available after u.
+   */
+  public Chain getAvailableEquivsAfter(Unit u);
 }

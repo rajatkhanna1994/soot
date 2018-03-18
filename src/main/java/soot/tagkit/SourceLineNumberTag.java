@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,61 +26,57 @@
 
 package soot.tagkit;
 
-public class SourceLineNumberTag implements Tag
-{
-    /* it is a value representing line number. */
-    private int startLineNumber;
-	private int endLineNumber;
-    
-    public SourceLineNumberTag(int ln)
-    {
-		startLineNumber = ln;
-		endLineNumber = ln;
-    }
+public class SourceLineNumberTag implements Tag {
+  /* it is a value representing line number. */
+  private int startLineNumber;
+  private int endLineNumber;
 
-	public SourceLineNumberTag(int startLn, int endLn){
-		startLineNumber = startLn;
-		endLineNumber = endLn;
-	}
+  public SourceLineNumberTag(int ln) {
+    startLineNumber = ln;
+    endLineNumber = ln;
+  }
 
-    public int getLineNumber() {
-    	return startLineNumber;
-    }
-	public int getStartLineNumber() {
-		return startLineNumber;
-	}
-	
-	public int getEndLineNumber() {
-		return endLineNumber;
-	}
+  public SourceLineNumberTag(int startLn, int endLn) {
+    startLineNumber = startLn;
+    endLineNumber = endLn;
+  }
 
-	public void setLineNumber(int value) {
-		this.startLineNumber = value;
-		this.endLineNumber = value;
-	}
-	
-	public void setStartLineNumber(int value) {
-		this.startLineNumber = value;
-	}
+  public int getLineNumber() {
+    return startLineNumber;
+  }
 
-	public void setEndLineNumber(int value) {
-		this.endLineNumber = value;
-	}
-    
-    public String getName()
-    {
-		return "SourceLineNumberTag";
-    }
+  public void setLineNumber(int value) {
+    this.startLineNumber = value;
+    this.endLineNumber = value;
+  }
 
-    public byte[] getValue()
-    {
-		byte[] v = new byte[2];
-		return v;
-    }
+  public int getStartLineNumber() {
+    return startLineNumber;
+  }
 
-    public String toString()
-    {
-   		return String.valueOf(startLineNumber);
-    }
+  public void setStartLineNumber(int value) {
+    this.startLineNumber = value;
+  }
+
+  public int getEndLineNumber() {
+    return endLineNumber;
+  }
+
+  public void setEndLineNumber(int value) {
+    this.endLineNumber = value;
+  }
+
+  public String getName() {
+    return "SourceLineNumberTag";
+  }
+
+  public byte[] getValue() {
+    byte[] v = new byte[2];
+    return v;
+  }
+
+  public String toString() {
+    return String.valueOf(startLineNumber);
+  }
 
 }

@@ -16,11 +16,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.pautil;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 import soot.AnySubType;
 import soot.ArrayType;
@@ -42,25 +42,23 @@ import soot.util.NumberedString;
 /**
  * Interface for handler for when an allocation site is encountered in a pointer
  * analysis query.
- * 
+ *
  * @author manu
- * 
- * 
  */
 public interface AllocationSiteHandler {
 
   /**
    * handle a particular allocation site
-   * 
-   * @param allocNode
-   *          the abstract location node
-   * @param callStack
-   *          for context-sensitive analysis, the call site; might be null
+   *
+   * @param allocNode the abstract location node
+   * @param callStack for context-sensitive analysis, the call site; might be null
    * @return true if analysis should be terminated; false otherwise
    */
   public boolean handleAllocationSite(AllocNode allocNode, ImmutableStack<Integer> callStack);
 
   public void resetState();
+
+  public boolean shouldHandle(VarNode dst);
 
   public static class PointsToSetHandler implements AllocationSiteHandler {
 
@@ -68,7 +66,7 @@ public interface AllocationSiteHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see AAA.algs.AllocationSiteHandler#handleAllocationSite(soot.jimple.spark.pag.AllocNode,
      *      java.lang.Integer)
      */
@@ -106,7 +104,7 @@ public interface AllocationSiteHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see AAA.algs.AllocationSiteHandler#handleAllocationSite(soot.jimple.spark.pag.AllocNode,
      *      java.lang.Integer)
      */
@@ -170,14 +168,15 @@ public interface AllocationSiteHandler {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see AAA.algs.AllocationSiteHandler#handleAllocationSite(soot.jimple.spark.pag.AllocNode,
      *      AAA.algs.MethodContext)
      */
     public boolean handleAllocationSite(AllocNode allocNode, ImmutableStack<Integer> callStack) {
       Type type = allocNode.getType();
-      if (!pag.getTypeManager().castNeverFails(type, receiverType))
+      if (!pag.getTypeManager().castNeverFails(type, receiverType)) {
         return false;
+      }
       if (type instanceof AnySubType) {
         AnySubType any = (AnySubType) type;
         RefType refType = any.getBase();
@@ -198,8 +197,9 @@ public interface AllocationSiteHandler {
       targetMethod = VirtualCalls.v().resolveNonSpecial(refType, methodStr);
       if (!possibleMethods.contains(targetMethod)) {
         possibleMethods.add(targetMethod);
-        if (possibleMethods.size() > 1)
+        if (possibleMethods.size() > 1) {
           return true;
+        }
       }
       return false;
     }
@@ -213,6 +213,4 @@ public interface AllocationSiteHandler {
       return false;
     }
   }
-
-  public boolean shouldHandle(VarNode dst);
 }

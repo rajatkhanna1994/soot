@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,31 +26,35 @@
 package soot.tagkit;
 
 
-/** Represents the synthetic attribute.
+/**
+ * Represents the synthetic attribute.
  */
 
-public class SyntheticParamTag implements Tag
-{
+public class SyntheticParamTag implements Tag {
 
-    public SyntheticParamTag(){
-    }
-    
-    public String toString() {
-        return "SyntheticParamTag";
-    }
+  public SyntheticParamTag() {
+  }
 
-    /** Returns the tag name. */
-    public String getName() {
-        return "SyntheticParamTag";
-    }
+  public String toString() {
+    return "SyntheticParamTag";
+  }
 
-    public String getInfo(){
-        return "SyntheticParam";
-    }
-    
-    /** Returns the tag raw data. */
-    public byte[] getValue() {
-        throw new RuntimeException( "SyntheticParamTag has no value for bytecode" );
-    }
+  /**
+   * Returns the tag name.
+   */
+  public String getName() {
+    return "SyntheticParamTag";
+  }
+
+  public String getInfo() {
+    return "SyntheticParam";
+  }
+
+  /**
+   * Returns the tag raw data.
+   */
+  public byte[] getValue() {
+    throw new RuntimeException("SyntheticParamTag has no value for bytecode");
+  }
 }
 

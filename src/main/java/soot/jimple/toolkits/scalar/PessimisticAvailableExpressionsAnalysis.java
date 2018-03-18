@@ -1,5 +1,5 @@
 /* Soot - a J*va Optimization Framework
- * Copyright (C) 2004 Jennifer Lhotak 
+ * Copyright (C) 2004 Jennifer Lhotak
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,13 +18,14 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
 package soot.jimple.toolkits.scalar;
+
 import soot.SideEffectTester;
 import soot.SootMethod;
 import soot.Unit;
@@ -32,20 +33,20 @@ import soot.Value;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.FlowSet;
 
-/** Implements an available expressions analysis on local variables. 
- * pessimistic analysis - for teaching 621*/
-public class PessimisticAvailableExpressionsAnalysis extends SlowAvailableExpressionsAnalysis 
-{
-    public PessimisticAvailableExpressionsAnalysis(DirectedGraph<Unit> dg, SootMethod m, SideEffectTester st){
-        super(dg);
-    }
-    
-    protected FlowSet<Value> newInitialFlow()
-    {
-        FlowSet<Value> newSet = emptySet.clone();
-        //((ToppedSet)newSet).setTop(true);
-        return newSet;
-    }
+/**
+ * Implements an available expressions analysis on local variables.
+ * pessimistic analysis - for teaching 621
+ */
+public class PessimisticAvailableExpressionsAnalysis extends SlowAvailableExpressionsAnalysis {
+  public PessimisticAvailableExpressionsAnalysis(DirectedGraph<Unit> dg, SootMethod m, SideEffectTester st) {
+    super(dg);
+  }
+
+  protected FlowSet<Value> newInitialFlow() {
+    FlowSet<Value> newSet = emptySet.clone();
+    //((ToppedSet)newSet).setTop(true);
+    return newSet;
+  }
 
 }
 

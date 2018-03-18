@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.toolkits.graph;
 
 import java.util.Iterator;
@@ -27,53 +28,53 @@ import java.util.List;
  * @author Eric Bodden
  */
 public class InverseGraph<N> implements DirectedGraph<N> {
-	
-	protected final DirectedGraph<N> g;
 
-	public InverseGraph(DirectedGraph<N> g) {
-		this.g = g;
-	}
+  protected final DirectedGraph<N> g;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<N> getHeads() {
-		return g.getTails();
-	}
+  public InverseGraph(DirectedGraph<N> g) {
+    this.g = g;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<N> getPredsOf(N s) {
-		return g.getSuccsOf(s);
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public List<N> getHeads() {
+    return g.getTails();
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<N> getSuccsOf(N s) {
-		return g.getPredsOf(s);
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public List<N> getPredsOf(N s) {
+    return g.getSuccsOf(s);
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<N> getTails() {
-		return g.getHeads();
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public List<N> getSuccsOf(N s) {
+    return g.getPredsOf(s);
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public Iterator<N> iterator() {
-		return g.iterator();
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public List<N> getTails() {
+    return g.getHeads();
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public int size() {
-		return g.size();
-	}
+  /**
+   * {@inheritDoc}
+   */
+  public Iterator<N> iterator() {
+    return g.iterator();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public int size() {
+    return g.size();
+  }
 
 }

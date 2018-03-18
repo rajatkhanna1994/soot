@@ -18,29 +18,26 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
-
-
-
 
 
 package soot;
 
 
 /**
- *   Abstract class for Soot classes that that model Java primitive types 
- *   (ie all types except void, null, reference types, and array types)
+ * Abstract class for Soot classes that that model Java primitive types
+ * (ie all types except void, null, reference types, and array types)
+ *
  * @author Ondrej Lhotak
  */
 @SuppressWarnings("serial")
-public abstract class PrimType extends Type
-{
-	public abstract RefType boxedType();
-	
-	public boolean isAllowedInFinalCode() {
-		return true;
-	}
+public abstract class PrimType extends Type {
+  public abstract RefType boxedType();
+
+  public boolean isAllowedInFinalCode() {
+    return true;
+  }
 }

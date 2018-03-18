@@ -18,30 +18,36 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import soot.util.*;
+import soot.Local;
+import soot.Type;
+import soot.Value;
+import soot.ValueBox;
+import soot.util.Switch;
 
-public interface ArrayRef extends ConcreteRef
-{
-    public Value getBase();
-    public void setBase(Local base);
-    public ValueBox getBaseBox();
-    public Value getIndex();
-    public void setIndex(Value index);
-    public ValueBox getIndexBox();
-    public Type getType();
-    public void apply(Switch sw);
+public interface ArrayRef extends ConcreteRef {
+  public Value getBase();
+
+  public void setBase(Local base);
+
+  public ValueBox getBaseBox();
+
+  public Value getIndex();
+
+  public void setIndex(Value index);
+
+  public ValueBox getIndexBox();
+
+  public Type getType();
+
+  public void apply(Switch sw);
 }
 
 

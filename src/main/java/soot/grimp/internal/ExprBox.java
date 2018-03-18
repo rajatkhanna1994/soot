@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,21 +26,22 @@
 
 package soot.grimp.internal;
 
-import soot.*;
-import soot.jimple.*;
+import soot.AbstractValueBox;
+import soot.Local;
+import soot.Value;
+import soot.jimple.ConcreteRef;
+import soot.jimple.Constant;
+import soot.jimple.Expr;
 
-public class ExprBox extends AbstractValueBox
-{
-    public ExprBox(Value value)
-    {
-        setValue(value);
-    }
+public class ExprBox extends AbstractValueBox {
+  public ExprBox(Value value) {
+    setValue(value);
+  }
 
-    public boolean canContainValue(Value value)
-    {
-        return value instanceof Local ||
-            value instanceof Constant || 
-            value instanceof Expr ||
-            value instanceof ConcreteRef;
-    }
+  public boolean canContainValue(Value value) {
+    return value instanceof Local ||
+        value instanceof Constant ||
+        value instanceof Expr ||
+        value instanceof ConcreteRef;
+  }
 }

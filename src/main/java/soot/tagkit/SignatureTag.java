@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,39 +26,43 @@
 package soot.tagkit;
 
 
-/** Represents the signature attribute used by fields, methods and classes 
+/**
+ * Represents the signature attribute used by fields, methods and classes
  * for dealing with generics in Java 1.5.
  */
 
-public class SignatureTag implements  Tag
-{
+public class SignatureTag implements Tag {
 
-    private String signature;
-    
-    public SignatureTag(String signature){
-        this.signature = signature;
-    }
-    
-    public String toString() {
-        return "Signature: "+signature;
-    }
+  private String signature;
 
-    /** Returns the tag name. */
-    public String getName() {
-        return "SignatureTag";
-    }
+  public SignatureTag(String signature) {
+    this.signature = signature;
+  }
 
-    public String getInfo(){
-        return "Signature";
-    }
-    
-    public String getSignature(){
-        return signature;
-    }
-    
-    /** Returns the tag raw data. */
-    public byte[] getValue() {
-        throw new RuntimeException( "SignatureTag has no value for bytecode" );
-    }
+  public String toString() {
+    return "Signature: " + signature;
+  }
+
+  /**
+   * Returns the tag name.
+   */
+  public String getName() {
+    return "SignatureTag";
+  }
+
+  public String getInfo() {
+    return "Signature";
+  }
+
+  public String getSignature() {
+    return signature;
+  }
+
+  /**
+   * Returns the tag raw data.
+   */
+  public byte[] getValue() {
+    throw new RuntimeException("SignatureTag has no value for bytecode");
+  }
 }
 

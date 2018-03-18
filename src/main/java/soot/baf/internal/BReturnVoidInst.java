@@ -18,68 +18,55 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.baf.*;
-import soot.util.*;
+import soot.baf.InstSwitch;
+import soot.baf.ReturnVoidInst;
+import soot.util.Switch;
 
-public class BReturnVoidInst extends AbstractInst implements ReturnVoidInst
-{
-    public BReturnVoidInst()
-    {
-    }
-    
-
-    public int getInCount()
-    {
-        return 0;
-    }
+public class BReturnVoidInst extends AbstractInst implements ReturnVoidInst {
+  public BReturnVoidInst() {
+  }
 
 
-    public Object clone() 
-    {
-        return new  BReturnVoidInst();
-    }
-
-    public int getInMachineCount()
-    {
-        return 0;
-    }
-    
-    public int getOutCount()
-    {
-        return 0;
-    }
-
-    public int getOutMachineCount()
-    {
-        return 0;
-    }
-    
-    final public String getName() { return "return"; }
-    
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseReturnVoidInst(this);
-    }   
-
-     public boolean fallsThrough()
-    {
-        return false;
-    }
-  
+  public int getInCount() {
+    return 0;
+  }
 
 
+  public Object clone() {
+    return new BReturnVoidInst();
+  }
 
+  public int getInMachineCount() {
+    return 0;
+  }
+
+  public int getOutCount() {
+    return 0;
+  }
+
+  public int getOutMachineCount() {
+    return 0;
+  }
+
+  final public String getName() {
+    return "return";
+  }
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseReturnVoidInst(this);
+  }
+
+  public boolean fallsThrough() {
+    return false;
+  }
 
 
 }

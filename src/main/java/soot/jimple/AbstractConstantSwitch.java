@@ -18,72 +18,57 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-public abstract class AbstractConstantSwitch implements ConstantSwitch
-{
-    Object result;
+public abstract class AbstractConstantSwitch implements ConstantSwitch {
+  Object result;
 
-    public void caseDoubleConstant(DoubleConstant v)
-    {
-        defaultCase(v);
-    }
+  public void caseDoubleConstant(DoubleConstant v) {
+    defaultCase(v);
+  }
 
-    public void caseFloatConstant(FloatConstant v)
-    {
-        defaultCase(v);
-    }
+  public void caseFloatConstant(FloatConstant v) {
+    defaultCase(v);
+  }
 
-    public void caseIntConstant(IntConstant v)
-    {
-        defaultCase(v);
-    }
+  public void caseIntConstant(IntConstant v) {
+    defaultCase(v);
+  }
 
-    public void caseLongConstant(LongConstant v)
-    {
-        defaultCase(v);
-    }
+  public void caseLongConstant(LongConstant v) {
+    defaultCase(v);
+  }
 
-    public void caseNullConstant(NullConstant v)
-    {
-        defaultCase(v);
-    }
+  public void caseNullConstant(NullConstant v) {
+    defaultCase(v);
+  }
 
-    public void caseStringConstant(StringConstant v)
-    {
-        defaultCase(v);
-    }
+  public void caseStringConstant(StringConstant v) {
+    defaultCase(v);
+  }
 
-    public void caseClassConstant(ClassConstant v)
-    {
-        defaultCase(v);
-    }
-    
-    public void caseMethodHandle(MethodHandle v)
-    {
-        defaultCase(v);
-    }
+  public void caseClassConstant(ClassConstant v) {
+    defaultCase(v);
+  }
 
-    public void defaultCase(Object v)
-    {
-    }
+  public void caseMethodHandle(MethodHandle v) {
+    defaultCase(v);
+  }
 
-    public Object getResult()
-    {
-        return result;
-    }
+  public void defaultCase(Object v) {
+  }
 
-    public void setResult(Object result)
-    {
-        this.result = result;
-    }
+  public Object getResult() {
+    return result;
+  }
+
+  public void setResult(Object result) {
+    this.result = result;
+  }
 }

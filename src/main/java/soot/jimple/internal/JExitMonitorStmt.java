@@ -18,63 +18,60 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.jimple.internal;
 
 
-import soot.util.*;
-import java.util.*;
-import soot.*;
-import soot.jimple.*;
-import soot.baf.*;
+import java.util.List;
 
-public class JExitMonitorStmt extends AbstractOpStmt 
-    implements ExitMonitorStmt
-{
-    public JExitMonitorStmt(Value op)
-    {
-        this(Jimple.v().newImmediateBox(op));
-    }
+import soot.Unit;
+import soot.UnitPrinter;
+import soot.Value;
+import soot.ValueBox;
+import soot.baf.Baf;
+import soot.jimple.ConvertToBaf;
+import soot.jimple.ExitMonitorStmt;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleToBafContext;
+import soot.jimple.StmtSwitch;
+import soot.util.Switch;
 
-    protected JExitMonitorStmt(ValueBox opBox)
-    {
-        super(opBox);
-    }
+public class JExitMonitorStmt extends AbstractOpStmt
+    implements ExitMonitorStmt {
+  public JExitMonitorStmt(Value op) {
+    this(Jimple.v().newImmediateBox(op));
+  }
 
-    public Object clone() 
-    {
-        return new JExitMonitorStmt(Jimple.cloneIfNecessary(getOp()));
-    }
+  protected JExitMonitorStmt(ValueBox opBox) {
+    super(opBox);
+  }
 
-    public String toString()
-    {
-        return Jimple.EXITMONITOR + " "  + opBox.getValue().toString();
-    }
-    
-    public void toString(UnitPrinter up) {
-        up.literal(Jimple.EXITMONITOR);
-        up.literal(" ");
-        opBox.toString(up);
-    }
+  public Object clone() {
+    return new JExitMonitorStmt(Jimple.cloneIfNecessary(getOp()));
+  }
 
-    public void apply(Switch sw)
-    {
-        ((StmtSwitch) sw).caseExitMonitorStmt(this);
+  public String toString() {
+    return Jimple.EXITMONITOR + " " + opBox.getValue().toString();
+  }
 
-    }    
+  public void toString(UnitPrinter up) {
+    up.literal(Jimple.EXITMONITOR);
+    up.literal(" ");
+    opBox.toString(up);
+  }
 
-  public void convertToBaf(JimpleToBafContext context, List<Unit> out)
-  {
-    ((ConvertToBaf)(getOp())).convertToBaf(context, out);
+  public void apply(Switch sw) {
+    ((StmtSwitch) sw).caseExitMonitorStmt(this);
+
+  }
+
+  public void convertToBaf(JimpleToBafContext context, List<Unit> out) {
+    ((ConvertToBaf) (getOp())).convertToBaf(context, out);
 
     Unit u = Baf.v().newExitMonitorInst();
     u.addAllTagsOf(this);
@@ -82,10 +79,13 @@ public class JExitMonitorStmt extends AbstractOpStmt
   }
 
 
-    
-    public boolean fallsThrough(){return true;}
-    public boolean branches(){return false;}        
-    
+  public boolean fallsThrough() {
+    return true;
+  }
+
+  public boolean branches() {
+    return false;
+  }
 
 
 }

@@ -18,216 +18,207 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf.internal;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import soot.Unit;
+import soot.UnitBox;
+import soot.UnitPrinter;
+import soot.baf.Baf;
+import soot.baf.InstSwitch;
+import soot.baf.LookupSwitchInst;
 import soot.jimple.Constant;
-import soot.util.*;
-import java.util.*;
-import soot.*;
-import soot.baf.*;
+import soot.util.Switch;
 
-public class BLookupSwitchInst extends AbstractInst implements LookupSwitchInst
-{
-    UnitBox defaultTargetBox;
-    List lookupValues;
-    UnitBox[] targetBoxes;
-    List unitBoxes;
+public class BLookupSwitchInst extends AbstractInst implements LookupSwitchInst {
+  UnitBox defaultTargetBox;
+  List lookupValues;
+  UnitBox[] targetBoxes;
+  List unitBoxes;
 
-    public BLookupSwitchInst(Unit defaultTarget, 
-                             List lookupValues, List targets)
+  public BLookupSwitchInst(Unit defaultTarget,
+                           List lookupValues, List targets) {
+    this.defaultTargetBox = Baf.v().newInstBox(defaultTarget);
+
+    this.targetBoxes = new UnitBox[targets.size()];
+
+    for (int i = 0; i < targetBoxes.length; i++) {
+      this.targetBoxes[i] = Baf.v().newInstBox((Unit) targets.get(i));
+    }
+
+    this.lookupValues = new ArrayList();
+    this.lookupValues.addAll(lookupValues);
+
+    // Build up unitBoxes
     {
-        this.defaultTargetBox = Baf.v().newInstBox(defaultTarget); 
+      unitBoxes = new ArrayList();
 
-        this.targetBoxes = new UnitBox[targets.size()];
+      for (UnitBox element : targetBoxes) {
+        unitBoxes.add(element);
+      }
 
-        for(int i = 0; i < targetBoxes.length; i++)
-            this.targetBoxes[i] = Baf.v().newInstBox((Unit) targets.get(i));
-
-        this.lookupValues = new ArrayList();
-        this.lookupValues.addAll(lookupValues);
-
-        // Build up unitBoxes
-        {
-            unitBoxes = new ArrayList();
-
-            for (UnitBox element : targetBoxes)
-				unitBoxes.add(element);
-
-            unitBoxes.add(defaultTargetBox);
-            unitBoxes = Collections.unmodifiableList(unitBoxes);
-        }
+      unitBoxes.add(defaultTargetBox);
+      unitBoxes = Collections.unmodifiableList(unitBoxes);
     }
+  }
 
-    public Object clone() 
-    {        
-        List list = new ArrayList();
-        for (UnitBox element : targetBoxes) {
+  public Object clone() {
+    List list = new ArrayList();
+    for (UnitBox element : targetBoxes) {
 
-            list.add(element.getUnit());
-        }
-
-        
-        return new  BLookupSwitchInst(defaultTargetBox.getUnit(), lookupValues, list);
+      list.add(element.getUnit());
     }
 
 
-    public int getInCount()
-    {
-        return 1;
+    return new BLookupSwitchInst(defaultTargetBox.getUnit(), lookupValues, list);
+  }
+
+
+  public int getInCount() {
+    return 1;
+  }
+
+  public int getInMachineCount() {
+    return 1;
+  }
+
+  public int getOutCount() {
+    return 0;
+  }
+
+  public int getOutMachineCount() {
+    return 0;
+  }
+
+  public Unit getDefaultTarget() {
+    return defaultTargetBox.getUnit();
+  }
+
+  public void setDefaultTarget(Unit defaultTarget) {
+    defaultTargetBox.setUnit(defaultTarget);
+  }
+
+  public UnitBox getDefaultTargetBox() {
+    return defaultTargetBox;
+  }
+
+  public void setLookupValue(int index, int value) {
+    this.lookupValues.set(index, new Integer(value));
+  }
+
+  public int getLookupValue(int index) {
+    return ((Integer) lookupValues.get(index)).intValue();
+  }
+
+  public List getLookupValues() {
+    return Collections.unmodifiableList(lookupValues);
+  }
+
+  public void setLookupValues(List lookupValues) {
+    this.lookupValues = new ArrayList();
+    this.lookupValues.addAll(lookupValues);
+  }
+
+  public int getTargetCount() {
+    return targetBoxes.length;
+  }
+
+  public Unit getTarget(int index) {
+    return targetBoxes[index].getUnit();
+  }
+
+  public void setTarget(int index, Unit target) {
+    targetBoxes[index].setUnit(target);
+  }
+
+  public UnitBox getTargetBox(int index) {
+    return targetBoxes[index];
+  }
+
+  public List getTargets() {
+    List targets = new ArrayList();
+
+    for (UnitBox element : targetBoxes) {
+      targets.add(element.getUnit());
     }
 
-    public int getInMachineCount()
-    {
-        return 1;
-    }
-    
-    public int getOutCount()
-    {
-        return 0;
-    }
+    return targets;
+  }
 
-    public int getOutMachineCount()
-    {
-        return 0;
+  public void setTargets(List<Unit> targets) {
+    for (int i = 0; i < targets.size(); i++) {
+      targetBoxes[i].setUnit(targets.get(i));
     }
-    
-    public Unit getDefaultTarget()
-    {
-        return defaultTargetBox.getUnit();
-    }
+  }
 
-    public void setDefaultTarget(Unit defaultTarget)
-    {
-        defaultTargetBox.setUnit(defaultTarget);
-    }
+  public String getName() {
+    return "lookupswitch";
+  }
 
-    public UnitBox getDefaultTargetBox()
-    {
-        return defaultTargetBox;
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
+    String endOfLine = " ";
+
+    buffer.append("lookupswitch" + endOfLine);
+
+    buffer.append("{" + endOfLine);
+
+    for (int i = 0; i < lookupValues.size(); i++) {
+      buffer.append("    case " + lookupValues.get(i) + ": goto " +
+          getTarget(i) + ";" + endOfLine);
     }
 
-    public void setLookupValues(List lookupValues)
-    {
-        this.lookupValues = new ArrayList();
-        this.lookupValues.addAll(lookupValues);
+    buffer.append("    default: goto " + getDefaultTarget() + ";" + endOfLine);
+    buffer.append("}");
+
+    return buffer.toString();
+  }
+
+  public void toString(UnitPrinter up) {
+    up.literal("lookupswitch");
+    up.newline();
+    up.literal("{");
+    up.newline();
+
+    for (int i = 0; i < lookupValues.size(); i++) {
+      up.literal("    case ");
+      up.constant((Constant) lookupValues.get(i));
+      up.literal(": goto ");
+      targetBoxes[i].toString(up);
+      up.literal(";");
+      up.newline();
     }
 
-    public void setLookupValue(int index, int value)
-    {
-        this.lookupValues.set(index, new Integer(value));
-    }
+    up.literal("    default: goto ");
+    defaultTargetBox.toString(up);
+    up.literal(";");
+    up.newline();
+    up.literal("}");
+  }
 
-    public int getLookupValue(int index)
-    {
-        return ((Integer) lookupValues.get(index)).intValue();
-    }
+  public List getUnitBoxes() {
+    return unitBoxes;
+  }
 
-    public  List getLookupValues()
-    {
-        return Collections.unmodifiableList(lookupValues);
-    }
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseLookupSwitchInst(this);
+  }
 
-    public int getTargetCount() { return targetBoxes.length; }
-    
-    public Unit getTarget(int index)
-    {
-        return targetBoxes[index].getUnit();
-    }
+  public boolean fallsThrough() {
+    return false;
+  }
 
-    public void setTarget(int index, Unit target)
-    {
-        targetBoxes[index].setUnit(target);
-    }
-
-    public void setTargets(List<Unit> targets)
-    {
-        for(int i = 0; i < targets.size(); i++)
-            targetBoxes[i].setUnit(targets.get(i));
-    }
-
-    public UnitBox getTargetBox(int index)
-    {
-        return targetBoxes[index];
-    }
-
-    public List getTargets()
-    {
-        List targets = new ArrayList();
-
-        for (UnitBox element : targetBoxes)
-			targets.add(element.getUnit());
-
-        return targets;
-    }
-
-    public String getName() { return "lookupswitch"; }
-
-    public String toString()
-    {
-        StringBuffer buffer = new StringBuffer();
-        String endOfLine = " ";
-        
-        buffer.append("lookupswitch" + endOfLine);
-            
-        buffer.append("{" + endOfLine);
-        
-        for(int i = 0; i < lookupValues.size(); i++)
-        {
-            buffer.append("    case " + lookupValues.get(i) + ": goto " + 
-                    getTarget(i) + ";" + endOfLine);
-        }
-
-        buffer.append("    default: goto " + getDefaultTarget() + ";" + endOfLine);
-        buffer.append("}");
-
-        return buffer.toString();
-    }
-
-    public void toString(UnitPrinter up) {
-        up.literal( "lookupswitch" );
-        up.newline();
-        up.literal("{");
-        up.newline();
-        
-        for(int i = 0; i < lookupValues.size(); i++)
-        {
-            up.literal("    case ");
-            up.constant( (Constant) lookupValues.get(i) );
-            up.literal(": goto ");
-            targetBoxes[i].toString(up);
-            up.literal(";");
-            up.newline();
-        }
-
-        up.literal("    default: goto ");
-        defaultTargetBox.toString(up);
-        up.literal(";");
-        up.newline();
-        up.literal("}");
-    }
-
-    public List getUnitBoxes()
-    {
-        return unitBoxes;
-    }
-
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseLookupSwitchInst(this);
-    }
-
-    public boolean fallsThrough()
-    {
-        return false;
-    }
-    public boolean branches()
-    {
-        return true;
-    }
+  public boolean branches() {
+    return true;
+  }
 
 
 }

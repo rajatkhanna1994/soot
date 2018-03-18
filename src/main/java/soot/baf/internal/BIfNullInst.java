@@ -18,59 +18,53 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.Unit;
+import soot.baf.Baf;
+import soot.baf.IfNullInst;
+import soot.baf.InstSwitch;
+import soot.util.Switch;
 
-public class BIfNullInst extends AbstractBranchInst implements IfNullInst
-{
-    public BIfNullInst(Unit target)
-    {
-        super(Baf.v().newInstBox(target));
-    }
+public class BIfNullInst extends AbstractBranchInst implements IfNullInst {
+  public BIfNullInst(Unit target) {
+    super(Baf.v().newInstBox(target));
+  }
 
-    public int getInCount()
-    {
-        return 1;
-    }
-    public int getOutCount() 
-    {
-        return 0;
-    }
+  public int getInCount() {
+    return 1;
+  }
+
+  public int getOutCount() {
+    return 0;
+  }
 
 
-    public Object clone() 
-    {
-        return new  BIfNullInst(getTarget());
-    }
+  public Object clone() {
+    return new BIfNullInst(getTarget());
+  }
 
-    public int getInMachineCount()
-    {
-        return 1;
-    }
+  public int getInMachineCount() {
+    return 1;
+  }
 
-    public int getOutMachineCount()
-    {
-        return 0;
-    }
-    
+  public int getOutMachineCount() {
+    return 0;
+  }
 
-    public String getName() { return "ifnull"; }
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseIfNullInst(this);
-    }    
+  public String getName() {
+    return "ifnull";
+  }
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseIfNullInst(this);
+  }
 }
 

@@ -18,43 +18,43 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
 package soot;
-import soot.util.*;
+
+import soot.util.Switch;
 
 /**
- *   Soot representation of the Java type for a statement address. Implemented as
- *   a singleton.
+ * Soot representation of the Java type for a statement address. Implemented as
+ * a singleton.
  */
 @SuppressWarnings("serial")
-public class StmtAddressType extends Type
-{
-    public StmtAddressType( Singletons.Global g ) {}
-    public static StmtAddressType v() { return G.v().soot_StmtAddressType(); }
+public class StmtAddressType extends Type {
+  public StmtAddressType(Singletons.Global g) {
+  }
 
-    public boolean equals(Object t)
-    {
-        return this == t;
-    }
+  public static StmtAddressType v() {
+    return G.v().soot_StmtAddressType();
+  }
 
-    
-    public int hashCode()
-    {
-        return 0x74F368D1;
-    }
-    
-    public String toString()
-    {
-        return "address";
-    }
+  public boolean equals(Object t) {
+    return this == t;
+  }
 
-    public void apply(Switch sw)
-    {
-        ((TypeSwitch) sw).caseStmtAddressType(this);
-    }
+
+  public int hashCode() {
+    return 0x74F368D1;
+  }
+
+  public String toString() {
+    return "address";
+  }
+
+  public void apply(Switch sw) {
+    ((TypeSwitch) sw).caseStmtAddressType(this);
+  }
 }

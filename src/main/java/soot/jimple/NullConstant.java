@@ -18,47 +18,45 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import soot.util.*;
+import soot.G;
+import soot.NullType;
+import soot.Singletons;
+import soot.Type;
+import soot.util.Switch;
 
-public class NullConstant extends Constant
-{
-    public NullConstant( Singletons.Global g ) {}
-    public static NullConstant v() { return G.v().soot_jimple_NullConstant(); }
+public class NullConstant extends Constant {
+  public NullConstant(Singletons.Global g) {
+  }
 
-    public boolean equals(Object c)
-    {
-        return c == G.v().soot_jimple_NullConstant();
-    }
+  public static NullConstant v() {
+    return G.v().soot_jimple_NullConstant();
+  }
 
-    public int hashCode() 
-    {
-        return 982;
-    }
+  public boolean equals(Object c) {
+    return c == G.v().soot_jimple_NullConstant();
+  }
 
-    public String toString()
-    {
-        return Jimple.NULL;
-    }
+  public int hashCode() {
+    return 982;
+  }
 
-    public Type getType()
-    {
-        return NullType.v();
-    }
+  public String toString() {
+    return Jimple.NULL;
+  }
 
-    public void apply(Switch sw)
-    {
-        ((ConstantSwitch) sw).caseNullConstant(this);
-    }
+  public Type getType() {
+    return NullType.v();
+  }
+
+  public void apply(Switch sw) {
+    ((ConstantSwitch) sw).caseNullConstant(this);
+  }
 }

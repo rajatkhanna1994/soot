@@ -19,17 +19,17 @@
 
 package soot.options;
 
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
 import soot.HasPhaseOptions;
 import soot.Pack;
 import soot.PackManager;
 import soot.PhaseOptions;
 import soot.Transform;
 import soot.plugins.internal.PluginLoader;
-
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 /**
  * Soot command-line options parser base class.
@@ -38,89 +38,92 @@ import java.util.StringTokenizer;
  */
 abstract class OptionsBase {
 
-    private String pad(int initial, String opts, int tab, String desc) {
-        StringBuffer b = new StringBuffer();
-        for (int i = 0; i < initial; i++) b.append(" ");
-        b.append(opts);
-        int i;
-        if (tab <= opts.length()) {
-            b.append("\n");
-            i = 0;
-        } else i = opts.length() + initial;
-        for (; i <= tab; i++) {
-            b.append(" ");
-        }
-        for (StringTokenizer t = new StringTokenizer(desc);
-             t.hasMoreTokens(); ) {
-            String s = t.nextToken();
-            if (i + s.length() > 78) {
-                b.append("\n");
-                i = 0;
-                for (; i <= tab; i++) {
-                    b.append(" ");
-                }
-            }
-            b.append(s);
-            b.append(" ");
-            i += s.length() + 1;
-        }
+  private final Deque<String> options = new LinkedList<>();
+  protected LinkedList<String> classes = new LinkedList<String>();
+
+  private String pad(int initial, String opts, int tab, String desc) {
+    StringBuffer b = new StringBuffer();
+    for (int i = 0; i < initial; i++) {
+      b.append(" ");
+    }
+    b.append(opts);
+    int i;
+    if (tab <= opts.length()) {
+      b.append("\n");
+      i = 0;
+    } else {
+      i = opts.length() + initial;
+    }
+    for (; i <= tab; i++) {
+      b.append(" ");
+    }
+    for (StringTokenizer t = new StringTokenizer(desc);
+         t.hasMoreTokens(); ) {
+      String s = t.nextToken();
+      if (i + s.length() > 78) {
         b.append("\n");
-        return b.toString();
-    }
-
-    protected String padOpt(String opts, String desc) {
-        return pad(1, opts, 30, desc);
-    }
-
-    protected String padVal(String vals, String desc) {
-        return pad(4, vals, 32, desc);
-    }
-
-    protected String getPhaseUsage() {
-        StringBuffer b = new StringBuffer();
-        b.append("\nPhases and phase options:\n");
-        for (Pack p : PackManager.v().allPacks()) {
-            b.append(padOpt(p.getPhaseName(), p.getDeclaredOptions()));
-            for (Iterator<Transform> phIt = p.iterator(); phIt.hasNext(); ) {
-                final HasPhaseOptions ph = (HasPhaseOptions) phIt.next();
-                b.append(padVal(ph.getPhaseName(), ph.getDeclaredOptions()));
-            }
+        i = 0;
+        for (; i <= tab; i++) {
+          b.append(" ");
         }
-        return b.toString();
+      }
+      b.append(s);
+      b.append(" ");
+      i += s.length() + 1;
     }
+    b.append("\n");
+    return b.toString();
+  }
 
-    private final Deque<String> options = new LinkedList<>();
+  protected String padOpt(String opts, String desc) {
+    return pad(1, opts, 30, desc);
+  }
 
-    protected void pushOption(String option) {
-        options.push(option);
+  protected String padVal(String vals, String desc) {
+    return pad(4, vals, 32, desc);
+  }
+
+  protected String getPhaseUsage() {
+    StringBuffer b = new StringBuffer();
+    b.append("\nPhases and phase options:\n");
+    for (Pack p : PackManager.v().allPacks()) {
+      b.append(padOpt(p.getPhaseName(), p.getDeclaredOptions()));
+      for (Iterator<Transform> phIt = p.iterator(); phIt.hasNext(); ) {
+        final HasPhaseOptions ph = (HasPhaseOptions) phIt.next();
+        b.append(padVal(ph.getPhaseName(), ph.getDeclaredOptions()));
+      }
     }
+    return b.toString();
+  }
 
-    protected boolean hasMoreOptions() {
-        return !options.isEmpty();
-    }
+  protected void pushOption(String option) {
+    options.push(option);
+  }
 
-    protected String nextOption() {
-        return options.removeFirst();
-    }
+  protected boolean hasMoreOptions() {
+    return !options.isEmpty();
+  }
 
-    protected LinkedList<String> classes = new LinkedList<String>();
+  protected String nextOption() {
+    return options.removeFirst();
+  }
 
-    public LinkedList<String> classes() {
-        return classes;
-    }
+  public LinkedList<String> classes() {
+    return classes;
+  }
 
-    public boolean setPhaseOption(String phase, String option) {
-        return PhaseOptions.v().processPhaseOptions(phase, option);
-    }
+  public boolean setPhaseOption(String phase, String option) {
+    return PhaseOptions.v().processPhaseOptions(phase, option);
+  }
 
-    /**
-     * Handles the value of a plugin parameter.
-     *
-     * @param file the plugin parameter value.
-     * @return {@code true} on success.
-     */
-    protected boolean loadPluginConfiguration(final String file) {
-        return PluginLoader.load(file);
-    }
+  /**
+   * Handles the value of a plugin parameter.
+   *
+   * @param file the plugin parameter value.
+   * @return {@code true} on success.
+   */
+  protected boolean loadPluginConfiguration(final String file) {
+    return PluginLoader.load(file);
+  }
 }
   

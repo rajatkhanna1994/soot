@@ -19,14 +19,18 @@
 
 package soot.jimple.spark.solver;
 
-/** Abstract base class for a propagator that propagates points-to sets
+/**
+ * Abstract base class for a propagator that propagates points-to sets
  * along pointer assignment graph.
+ *
  * @author Ondrej Lhotak
  */
 
 public abstract class Propagator {
-    /** Actually does the propagation. */
-    public abstract void propagate();
+  /**
+   * Actually does the propagation.
+   */
+  public abstract void propagate();
 }
 
 

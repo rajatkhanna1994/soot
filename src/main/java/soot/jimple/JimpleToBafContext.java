@@ -18,68 +18,58 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import soot.baf.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class JimpleToBafContext
-{
-    private Map<Local, Local> jimpleLocalToBafLocal = new HashMap<Local, Local>();
-    private BafBody bafBody;
-    private Unit mCurrentUnit;
+import soot.Local;
+import soot.Unit;
+import soot.baf.BafBody;
 
-    /**
-       An approximation of the local count is required in order to allocate a reasonably sized hash map. 
-     */
-     
-    public JimpleToBafContext(int localCount)
-    {
-       jimpleLocalToBafLocal = new HashMap<Local, Local>(localCount * 2 + 1, 0.7f);
-    }
+public class JimpleToBafContext {
+  private Map<Local, Local> jimpleLocalToBafLocal = new HashMap<Local, Local>();
+  private BafBody bafBody;
+  private Unit mCurrentUnit;
 
+  /**
+   * An approximation of the local count is required in order to allocate a reasonably sized hash map.
+   */
 
-    public void setCurrentUnit(Unit u )
-    {
-	mCurrentUnit = u;
-    }
+  public JimpleToBafContext(int localCount) {
+    jimpleLocalToBafLocal = new HashMap<Local, Local>(localCount * 2 + 1, 0.7f);
+  }
 
-    public Unit getCurrentUnit()
-    {
-	return mCurrentUnit;
-    }
+  public Unit getCurrentUnit() {
+    return mCurrentUnit;
+  }
 
-    
-    public Local getBafLocalOfJimpleLocal(Local jimpleLocal)
-    {
-        return jimpleLocalToBafLocal.get(jimpleLocal);
-    }
-    
-    public void setBafLocalOfJimpleLocal(Local jimpleLocal, Local bafLocal)
-    {
-        jimpleLocalToBafLocal.put(jimpleLocal, bafLocal);
-    }       
-    
-    public BafBody getBafBody()
-    {
-        return bafBody;
-    }
-    
-    public void setBafBody(BafBody bafBody)
-    {
-        this.bafBody = bafBody;
-    }
-    
+  public void setCurrentUnit(Unit u) {
+    mCurrentUnit = u;
+  }
+
+  public Local getBafLocalOfJimpleLocal(Local jimpleLocal) {
+    return jimpleLocalToBafLocal.get(jimpleLocal);
+  }
+
+  public void setBafLocalOfJimpleLocal(Local jimpleLocal, Local bafLocal) {
+    jimpleLocalToBafLocal.put(jimpleLocal, bafLocal);
+  }
+
+  public BafBody getBafBody() {
+    return bafBody;
+  }
+
+  public void setBafBody(BafBody bafBody) {
+    this.bafBody = bafBody;
+  }
+
 }
 
 

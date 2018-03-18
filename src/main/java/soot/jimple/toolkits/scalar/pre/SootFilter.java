@@ -18,15 +18,27 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
 package soot.jimple.toolkits.scalar.pre;
-import soot.jimple.*;
-import soot.*;
+
+import soot.EquivalentValue;
+import soot.Local;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.AssignStmt;
+import soot.jimple.BinopExpr;
+import soot.jimple.ConcreteRef;
+import soot.jimple.Constant;
+import soot.jimple.DivExpr;
+import soot.jimple.InvokeExpr;
+import soot.jimple.LengthExpr;
+import soot.jimple.RemExpr;
+import soot.jimple.UnopExpr;
 
 /**
  * Allows easy filtering/wrapping of Soot objects. Operations that are done
@@ -42,7 +54,9 @@ public class SootFilter {
    * @return the EquivalentValue containing val.
    */
   public static EquivalentValue equiVal(Value val) {
-    if (val == null) return null;
+    if (val == null) {
+      return null;
+    }
     return new EquivalentValue(val);
   }
 
@@ -51,13 +65,14 @@ public class SootFilter {
    *
    * @param unit a Unit from which to extract the RHS.
    * @return the RHS-Value of <code>unit</code> or <code>null</code> if
-   *                        <code>unit</code> wasn't an assignment-stmt.
+   * <code>unit</code> wasn't an assignment-stmt.
    */
   public static Value rhs(Unit unit) {
-    if (unit instanceof AssignStmt)
-      return ((AssignStmt)unit).getRightOp();
-    else
+    if (unit instanceof AssignStmt) {
+      return ((AssignStmt) unit).getRightOp();
+    } else {
       return null;
+    }
   }
 
   /**
@@ -68,8 +83,12 @@ public class SootFilter {
    * <code>null</code>.
    */
   public static Value binop(Value val) {
-    if (val == null) return null;
-    if (val instanceof BinopExpr) return val;
+    if (val == null) {
+      return null;
+    }
+    if (val instanceof BinopExpr) {
+      return val;
+    }
     return null;
   }
 
@@ -95,8 +114,12 @@ public class SootFilter {
    * <code>null</code>.
    */
   public static Value concreteRef(Value val) {
-    if (val == null) return null;
-    if (val instanceof ConcreteRef) return val;
+    if (val == null) {
+      return null;
+    }
+    if (val instanceof ConcreteRef) {
+      return val;
+    }
     return null;
   }
 
@@ -107,14 +130,17 @@ public class SootFilter {
    *
    * @param val the Value to test for.
    * @return <code>val</code> if val doesn't throw any exception, or
-   *                          <code>null</code> otherwise.
+   * <code>null</code> otherwise.
    */
   public static Value noExceptionThrowing(Value val) {
-    if (val == null) return null;
-    if (!throwsException(val))
-      return val;
-    else
+    if (val == null) {
       return null;
+    }
+    if (!throwsException(val)) {
+      return val;
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -122,7 +148,7 @@ public class SootFilter {
    *
    * @param unit the Unit to test.
    * @return the rhs, if <code>unit</code> is an assignment-stmt and can't
-   *                     throw any exception.
+   * throw any exception.
    */
   public static Value noExceptionThrowingRhs(Unit unit) {
     return noExceptionThrowing(rhs(unit));
@@ -133,7 +159,7 @@ public class SootFilter {
    *
    * @param unit the Unit to look at.
    * @return the RHS of <code>unit</code> if it is an assignment-stmt, and its
-   *           RHS is not an invoke.
+   * RHS is not an invoke.
    */
   public static Value noInvokeRhs(Unit unit) {
     return noInvoke(rhs(unit));
@@ -145,13 +171,14 @@ public class SootFilter {
    *
    * @param val the Value to inspect
    * @return <code>val</code>, if val is not an invoke, <code>null</code>
-   *                       otherwise.
+   * otherwise.
    */
   public static Value noInvoke(Value val) {
-    if (val == null || isInvoke(val))
+    if (val == null || isInvoke(val)) {
       return null;
-    else
+    } else {
       return val;
+    }
   }
 
   /**
@@ -162,8 +189,9 @@ public class SootFilter {
    */
   public static boolean isInvoke(Value val) {
     val = getEquivalentValueRoot(val);
-    if (val instanceof InvokeExpr)
+    if (val instanceof InvokeExpr) {
       return true;
+    }
     return false;
   }
 
@@ -175,10 +203,11 @@ public class SootFilter {
    * @return <code>val</code>, if it is a Local, <code>null</code> otherwise.
    */
   public static Value local(Value val) {
-    if (val != null && isLocal(val))
+    if (val != null && isLocal(val)) {
       return val;
-    else
+    } else {
       return null;
+    }
   }
 
   /**
@@ -189,10 +218,11 @@ public class SootFilter {
    * @return <code>val</code>, if it is not a Local, <code>null</code> otherwise.
    */
   public static Value noLocal(Value val) {
-    if (val != null && !isLocal(val))
+    if (val != null && !isLocal(val)) {
       return val;
-    else
+    } else {
       return null;
+    }
   }
 
   /**
@@ -212,11 +242,14 @@ public class SootFilter {
    * otherwise.
    */
   public static Value getEquivalentValueRoot(Value val) {
-    if (val == null) return null;
+    if (val == null) {
+      return null;
+    }
     /* extract the Value, if val is an EquivalentValue. One of the reasons, why
      * testing for "instanceof" is sometimes not a good idea.*/
-    while (val instanceof EquivalentValue)
-      val = ((EquivalentValue)val).getValue();
+    while (val instanceof EquivalentValue) {
+      val = ((EquivalentValue) val).getValue();
+    }
     return val;
   }
 
@@ -229,13 +262,14 @@ public class SootFilter {
 
     /* i really hope i did not forget any... */
     if (val instanceof BinopExpr ||
-	val instanceof UnopExpr ||
-	val instanceof Local ||
-	val instanceof Constant) {
+        val instanceof UnopExpr ||
+        val instanceof Local ||
+        val instanceof Constant) {
       if (val instanceof DivExpr ||
-	  val instanceof RemExpr ||
-	  val instanceof LengthExpr)
-	return true;
+          val instanceof RemExpr ||
+          val instanceof LengthExpr) {
+        return true;
+      }
       return false;
     }
     return true;

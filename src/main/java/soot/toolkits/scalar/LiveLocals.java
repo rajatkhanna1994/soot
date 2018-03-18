@@ -18,53 +18,52 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.toolkits.scalar;
 
-import soot.*;
-import soot.toolkits.graph.UnitGraph;
+import java.util.List;
 
-import java.util.*;
+import soot.Local;
+import soot.Unit;
+import soot.toolkits.graph.UnitGraph;
 
 
 /**
- *   Provides an interface for querying for the list of Locals that are
- *   live before an after a given unit in a method.
+ * Provides an interface for querying for the list of Locals that are
+ * live before an after a given unit in a method.
  */
-public interface LiveLocals
-{
-	static final public class Factory {
-		private Factory() {}
-		public static LiveLocals newLiveLocals(UnitGraph graph) {
-			return new SimpleLiveLocals(graph);
-		}
-	}
-	
-    /**
-     *   Returns the list of Locals that are live before the specified
-     *   Unit. 
-     *   @param s the Unit that defines this query.
-     *   @return a list of Locals that are live before the specified unit in the method.
-     */
-    public List<Local> getLiveLocalsBefore(Unit s);
+public interface LiveLocals {
+  /**
+   * Returns the list of Locals that are live before the specified
+   * Unit.
+   *
+   * @param s the Unit that defines this query.
+   * @return a list of Locals that are live before the specified unit in the method.
+   */
+  public List<Local> getLiveLocalsBefore(Unit s);
 
+  /**
+   * Returns the list of Locals that are live after the specified
+   * Unit.
+   *
+   * @param s the Unit that defines this query.
+   * @return a list of Locals that are live after the specified unit in the method.
+   */
+  public List<Local> getLiveLocalsAfter(Unit s);
 
-    /**
-     *   Returns the list of Locals that are live after the specified
-     *   Unit. 
-     *   @param s the Unit that defines this query.
-     *   @return a list of Locals that are live after the specified unit in the method.
-     */
-    public List<Local> getLiveLocalsAfter(Unit s);
+  static final public class Factory {
+    private Factory() {
+    }
+
+    public static LiveLocals newLiveLocals(UnitGraph graph) {
+      return new SimpleLiveLocals(graph);
+    }
+  }
 }
 
 

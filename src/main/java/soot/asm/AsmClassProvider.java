@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.asm;
 
 import soot.ClassProvider;
@@ -25,15 +26,15 @@ import soot.SourceLocator;
 
 /**
  * Objectweb ASM class provider.
- * 
+ *
  * @author Aaloan Miftah
  */
 public class AsmClassProvider implements ClassProvider {
 
-	public ClassSource find(String cls) {
-		String clsFile = cls.replace('.', '/') + ".class";
-		FoundFile file =
-				SourceLocator.v().lookupInClassPath(clsFile);
-		return file == null ? null : new AsmClassSource(cls, file);
-	}
+  public ClassSource find(String cls) {
+    String clsFile = cls.replace('.', '/') + ".class";
+    FoundFile file =
+        SourceLocator.v().lookupInClassPath(clsFile);
+    return file == null ? null : new AsmClassSource(cls, file);
+  }
 }

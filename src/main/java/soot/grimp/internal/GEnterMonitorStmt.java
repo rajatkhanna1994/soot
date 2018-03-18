@@ -18,32 +18,25 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.grimp.internal;
 
-import soot.*;
-import soot.grimp.*;
-import soot.jimple.internal.*;
+import soot.Value;
+import soot.grimp.Grimp;
+import soot.jimple.internal.JEnterMonitorStmt;
 
-public class GEnterMonitorStmt extends JEnterMonitorStmt 
-{
-    public GEnterMonitorStmt(Value op)
-    {
-        super(Grimp.v().newExprBox(op));
-    }
+public class GEnterMonitorStmt extends JEnterMonitorStmt {
+  public GEnterMonitorStmt(Value op) {
+    super(Grimp.v().newExprBox(op));
+  }
 
-    public Object clone() 
-    {
-        return new GEnterMonitorStmt(Grimp.cloneIfNecessary(getOp()));
-    }
+  public Object clone() {
+    return new GEnterMonitorStmt(Grimp.cloneIfNecessary(getOp()));
+  }
 }
 

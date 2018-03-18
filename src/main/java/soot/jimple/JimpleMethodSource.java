@@ -18,42 +18,45 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
 package soot.jimple;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import soot.options.*;
-import soot.*;
-import soot.jimple.parser.*;
+import soot.Body;
+import soot.MethodSource;
+import soot.PackManager;
+import soot.SootMethod;
+import soot.jimple.parser.JimpleAST;
+import soot.options.Options;
 
-public class JimpleMethodSource implements MethodSource
-{
-    private static final Logger logger = LoggerFactory.getLogger(JimpleMethodSource.class);
-    JimpleAST mJimpleAST;
+public class JimpleMethodSource implements MethodSource {
+  private static final Logger logger = LoggerFactory.getLogger(JimpleMethodSource.class);
+  JimpleAST mJimpleAST;
 
-    public JimpleMethodSource(JimpleAST aJimpleAST)
-    {
-        mJimpleAST = aJimpleAST;
+  public JimpleMethodSource(JimpleAST aJimpleAST) {
+    mJimpleAST = aJimpleAST;
+  }
+
+  public Body getBody(SootMethod m, String phaseName) {
+    JimpleBody jb = (JimpleBody) mJimpleAST.getBody(m);
+    if (jb == null) {
+      throw new RuntimeException("Could not load body for method " + m.getSignature());
     }
 
-    public Body getBody(SootMethod m, String phaseName)
-    {  
-        JimpleBody jb = (JimpleBody)mJimpleAST.getBody(m);
-        if (jb == null)
-        	throw new RuntimeException("Could not load body for method " + m.getSignature());
-
-        if(Options.v().verbose())
-            logger.debug("[" + m.getName() + "] Retrieving JimpleBody from AST...");
-    
-
-        PackManager.v().getPack("jb").apply(jb);
-        return jb;
+    if (Options.v().verbose()) {
+      logger.debug("[" + m.getName() + "] Retrieving JimpleBody from AST...");
     }
+
+
+    PackManager.v().getPack("jb").apply(jb);
+    return jb;
+  }
 }
 
 

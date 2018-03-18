@@ -18,13 +18,10 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
-
-
-
 
 
 package soot.jimple;
@@ -34,17 +31,19 @@ import java.util.List;
 import soot.SootMethodRef;
 import soot.Value;
 
-public interface DynamicInvokeExpr extends InvokeExpr
-{
-	public SootMethodRef getBootstrapMethodRef();
-	public List<Value> getBootstrapArgs();
-    public Value getBootstrapArg(int index);
-    public int getBootstrapArgCount();
-    
-    /*
-     * Tag of the method handle, see JVM-spec. 5.4.3.5.
-     */
-    public int getHandleTag();
+public interface DynamicInvokeExpr extends InvokeExpr {
+  public SootMethodRef getBootstrapMethodRef();
+
+  public List<Value> getBootstrapArgs();
+
+  public Value getBootstrapArg(int index);
+
+  public int getBootstrapArgCount();
+
+  /*
+   * Tag of the method handle, see JVM-spec. 5.4.3.5.
+   */
+  public int getHandleTag();
 }
 
 

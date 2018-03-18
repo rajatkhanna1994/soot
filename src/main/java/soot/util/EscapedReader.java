@@ -18,68 +18,73 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
 package soot.util;
+
+import java.io.FilterReader;
+import java.io.IOException;
+import java.io.Reader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.*;
 
-/** A FilterReader which catches escaped characters (<code>\\unnnn</code>) in the
- * input and de-escapes them.  Used in the Jimple Parser. */
-public class EscapedReader extends FilterReader
-{
-    private static final Logger logger = LoggerFactory.getLogger(EscapedReader.class);
-    /** Constructs an EscapedReader around the given Reader. */
-    public EscapedReader(Reader fos)
-    {
-        super(fos);
+/**
+ * A FilterReader which catches escaped characters (<code>\\unnnn</code>) in the
+ * input and de-escapes them.  Used in the Jimple Parser.
+ */
+public class EscapedReader extends FilterReader {
+  private static final Logger logger = LoggerFactory.getLogger(EscapedReader.class);
+  boolean nextF;
+  int nextch = 0;
+  private StringBuffer mini = new StringBuffer();
+
+  /**
+   * Constructs an EscapedReader around the given Reader.
+   */
+  public EscapedReader(Reader fos) {
+    super(fos);
+  }
+
+  /**
+   * Reads a character from the input.
+   */
+  public int read() throws IOException {
+    /* if you already read the char, just return it */
+    if (nextF) {
+      nextF = false;
+      return nextch;
     }
 
-    private StringBuffer mini = new StringBuffer();
+    int ch = super.read();
 
-    boolean nextF;
-    int nextch = 0;
-
-    /** Reads a character from the input. */
-    public int read() throws IOException
-    {
-        /* if you already read the char, just return it */
-        if (nextF)
-        {
-            nextF = false;
-            return nextch;
-        }
-
-        int ch = super.read();
-        
-        if (ch != '\\')
-            return ch;
-
-        /* we may have an escape sequence here ..*/
-        mini = new StringBuffer();
-
-        ch = super.read();
-        if (ch != 'u')
-          {
-            nextF = true; nextch = ch;
-            return '\\';
-          }
-        
-        mini.append("\\u");
-        while (mini.length() < 6)
-        {
-            ch = super.read();
-            mini.append((char)ch);
-        }
-
-        //        logger.debug(""+mini.toString());
-        ch = Integer.parseInt(mini.substring(2).toString(), 16);
-
-        return ch;
+    if (ch != '\\') {
+      return ch;
     }
+
+    /* we may have an escape sequence here ..*/
+    mini = new StringBuffer();
+
+    ch = super.read();
+    if (ch != 'u') {
+      nextF = true;
+      nextch = ch;
+      return '\\';
+    }
+
+    mini.append("\\u");
+    while (mini.length() < 6) {
+      ch = super.read();
+      mini.append((char) ch);
+    }
+
+    //        logger.debug(""+mini.toString());
+    ch = Integer.parseInt(mini.substring(2).toString(), 16);
+
+    return ch;
+  }
 }

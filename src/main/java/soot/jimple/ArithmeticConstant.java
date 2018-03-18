@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,19 +26,18 @@
 package soot.jimple;
 
 @SuppressWarnings("serial")
-public abstract class ArithmeticConstant extends NumericConstant
-{
-    // PTC 1999/06/28
-    public abstract ArithmeticConstant and(ArithmeticConstant c);
+public abstract class ArithmeticConstant extends NumericConstant {
+  // PTC 1999/06/28
+  public abstract ArithmeticConstant and(ArithmeticConstant c);
 
-    public abstract ArithmeticConstant or(ArithmeticConstant c);
+  public abstract ArithmeticConstant or(ArithmeticConstant c);
 
-    public abstract ArithmeticConstant xor(ArithmeticConstant c);
+  public abstract ArithmeticConstant xor(ArithmeticConstant c);
 
-    public abstract ArithmeticConstant shiftLeft(ArithmeticConstant c);
+  public abstract ArithmeticConstant shiftLeft(ArithmeticConstant c);
 
-    public abstract ArithmeticConstant shiftRight(ArithmeticConstant c);
+  public abstract ArithmeticConstant shiftRight(ArithmeticConstant c);
 
-    public abstract ArithmeticConstant unsignedShiftRight(ArithmeticConstant c);
+  public abstract ArithmeticConstant unsignedShiftRight(ArithmeticConstant c);
 
 }

@@ -18,25 +18,26 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
-import java.util.*;
+import java.util.List;
 
-public interface TableSwitchStmt extends SwitchStmt
-{
-    public void setLowIndex(int lowIndex);
-    public void setHighIndex(int highIndex);
-    public int getLowIndex();
-    public int getHighIndex();
-    public void setTargets(List<? extends Unit> targets);
+import soot.Unit;
+
+public interface TableSwitchStmt extends SwitchStmt {
+  public int getLowIndex();
+
+  public void setLowIndex(int lowIndex);
+
+  public int getHighIndex();
+
+  public void setHighIndex(int highIndex);
+
+  public void setTargets(List<? extends Unit> targets);
 }

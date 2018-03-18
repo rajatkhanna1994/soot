@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,48 +26,44 @@
 
 package soot.tagkit;
 
-public class JimpleLineNumberTag implements Tag
-{
-    /* it is a value representing line number. */
-    private final int startLineNumber;
-	private final int endLineNumber;
-    
-    public JimpleLineNumberTag(int ln)
-    {
-		startLineNumber = ln;
-		endLineNumber = ln;
-    }
+public class JimpleLineNumberTag implements Tag {
+  /* it is a value representing line number. */
+  private final int startLineNumber;
+  private final int endLineNumber;
 
-	public JimpleLineNumberTag(int startLn, int endLn){
-		startLineNumber = startLn;
-		endLineNumber = endLn;
-	}
+  public JimpleLineNumberTag(int ln) {
+    startLineNumber = ln;
+    endLineNumber = ln;
+  }
 
-    public int getLineNumber() {
-    	return startLineNumber;
-    }
-	public int getStartLineNumber() {
-		return startLineNumber;
-	}
-	
-	public int getEndLineNumber() {
-		return endLineNumber;
-	}
-    
-    public String getName()
-    {
-		return "JimpleLineNumberTag";
-    }
+  public JimpleLineNumberTag(int startLn, int endLn) {
+    startLineNumber = startLn;
+    endLineNumber = endLn;
+  }
 
-    public byte[] getValue()
-    {
-		byte[] v = new byte[2];
-		return v;
-    }
+  public int getLineNumber() {
+    return startLineNumber;
+  }
 
-    public String toString()
-    {
-   		return "Jimple Line Tag: "+startLineNumber;
-    }
+  public int getStartLineNumber() {
+    return startLineNumber;
+  }
+
+  public int getEndLineNumber() {
+    return endLineNumber;
+  }
+
+  public String getName() {
+    return "JimpleLineNumberTag";
+  }
+
+  public byte[] getValue() {
+    byte[] v = new byte[2];
+    return v;
+  }
+
+  public String toString() {
+    return "Jimple Line Tag: " + startLineNumber;
+  }
 
 }

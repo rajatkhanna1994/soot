@@ -18,53 +18,53 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot;
 
-import soot.util.*;
+import soot.util.Switch;
 
 
 @SuppressWarnings("serial")
-public class AnySubType extends RefLikeType
-{
-    private AnySubType( RefType base )
-    {
-        this.base = base;
-    }
+public class AnySubType extends RefLikeType {
+  private RefType base;
 
-    public static AnySubType v( RefType base ) {
-        if( base.getAnySubType() == null ) {
-        	synchronized (base) {
-                if( base.getAnySubType() == null ) {
-                	base.setAnySubType( new AnySubType( base ) );
-                }
-        	}
+  private AnySubType(RefType base) {
+    this.base = base;
+  }
+
+  public static AnySubType v(RefType base) {
+    if (base.getAnySubType() == null) {
+      synchronized (base) {
+        if (base.getAnySubType() == null) {
+          base.setAnySubType(new AnySubType(base));
         }
-        return base.getAnySubType();
+      }
     }
-    
-    public String toString()
-    {
-        return "Any_subtype_of_"+base;
-    }
+    return base.getAnySubType();
+  }
 
-    public void apply(Switch sw)
-    {
-        ((TypeSwitch) sw).caseAnySubType(this);
-    }
+  public String toString() {
+    return "Any_subtype_of_" + base;
+  }
 
-    public Type getArrayElementType() {
-	throw new RuntimeException( "Attempt to get array base type of a non-array" );  
-    }
-    public RefType getBase() { return base; }
-    public void setBase( RefType base ) { this.base = base; }
-    private RefType base;
+  public void apply(Switch sw) {
+    ((TypeSwitch) sw).caseAnySubType(this);
+  }
+
+  public Type getArrayElementType() {
+    throw new RuntimeException("Attempt to get array base type of a non-array");
+  }
+
+  public RefType getBase() {
+    return base;
+  }
+
+  public void setBase(RefType base) {
+    this.base = base;
+  }
 }

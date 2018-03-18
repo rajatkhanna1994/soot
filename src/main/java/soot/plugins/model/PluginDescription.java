@@ -1,5 +1,5 @@
 /* Soot - a J*va Optimization Framework
- * 
+ *
  * Copyright (C) 2013 Bernhard J. Berger
  *
  * This library is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ package soot.plugins.model;
 
 /**
  * Base class of all available plugin description.
- * 
+ *
  * @author Bernhard J. Berger.
  */
 public abstract class PluginDescription {

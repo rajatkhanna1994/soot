@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,41 +26,45 @@
 package soot.tagkit;
 
 
-/** Represents the annotation default attribute attatched method
+/**
+ * Represents the annotation default attribute attatched method
  * - could have at most one annotation default each
  * for Java 1.5.
  */
 
-public class AnnotationDefaultTag implements Tag
-{
-    private AnnotationElem defaultVal;
-    
-    public AnnotationDefaultTag(AnnotationElem def){
-        this.defaultVal = def;
-    }
-    
-    // should also print here number of annotations and perhaps the annotations themselves
-    public String toString() {
-        return "Annotation Default: "+defaultVal;
-    }
+public class AnnotationDefaultTag implements Tag {
+  private AnnotationElem defaultVal;
 
-    /** Returns the tag name. */
-    public String getName() {
-        return "AnnotationDefaultTag";
-    }
+  public AnnotationDefaultTag(AnnotationElem def) {
+    this.defaultVal = def;
+  }
 
-    public String getInfo(){
-        return "AnnotationDefault";
-    }
-    
-    public AnnotationElem getDefaultVal(){
-        return defaultVal;
-    }
+  // should also print here number of annotations and perhaps the annotations themselves
+  public String toString() {
+    return "Annotation Default: " + defaultVal;
+  }
 
-    /** Returns the tag raw data. */
-    public byte[] getValue() {
-        throw new RuntimeException( "AnnotationDefaultTag has no value for bytecode" );
-    }
+  /**
+   * Returns the tag name.
+   */
+  public String getName() {
+    return "AnnotationDefaultTag";
+  }
+
+  public String getInfo() {
+    return "AnnotationDefault";
+  }
+
+  public AnnotationElem getDefaultVal() {
+    return defaultVal;
+  }
+
+  /**
+   * Returns the tag raw data.
+   */
+  public byte[] getValue() {
+    throw new RuntimeException("AnnotationDefaultTag has no value for bytecode");
+  }
 
 }
 

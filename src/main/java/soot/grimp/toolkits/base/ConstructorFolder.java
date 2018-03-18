@@ -18,25 +18,22 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
- 
-
-
-
 package soot.grimp.toolkits.base;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.G;
@@ -52,53 +49,57 @@ import soot.jimple.NewExpr;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.options.Options;
-import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.LocalUses;
-import soot.toolkits.scalar.SimpleLocalUses;
-import soot.toolkits.scalar.SmartLocalDefs;
-import soot.toolkits.scalar.SmartLocalDefsPool;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
 
-public class ConstructorFolder extends BodyTransformer
-{
-    private static final Logger logger = LoggerFactory.getLogger(ConstructorFolder.class);
-    public ConstructorFolder( Singletons.Global g ) {}
-    public static ConstructorFolder v() { return G.v().soot_grimp_toolkits_base_ConstructorFolder(); }
+public class ConstructorFolder extends BodyTransformer {
+  private static final Logger logger = LoggerFactory.getLogger(ConstructorFolder.class);
 
-    /** This method change all new Obj/<init>(args) pairs to new Obj(args) idioms. */
-    protected void internalTransform(Body b, String phaseName, Map options)
-    {
-        GrimpBody body = (GrimpBody)b;
+  public ConstructorFolder(Singletons.Global g) {
+  }
 
-        if(Options.v().verbose())
-            logger.debug("[" + body.getMethod().getName() +
-                "] Folding constructors...");
+  public static ConstructorFolder v() {
+    return G.v().soot_grimp_toolkits_base_ConstructorFolder();
+  }
 
-      Chain units = body.getUnits();
-      List<Unit> stmtList = new ArrayList<Unit>();
-      stmtList.addAll(units);
+  /**
+   * This method change all new Obj/<init>(args) pairs to new Obj(args) idioms.
+   */
+  protected void internalTransform(Body b, String phaseName, Map options) {
+    GrimpBody body = (GrimpBody) b;
 
-      Iterator<Unit> it = stmtList.iterator();
-      
-      LocalUses localUses = LocalUses.Factory.newLocalUses(b);
+    if (Options.v().verbose()) {
+      logger.debug("[" + body.getMethod().getName() +
+          "] Folding constructors...");
+    }
 
-      /* fold in NewExpr's with specialinvoke's */
-      while (it.hasNext())
-        {
-          Stmt s = (Stmt)it.next();
-            
-          if (!(s instanceof AssignStmt))
-            continue;
-            
-          /* this should be generalized to ArrayRefs */
-          Value lhs = ((AssignStmt)s).getLeftOp();
-          if (!(lhs instanceof Local))
-            continue;
-            
-          Value rhs = ((AssignStmt)s).getRightOp();
-          if (!(rhs instanceof NewExpr))
-            continue;
+    Chain units = body.getUnits();
+    List<Unit> stmtList = new ArrayList<Unit>();
+    stmtList.addAll(units);
+
+    Iterator<Unit> it = stmtList.iterator();
+
+    LocalUses localUses = LocalUses.Factory.newLocalUses(b);
+
+    /* fold in NewExpr's with specialinvoke's */
+    while (it.hasNext()) {
+      Stmt s = (Stmt) it.next();
+
+      if (!(s instanceof AssignStmt)) {
+        continue;
+      }
+
+      /* this should be generalized to ArrayRefs */
+      Value lhs = ((AssignStmt) s).getLeftOp();
+      if (!(lhs instanceof Local)) {
+        continue;
+      }
+
+      Value rhs = ((AssignStmt) s).getRightOp();
+      if (!(rhs instanceof NewExpr)) {
+        continue;
+      }
 
           /* TO BE IMPLEMENTED LATER: move any copy of the object reference
              for lhs down beyond the NewInvokeExpr, with the rationale
@@ -107,42 +108,43 @@ public class ConstructorFolder extends BodyTransformer
 
              Also, do note that any new's (object creation) without
              corresponding constructors must be dead. */
-           
-          List lu = localUses.getUsesOf(s);
-          Iterator luIter = lu.iterator();
-          boolean MadeNewInvokeExpr = false;
-           
-          while (luIter.hasNext())
-            {
-              Unit use = ((UnitValueBoxPair)(luIter.next())).unit;
-              if (!(use instanceof InvokeStmt))
-                continue;
-              InvokeStmt is = (InvokeStmt)use;
-              if (!(is.getInvokeExpr() instanceof SpecialInvokeExpr) ||
-                  lhs != ((SpecialInvokeExpr)is.getInvokeExpr()).getBase())
-                continue;
-              
-              SpecialInvokeExpr oldInvoke = 
-                ((SpecialInvokeExpr)is.getInvokeExpr());
-              LinkedList invokeArgs = new LinkedList();
-              for (int i = 0; i < oldInvoke.getArgCount(); i++)
-                invokeArgs.add(oldInvoke.getArg(i));
-              
-              AssignStmt constructStmt = Grimp.v().newAssignStmt
-                ((AssignStmt)s);
-              constructStmt.setRightOp
-                (Grimp.v().newNewInvokeExpr
-                 (((NewExpr)rhs).getBaseType(), oldInvoke.getMethodRef(), invokeArgs));
-              MadeNewInvokeExpr = true;
-              
-              use.redirectJumpsToThisTo(constructStmt);
-              units.insertBefore(constructStmt, use);
-              units.remove(use);
-            }
-          if (MadeNewInvokeExpr)
-            {
-              units.remove(s);
-            }
+
+      List lu = localUses.getUsesOf(s);
+      Iterator luIter = lu.iterator();
+      boolean MadeNewInvokeExpr = false;
+
+      while (luIter.hasNext()) {
+        Unit use = ((UnitValueBoxPair) (luIter.next())).unit;
+        if (!(use instanceof InvokeStmt)) {
+          continue;
         }
-    }  
+        InvokeStmt is = (InvokeStmt) use;
+        if (!(is.getInvokeExpr() instanceof SpecialInvokeExpr) ||
+            lhs != ((SpecialInvokeExpr) is.getInvokeExpr()).getBase()) {
+          continue;
+        }
+
+        SpecialInvokeExpr oldInvoke =
+            ((SpecialInvokeExpr) is.getInvokeExpr());
+        LinkedList invokeArgs = new LinkedList();
+        for (int i = 0; i < oldInvoke.getArgCount(); i++) {
+          invokeArgs.add(oldInvoke.getArg(i));
+        }
+
+        AssignStmt constructStmt = Grimp.v().newAssignStmt
+            ((AssignStmt) s);
+        constructStmt.setRightOp
+            (Grimp.v().newNewInvokeExpr
+                (((NewExpr) rhs).getBaseType(), oldInvoke.getMethodRef(), invokeArgs));
+        MadeNewInvokeExpr = true;
+
+        use.redirectJumpsToThisTo(constructStmt);
+        units.insertBefore(constructStmt, use);
+        units.remove(use);
+      }
+      if (MadeNewInvokeExpr) {
+        units.remove(s);
+      }
+    }
+  }
 }

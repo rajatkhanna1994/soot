@@ -24,37 +24,41 @@
  */
 
 package soot.jimple.toolkits.pointer.nativemethods;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import soot.*;
-import soot.jimple.toolkits.pointer.representations.*;
-import soot.jimple.toolkits.pointer.util.*;
+import soot.SootMethod;
+import soot.jimple.toolkits.pointer.representations.Environment;
+import soot.jimple.toolkits.pointer.representations.ReferenceVariable;
+import soot.jimple.toolkits.pointer.util.NativeHelper;
 
 public class JavaLangSystemNative extends NativeMethodClass {
-    private static final Logger logger = LoggerFactory.getLogger(JavaLangSystemNative.class);
-    public JavaLangSystemNative( NativeHelper helper ) { super(helper); }
+  private static final Logger logger = LoggerFactory.getLogger(JavaLangSystemNative.class);
+
+  public JavaLangSystemNative(NativeHelper helper) {
+    super(helper);
+  }
 
   /**
    * Implements the abstract method simulateMethod.
-   * It distributes the request to the corresponding methods 
+   * It distributes the request to the corresponding methods
    * by signatures.
    */
   public void simulateMethod(SootMethod method,
-			     ReferenceVariable thisVar,
-			     ReferenceVariable returnVar,
-			     ReferenceVariable params[]){
+                             ReferenceVariable thisVar,
+                             ReferenceVariable returnVar,
+                             ReferenceVariable params[]) {
 
     String subSignature = method.getSubSignature();
 
     if (subSignature.equals("void arraycopy(java.lang.Object,int,java.lang.Object,int,int)")) {
       java_lang_System_arraycopy(method, thisVar, returnVar, params);
       return;
-    
+
     } else if (subSignature.equals("void setIn0(java.io.InputStream)")) {
       java_lang_System_setIn0(method, thisVar, returnVar, params);
       return;
-      
+
     } else if (subSignature.equals("void setOut0(java.io.PrintStream)")) {
       java_lang_System_setOut0(method, thisVar, returnVar, params);
       return;
@@ -85,24 +89,24 @@ public class JavaLangSystemNative extends NativeMethodClass {
   /**
    * Copies an array from the specified source array, beginning at the
    * specified position, to the specified position of the destination
-   * array.  
-   *
+   * array.
+   * <p>
    * NOTE: If the content of array is reference type, then it is
-   *       necessary to build a connection between elements of
-   *       two arrays
-   *              
-   *       dst[] = src[]
-   *
-   *  public static native void arraycopy(java.lang.Object, 
-   *                                      int, 
-   *                                      java.lang.Object, 
-   *                                      int, 
-   *                                      int);
+   * necessary to build a connection between elements of
+   * two arrays
+   * <p>
+   * dst[] = src[]
+   * <p>
+   * public static native void arraycopy(java.lang.Object,
+   * int,
+   * java.lang.Object,
+   * int,
+   * int);
    */
   public void java_lang_System_arraycopy(SootMethod method,
-						ReferenceVariable thisVar,
-						ReferenceVariable returnVar,
-						ReferenceVariable params[]){
+                                         ReferenceVariable thisVar,
+                                         ReferenceVariable returnVar,
+                                         ReferenceVariable params[]) {
     ReferenceVariable srcElm = helper.arrayElementOf(params[0]);
     ReferenceVariable dstElm = helper.arrayElementOf(params[2]);
     // never make a[] = b[], it violates the principle of jimple statement.
@@ -112,94 +116,92 @@ public class JavaLangSystemNative extends NativeMethodClass {
     helper.assign(dstElm, tmpVar);
   }
 
-  /** 
-   * NOTE: this native method is not documented in JDK API. 
-   *       It should have the side effect:
-   *       System.in = parameter
-   *
+  /**
+   * NOTE: this native method is not documented in JDK API.
+   * It should have the side effect:
+   * System.in = parameter
+   * <p>
    * private static native void setIn0(java.io.InputStream);
    */
   public void java_lang_System_setIn0(SootMethod method,
-					     ReferenceVariable thisVar,
-					     ReferenceVariable returnVar,
-					     ReferenceVariable params[]) {
-    ReferenceVariable sysIn = 
-      helper.staticField("java.lang.System", "in");
+                                      ReferenceVariable thisVar,
+                                      ReferenceVariable returnVar,
+                                      ReferenceVariable params[]) {
+    ReferenceVariable sysIn =
+        helper.staticField("java.lang.System", "in");
     helper.assign(sysIn, params[0]);
   }
 
   /**
    * NOTE: the same explanation as setIn0:
-   *       G.v().out = parameter
-   *
+   * G.v().out = parameter
+   * <p>
    * private static native void setOut0(java.io.PrintStream);
    */
   public void java_lang_System_setOut0(SootMethod method,
-					      ReferenceVariable thisVar,
-					      ReferenceVariable returnVar,
-					      ReferenceVariable params[]) {
-    ReferenceVariable sysOut = 
-      helper.staticField("java.lang.System", "out");
+                                       ReferenceVariable thisVar,
+                                       ReferenceVariable returnVar,
+                                       ReferenceVariable params[]) {
+    ReferenceVariable sysOut =
+        helper.staticField("java.lang.System", "out");
     helper.assign(sysOut, params[0]);
   }
 
   /**
    * NOTE: the same explanation as setIn0:
-   *       System.err = parameter
-   *
-   * private static native void setErr0(java.io.PrintStream);  
+   * System.err = parameter
+   * <p>
+   * private static native void setErr0(java.io.PrintStream);
    */
   public void java_lang_System_setErr0(SootMethod method,
-					      ReferenceVariable thisVar,
-					      ReferenceVariable returnVar,
-					      ReferenceVariable params[]) {
-    ReferenceVariable sysErr = 
-      helper.staticField("java.lang.System", "err");
+                                       ReferenceVariable thisVar,
+                                       ReferenceVariable returnVar,
+                                       ReferenceVariable params[]) {
+    ReferenceVariable sysErr =
+        helper.staticField("java.lang.System", "err");
     helper.assign(sysErr, params[0]);
   }
 
   /**
    * NOTE: this method is not documented, it should do following:
-   *       @return = System.props;
-   *       System.props = parameter;
    *
-   * private static native 
-   *         java.util.Properties initProperties(java.util.Properties);
+   * @return = System.props;
+   * System.props = parameter;
+   * <p>
+   * private static native
+   * java.util.Properties initProperties(java.util.Properties);
    */
-  public 
-    void java_lang_System_initProperties(SootMethod method,
-					 ReferenceVariable thisVar,
-					 ReferenceVariable returnVar,
-					 ReferenceVariable params[]) {
-    ReferenceVariable sysProps = 
-      helper.staticField("java.lang.System", "props");
+  public void java_lang_System_initProperties(SootMethod method,
+                                              ReferenceVariable thisVar,
+                                              ReferenceVariable returnVar,
+                                              ReferenceVariable params[]) {
+    ReferenceVariable sysProps =
+        helper.staticField("java.lang.System", "props");
     helper.assign(returnVar, sysProps);
     helper.assign(sysProps, params[0]);
   }
 
   /**
    * NOTE: it is platform-dependent, create a new string, needs to be verified.
-   *
+   * <p>
    * public static native java.lang.String mapLibraryName(java.lang.String);
    */
-  public 
-    void java_lang_System_mapLibraryName(SootMethod method,
-					 ReferenceVariable thisVar,
-					 ReferenceVariable returnVar,
-					 ReferenceVariable params[]) {
+  public void java_lang_System_mapLibraryName(SootMethod method,
+                                              ReferenceVariable thisVar,
+                                              ReferenceVariable returnVar,
+                                              ReferenceVariable params[]) {
     helper.assignObjectTo(returnVar, Environment.v().getStringObject());
   }
 
   /**
    * Undocumented, used by class loading.
-   *
+   * <p>
    * static native java.lang.Class getCallerClass();
    */
-  public 
-    void java_lang_System_getCallerClass(SootMethod method,
-					 ReferenceVariable thisVar,
-					 ReferenceVariable returnVar,
-					 ReferenceVariable params[]) {
+  public void java_lang_System_getCallerClass(SootMethod method,
+                                              ReferenceVariable thisVar,
+                                              ReferenceVariable returnVar,
+                                              ReferenceVariable params[]) {
     helper.assignObjectTo(returnVar, Environment.v().getClassObject());
   }
 

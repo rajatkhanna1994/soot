@@ -18,27 +18,31 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
+import soot.Value;
+import soot.ValueBox;
 
-public interface BinopExpr extends Expr
-{
-    public Value getOp1();
-    public Value getOp2();
-    public ValueBox getOp1Box();
-    public ValueBox getOp2Box();
-    public void setOp1(Value op1);
-    public void setOp2(Value op2);
-    public String getSymbol();
-    public String toString();
+public interface BinopExpr extends Expr {
+  public Value getOp1();
+
+  public void setOp1(Value op1);
+
+  public Value getOp2();
+
+  public void setOp2(Value op2);
+
+  public ValueBox getOp1Box();
+
+  public ValueBox getOp2Box();
+
+  public String getSymbol();
+
+  public String toString();
 }

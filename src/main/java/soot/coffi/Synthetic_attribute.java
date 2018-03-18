@@ -18,22 +18,19 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
-
 package soot.coffi;
 
-/** Attribute that connects synthetic attribute.
- * @see attribute_info
+/**
+ * Attribute that connects synthetic attribute.
+ *
  * @author Jennifer Lhotak
+ * @see attribute_info
  */
 class Synthetic_attribute extends attribute_info {
 }

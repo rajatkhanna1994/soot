@@ -16,12 +16,13 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.spark.ondemand.genericutil;
 
 /**
  * A simple interface for defining a function that maps objects.
  */
-public interface Mapper<T,U> {
-    public U map(T obj_);
- }
+public interface Mapper<T, U> {
+  public U map(T obj_);
+}
 

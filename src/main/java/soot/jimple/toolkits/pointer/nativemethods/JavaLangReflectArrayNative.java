@@ -26,22 +26,24 @@
 
 package soot.jimple.toolkits.pointer.nativemethods;
 
-import soot.*;
-import soot.jimple.toolkits.pointer.representations.*;
-import soot.jimple.toolkits.pointer.util.*;
+import soot.SootMethod;
+import soot.jimple.toolkits.pointer.representations.ReferenceVariable;
+import soot.jimple.toolkits.pointer.util.NativeHelper;
 
 public class JavaLangReflectArrayNative extends NativeMethodClass {
-    public JavaLangReflectArrayNative( NativeHelper helper ) { super(helper); }
+  public JavaLangReflectArrayNative(NativeHelper helper) {
+    super(helper);
+  }
 
   /**
    * Implements the abstract method simulateMethod.
-   * It distributes the request to the corresponding methods 
+   * It distributes the request to the corresponding methods
    * by signatures.
    */
   public void simulateMethod(SootMethod method,
-			     ReferenceVariable thisVar,
-			     ReferenceVariable returnVar,
-			     ReferenceVariable params[]){
+                             ReferenceVariable thisVar,
+                             ReferenceVariable returnVar,
+                             ReferenceVariable params[]) {
 
     String subSignature = method.getSubSignature();
 
@@ -53,13 +55,13 @@ public class JavaLangReflectArrayNative extends NativeMethodClass {
       java_lang_reflect_Array_set(method, thisVar, returnVar, params);
       return;
 
-    } else if (subSignature.equals("java.lang.Object newArray(java.lang.Class,int)")){
+    } else if (subSignature.equals("java.lang.Object newArray(java.lang.Class,int)")) {
       java_lang_reflect_Array_newArray(method, thisVar, returnVar, params);
       return;
 
-    } else if (subSignature.equals("java.lang.Object multiNewArray(java.lang.Class,int[])")){
-      java_lang_reflect_Array_multiNewArray(method, thisVar, 
-					    returnVar, params);
+    } else if (subSignature.equals("java.lang.Object multiNewArray(java.lang.Class,int[])")) {
+      java_lang_reflect_Array_multiNewArray(method, thisVar,
+          returnVar, params);
       return;
 
     } else {
@@ -73,71 +75,69 @@ public class JavaLangReflectArrayNative extends NativeMethodClass {
    * Returns the value of the indexed component in the specified array
    * object. The value is automatically wrapped in an object if it has
    * a primitive type.
-   *
+   * <p>
    * NOTE: @return = @param0[]
-   *
-   * public static native java.lang.Object get(java.lang.Object, int) 
-   *                     throws java.lang.IllegalArgumentException, 
-   *                            java.lang.ArrayIndexOutOfBoundsException;
+   * <p>
+   * public static native java.lang.Object get(java.lang.Object, int)
+   * throws java.lang.IllegalArgumentException,
+   * java.lang.ArrayIndexOutOfBoundsException;
    */
-  public 
-    void java_lang_reflect_Array_get(SootMethod method,
-				     ReferenceVariable thisVar,
-				     ReferenceVariable returnVar,
-				     ReferenceVariable params[]){
+  public void java_lang_reflect_Array_get(SootMethod method,
+                                          ReferenceVariable thisVar,
+                                          ReferenceVariable returnVar,
+                                          ReferenceVariable params[]) {
     throw new NativeMethodNotSupportedException(method);
   }
-  
+
   /**
    * @param0[] = @param1
-   *
-   * public static native void set(java.lang.Object, int, java.lang.Object) 
-   *                         throws java.lang.IllegalArgumentException, 
-   *                                java.lang.ArrayIndexOutOfBoundsException;
+   * <p>
+   * public static native void set(java.lang.Object, int, java.lang.Object)
+   * throws java.lang.IllegalArgumentException,
+   * java.lang.ArrayIndexOutOfBoundsException;
    */
-  public 
-    void java_lang_reflect_Array_set(SootMethod method,
-				     ReferenceVariable thisVar,
-				     ReferenceVariable returnVar,
-				     ReferenceVariable params[]){
+  public void java_lang_reflect_Array_set(SootMethod method,
+                                          ReferenceVariable thisVar,
+                                          ReferenceVariable returnVar,
+                                          ReferenceVariable params[]) {
     throw new NativeMethodNotSupportedException(method);
   }
 
   /**
    * Treat this method as
+   *
    * @return = new A[];
-   *
-   * private static native java.lang.Object newArray(java.lang.Class, int) 
-   *                        throws java.lang.NegativeArraySizeException;
+   * <p>
+   * private static native java.lang.Object newArray(java.lang.Class, int)
+   * throws java.lang.NegativeArraySizeException;
    */
-  public 
-    void java_lang_reflect_Array_newArray(SootMethod method,
-					  ReferenceVariable thisVar,
-					  ReferenceVariable returnVar,
-					  ReferenceVariable params[]){
+  public void java_lang_reflect_Array_newArray(SootMethod method,
+                                               ReferenceVariable thisVar,
+                                               ReferenceVariable returnVar,
+                                               ReferenceVariable params[]) {
     throw new NativeMethodNotSupportedException(method);
   }
 
   /**
    * Treat this method as
-   * @return = new A[][];
    *
-   * private static native java.lang.Object multiNewArray(java.lang.Class, 
-   *                                                      int[]) 
-   *                        throws java.lang.IllegalArgumentException, 
-   *                               java.lang.NegativeArraySizeException;
+   * @return = new A[][];
+   * <p>
+   * private static native java.lang.Object multiNewArray(java.lang.Class,
+   * int[])
+   * throws java.lang.IllegalArgumentException,
+   * java.lang.NegativeArraySizeException;
    */
-  public 
-    void java_lang_reflect_Array_multiNewArray(SootMethod method,
-					       ReferenceVariable thisVar,
-					       ReferenceVariable returnVar,
-					       ReferenceVariable params[]){
+  public void java_lang_reflect_Array_multiNewArray(SootMethod method,
+                                                    ReferenceVariable thisVar,
+                                                    ReferenceVariable returnVar,
+                                                    ReferenceVariable params[]) {
     throw new NativeMethodNotSupportedException(method);
   }
 
   /**
    * Following native methods have no side effects.
-   *    
+   *
    * public static native int getLength(java.lang.Object) 
    *                     throws java.lang.IllegalArgumentException;
    *
@@ -148,11 +148,11 @@ public class JavaLangReflectArrayNative extends NativeMethodClass {
    * public static native byte getByte(java.lang.Object, int) 
    *                     throws java.lang.IllegalArgumentException, 
    *                            java.lang.ArrayIndexOutOfBoundsException;
-   * 
+   *
    * public static native char getChar(java.lang.Object, int) 
    *                     throws java.lang.IllegalArgumentException, 
    *                            java.lang.ArrayIndexOutOfBoundsException;
-   *                
+   *
    * public static native short getShort(java.lang.Object, int) 
    *                     throws java.lang.IllegalArgumentException, 
    *                            java.lang.ArrayIndexOutOfBoundsException;

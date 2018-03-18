@@ -1,10 +1,10 @@
 /* Soot - a Java Optimization Framework
  * Copyright (C) 2012 Michael Markert, Frank Hartmann
- * 
+ *
  * (c) 2012 University of Luxembourg - Interdisciplinary Centre for
  * Security Reliability and Trust (SnT) - All rights reserved
  * Alexandre Bartel
- * 
+ *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,30 +25,29 @@
 package soot.dexpler.instructions;
 
 import org.jf.dexlib2.iface.instruction.Instruction;
-
 import soot.dexpler.DexBody;
 
 public class InvokeStaticInstruction extends MethodInvocationInstruction {
 
-    public InvokeStaticInstruction (Instruction instruction, int codeAdress) {
-        super(instruction, codeAdress);
-    }
+  public InvokeStaticInstruction(Instruction instruction, int codeAdress) {
+    super(instruction, codeAdress);
+  }
 
-    public void jimplify (DexBody body) {
+  public void jimplify(DexBody body) {
 //        // use Nop as begin marker
 //        NopStmt nop = Jimple.v().newNopStmt();
 //        defineBlock(nop);
 //        tagWithLineNumber(nop);
 //        body.add(nop);
 //        beginUnit = nop;
-    	
-    	jimplifyStatic(body);
-    	
-        // setUnit() is called in MethodInvocationInstruction
-    }
 
-    @Override
-    boolean isUsedAsFloatingPoint(DexBody body, int register) {
-        return isUsedAsFloatingPoint(body, register, true);
-    }
+    jimplifyStatic(body);
+
+    // setUnit() is called in MethodInvocationInstruction
+  }
+
+  @Override
+  boolean isUsedAsFloatingPoint(DexBody body, int register) {
+    return isUsedAsFloatingPoint(body, register, true);
+  }
 }

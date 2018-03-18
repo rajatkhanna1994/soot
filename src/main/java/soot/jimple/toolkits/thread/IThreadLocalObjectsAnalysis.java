@@ -16,6 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.toolkits.thread;
 
 import soot.SootMethod;
@@ -28,6 +29,6 @@ import soot.Value;
  */
 public interface IThreadLocalObjectsAnalysis {
 
-	public boolean isObjectThreadLocal(Value localOrRef, SootMethod sm);
+  public boolean isObjectThreadLocal(Value localOrRef, SootMethod sm);
 
 }

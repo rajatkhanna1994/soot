@@ -1,10 +1,10 @@
 /* Soot - a Java Optimization Framework
  * Copyright (C) 2012 Michael Markert, Frank Hartmann
- * 
+ *
  * (c) 2012 University of Luxembourg - Interdisciplinary Centre for
  * Security Reliability and Trust (SnT) - All rights reserved
  * Alexandre Bartel
- * 
+ *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,6 @@ package soot.dexpler.instructions;
 import org.jf.dexlib2.iface.instruction.Instruction;
 import org.jf.dexlib2.iface.instruction.TwoRegisterInstruction;
 import org.jf.dexlib2.iface.instruction.formats.Instruction12x;
-
 import soot.IntType;
 import soot.Local;
 import soot.dexpler.DexBody;
@@ -38,38 +37,39 @@ import soot.jimple.Jimple;
 import soot.jimple.LengthExpr;
 
 public class ArrayLengthInstruction extends DexlibAbstractInstruction {
-  
-    public ArrayLengthInstruction (Instruction instruction, int codeAdress) {
-        super(instruction, codeAdress);
+
+  public ArrayLengthInstruction(Instruction instruction, int codeAdress) {
+    super(instruction, codeAdress);
+  }
+
+  @Override
+  public void jimplify(DexBody body) {
+    if (!(instruction instanceof Instruction12x)) {
+      throw new IllegalArgumentException("Expected Instruction12x but got: " + instruction.getClass());
     }
 
-    @Override
-	public void jimplify (DexBody body) {
-        if(!(instruction instanceof Instruction12x))
-            throw new IllegalArgumentException("Expected Instruction12x but got: "+instruction.getClass());
+    Instruction12x lengthOfArrayInstruction = (Instruction12x) instruction;
+    int dest = lengthOfArrayInstruction.getRegisterA();
 
-        Instruction12x lengthOfArrayInstruction = (Instruction12x)instruction;
-        int dest = lengthOfArrayInstruction.getRegisterA();
+    Local arrayReference = body.getRegisterLocal(lengthOfArrayInstruction.getRegisterB());
 
-        Local arrayReference = body.getRegisterLocal(lengthOfArrayInstruction.getRegisterB());
+    LengthExpr lengthExpr = Jimple.v().newLengthExpr(arrayReference);
 
-        LengthExpr lengthExpr = Jimple.v().newLengthExpr(arrayReference);
+    AssignStmt assign = Jimple.v().newAssignStmt(body.getRegisterLocal(dest), lengthExpr);
 
-        AssignStmt assign = Jimple.v().newAssignStmt(body.getRegisterLocal(dest), lengthExpr);
+    setUnit(assign);
+    addTags(assign);
+    body.add(assign);
 
-        setUnit(assign);
-        addTags(assign);
-        body.add(assign);
-        
-        if (IDalvikTyper.ENABLE_DVKTYPER) {
-          DalvikTyper.v().setType(assign.getLeftOpBox(), IntType.v(), false);      
-        }
+    if (IDalvikTyper.ENABLE_DVKTYPER) {
+      DalvikTyper.v().setType(assign.getLeftOpBox(), IntType.v(), false);
     }
+  }
 
-    @Override
-    boolean overridesRegister(int register) {
-        TwoRegisterInstruction i = (TwoRegisterInstruction) instruction;
-        int dest = i.getRegisterA();
-        return register == dest;
-    }
+  @Override
+  boolean overridesRegister(int register) {
+    TwoRegisterInstruction i = (TwoRegisterInstruction) instruction;
+    int dest = i.getRegisterA();
+    return register == dest;
+  }
 }

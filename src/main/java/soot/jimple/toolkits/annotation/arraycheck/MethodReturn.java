@@ -18,51 +18,45 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.jimple.toolkits.annotation.arraycheck;
 
-import soot.*;
+import soot.SootMethod;
+import soot.Type;
 
-class MethodReturn
-{
-    private SootMethod m;
-    public MethodReturn(SootMethod m)
-    {
-	this.m = m;
+class MethodReturn {
+  private SootMethod m;
+
+  public MethodReturn(SootMethod m) {
+    this.m = m;
+  }
+
+  public SootMethod getMethod() {
+    return m;
+  }
+
+  public Type getType() {
+    return m.getReturnType();
+  }
+
+  public int hashCode() {
+    return m.hashCode() + m.getParameterCount();
+  }
+
+  public boolean equals(Object other) {
+    if (other instanceof MethodReturn) {
+      return m.equals(((MethodReturn) other).getMethod());
     }
 
-    public SootMethod getMethod()
-    {
-	return m;
-    }
+    return false;
+  }
 
-    public Type getType()
-    {
-	return m.getReturnType();
-    }
-
-    public int hashCode()
-    {
-	return m.hashCode()+m.getParameterCount();
-    }
-
-    public boolean equals(Object other)
-    {
-	if (other instanceof MethodReturn)
-	{
-	    return m.equals( ((MethodReturn)other).getMethod() );
-	}
-
-	return false;
-    }
-
-    public String toString()
-    {
-    	return "["+m.getSignature()+" : R]";
-    }
+  public String toString() {
+    return "[" + m.getSignature() + " : R]";
+  }
 }
 		

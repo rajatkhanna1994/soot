@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -26,35 +26,40 @@
 
 package soot;
 
-import soot.tagkit.*;
+import soot.tagkit.AbstractHost;
 
-/** Reference implementation for ValueBox; just
- * add a canContainValue method. */
+/**
+ * Reference implementation for ValueBox; just
+ * add a canContainValue method.
+ */
 @SuppressWarnings("serial")
-public abstract class AbstractValueBox extends AbstractHost implements ValueBox
-{
-    Value value;
+public abstract class AbstractValueBox extends AbstractHost implements ValueBox {
+  Value value;
 
-    public void setValue(Value value)
-    {
-    	if(value==null) throw new IllegalArgumentException("value may not be null");
-        if(canContainValue(value))
-            this.value = value;
-        else
-            throw new RuntimeException("Box " + this + " cannot contain value: " + value + "(" + value.getClass() + ")" );
-    }
+  public Value getValue() {
+    return value;
+  }
 
-    public Value getValue()
-    {
-        return value;
+  public void setValue(Value value) {
+    if (value == null) {
+      throw new IllegalArgumentException("value may not be null");
     }
-    
-    public void toString( UnitPrinter up ) {
-        up.startValueBox(this);
-        value.toString(up);
-        up.endValueBox(this);
+    if (canContainValue(value)) {
+      this.value = value;
+    } else {
+      throw new RuntimeException("Box " + this + " cannot contain value: " + value + "(" + value.getClass() + ")");
     }
-    public String toString() { return getClass().getSimpleName()+"("+value+")"; }
+  }
+
+  public void toString(UnitPrinter up) {
+    up.startValueBox(this);
+    value.toString(up);
+    up.endValueBox(this);
+  }
+
+  public String toString() {
+    return getClass().getSimpleName() + "(" + value + ")";
+  }
 }
 
 

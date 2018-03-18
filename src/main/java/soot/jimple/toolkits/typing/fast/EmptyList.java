@@ -1,6 +1,6 @@
 /* Soot - a J*va Optimization Framework
- * Copyright (C) 2008 Ben Bellamy 
- * 
+ * Copyright (C) 2008 Ben Bellamy
+ *
  * All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,23 +18,21 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.toolkits.typing.fast;
 
-import java.util.*;
+import java.util.AbstractList;
 
 /**
  * @author Ben Bellamy
  */
 @Deprecated
-public class EmptyList<E> extends AbstractList<E>
-{
-	public E get(int index)
-	{
-		throw new IndexOutOfBoundsException();
-	}
-	
-	public int size()
-	{
-		return 0;
-	}
+public class EmptyList<E> extends AbstractList<E> {
+  public E get(int index) {
+    throw new IndexOutOfBoundsException();
+  }
+
+  public int size() {
+    return 0;
+  }
 }

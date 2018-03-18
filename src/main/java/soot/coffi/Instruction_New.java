@@ -18,19 +18,16 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
-
 package soot.coffi;
-/** Instruction subclasses are used to represent parsed bytecode; each
+
+/**
+ * Instruction subclasses are used to represent parsed bytecode; each
  * bytecode operation has a corresponding subclass of Instruction.
  * <p>
  * Each subclass is derived from one of
@@ -45,6 +42,7 @@ package soot.coffi;
  * <li>Instruction_intbranch (a short argument specifying a code offset)</li>
  * <li>Instruction_longbranch (an int argument specifying a code offset)</li>
  * </ul>
+ *
  * @author Clark Verbrugge
  * @see Instruction
  * @see Instruction_noargs
@@ -59,11 +57,15 @@ package soot.coffi;
  * @see Instruction_Unknown
  */
 class Instruction_New extends Instruction_intindex {
-   public Instruction_New() { super((byte)ByteCode.NEW);
-   name = "new"; /*branches = true;*/ calls = true; }
-   public Instruction[] branchpoints(Instruction next) {
-      Instruction i[] = new Instruction[1];
-      i[0] = null;
-      return i;
-   }
+  public Instruction_New() {
+    super((byte) ByteCode.NEW);
+    name = "new"; /*branches = true;*/
+    calls = true;
+  }
+
+  public Instruction[] branchpoints(Instruction next) {
+    Instruction i[] = new Instruction[1];
+    i[0] = null;
+    return i;
+  }
 }

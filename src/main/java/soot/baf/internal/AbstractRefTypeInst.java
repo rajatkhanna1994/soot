@@ -18,44 +18,47 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.baf.internal;
 
-import soot.*;
+import soot.RefType;
+import soot.Type;
+import soot.UnitPrinter;
 
-public abstract class AbstractRefTypeInst extends AbstractInst
-{
-    Type opType;
+public abstract class AbstractRefTypeInst extends AbstractInst {
+  Type opType;
 
-    protected AbstractRefTypeInst(RefType opType)
-    {
-        this.opType = opType;
-    }
-    
-    public Type getOpType()
-    {
-        return opType;
-    }
-    
-    public void setOpType(Type t)
-    {
-        opType = t;
-    }
+  protected AbstractRefTypeInst(RefType opType) {
+    this.opType = opType;
+  }
 
-    public RefType getBaseType() { return (RefType)opType; }
-    public void setBaseType(RefType type) { this.opType = type; }
+  public Type getOpType() {
+    return opType;
+  }
 
-    String getParameters() { return " "+opType.toString(); }
-    protected void getParameters( UnitPrinter up ) {
-        up.literal(" ");
-        up.type(opType);
-    }
+  public void setOpType(Type t) {
+    opType = t;
+  }
+
+  public RefType getBaseType() {
+    return (RefType) opType;
+  }
+
+  public void setBaseType(RefType type) {
+    this.opType = type;
+  }
+
+  String getParameters() {
+    return " " + opType.toString();
+  }
+
+  protected void getParameters(UnitPrinter up) {
+    up.literal(" ");
+    up.type(opType);
+  }
 }

@@ -18,28 +18,34 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf;
 
-import soot.*;
+import soot.Unit;
 
-public interface Inst extends Unit
-{    
-    public int getInCount();
-    public int getOutCount();
-    public int getNetCount();
-    
-    public int getInMachineCount();
-    public int getOutMachineCount();
-    public int getNetMachineCount();
-    
-    public boolean containsInvokeExpr();
-    public boolean containsFieldRef();
-    public boolean containsArrayRef();
-    public boolean containsNewExpr();
+public interface Inst extends Unit {
+  public int getInCount();
+
+  public int getOutCount();
+
+  public int getNetCount();
+
+  public int getInMachineCount();
+
+  public int getOutMachineCount();
+
+  public int getNetMachineCount();
+
+  public boolean containsInvokeExpr();
+
+  public boolean containsFieldRef();
+
+  public boolean containsArrayRef();
+
+  public boolean containsNewExpr();
 }
 

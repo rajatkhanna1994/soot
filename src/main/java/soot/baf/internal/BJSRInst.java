@@ -18,62 +18,57 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.baf.internal;
-import soot.*;
-import soot.baf.*;
-import soot.util.*;
 
-public class BJSRInst extends AbstractBranchInst implements JSRInst
-{
-    public BJSRInst(Unit target)
-    {
-        super(Baf.v().newInstBox(target));
-    }
+import soot.Unit;
+import soot.baf.Baf;
+import soot.baf.InstSwitch;
+import soot.baf.JSRInst;
+import soot.util.Switch;
 
-    public Object clone()
-    {
-        return new BJSRInst(getTarget());
-    }
+public class BJSRInst extends AbstractBranchInst implements JSRInst {
+  public BJSRInst(Unit target) {
+    super(Baf.v().newInstBox(target));
+  }
 
-    public int getInMachineCount()
-    {
-        return 0;
-    }
+  public Object clone() {
+    return new BJSRInst(getTarget());
+  }
 
-    public boolean branches()
-    {
-        return true;
-    }
-    
-    public int getInCount()
-    {
-        return 0;
-    }
-    
-    public int getOutCount()
-    {
-        return 1;
-    }
+  public int getInMachineCount() {
+    return 0;
+  }
 
-    public int getOutMachineCount()
-    {
-        return 1;
-    }
+  public boolean branches() {
+    return true;
+  }
 
-    public String getName() { return "jsr"; }
+  public int getInCount() {
+    return 0;
+  }
 
-    public void apply(Switch sw)
-    {
-        ((InstSwitch) sw).caseJSRInst(this);
-    }    
-   
-    public boolean fallsThrough()
-    {
-        return false;
-    }
+  public int getOutCount() {
+    return 1;
+  }
+
+  public int getOutMachineCount() {
+    return 1;
+  }
+
+  public String getName() {
+    return "jsr";
+  }
+
+  public void apply(Switch sw) {
+    ((InstSwitch) sw).caseJSRInst(this);
+  }
+
+  public boolean fallsThrough() {
+    return false;
+  }
 }

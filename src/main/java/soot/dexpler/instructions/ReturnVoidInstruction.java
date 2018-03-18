@@ -1,10 +1,10 @@
 /* Soot - a Java Optimization Framework
  * Copyright (C) 2012 Michael Markert, Frank Hartmann
- * 
+ *
  * (c) 2012 University of Luxembourg - Interdisciplinary Centre for
  * Security Reliability and Trust (SnT) - All rights reserved
  * Alexandre Bartel
- * 
+ *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,22 +25,21 @@
 package soot.dexpler.instructions;
 
 import org.jf.dexlib2.iface.instruction.Instruction;
-
 import soot.dexpler.DexBody;
 import soot.jimple.Jimple;
 import soot.jimple.ReturnVoidStmt;
 
 public class ReturnVoidInstruction extends DexlibAbstractInstruction {
 
-    public ReturnVoidInstruction (Instruction instruction, int codeAdress) {
-        super(instruction, codeAdress);
-    }
+  public ReturnVoidInstruction(Instruction instruction, int codeAdress) {
+    super(instruction, codeAdress);
+  }
 
-    public void jimplify (DexBody body) {
-        ReturnVoidStmt returnStmt = Jimple.v().newReturnVoidStmt();
-        setUnit(returnStmt);
-        addTags(returnStmt);
-        body.add(returnStmt);
-    }
+  public void jimplify(DexBody body) {
+    ReturnVoidStmt returnStmt = Jimple.v().newReturnVoidStmt();
+    setUnit(returnStmt);
+    addTags(returnStmt);
+    body.add(returnStmt);
+  }
 
 }

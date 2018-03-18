@@ -26,26 +26,29 @@
 
 package soot.jimple.toolkits.pointer.nativemethods;
 
-import soot.*;
-import soot.jimple.toolkits.pointer.representations.*;
-import soot.jimple.toolkits.pointer.util.*;
+import soot.SootMethod;
+import soot.jimple.toolkits.pointer.representations.Environment;
+import soot.jimple.toolkits.pointer.representations.ReferenceVariable;
+import soot.jimple.toolkits.pointer.util.NativeHelper;
 
 public class JavaLangThreadNative extends NativeMethodClass {
-    public JavaLangThreadNative( NativeHelper helper ) { super(helper); }
+  public JavaLangThreadNative(NativeHelper helper) {
+    super(helper);
+  }
 
   /**
    * Implements the abstract method simulateMethod.
-   * It distributes the request to the corresponding methods 
+   * It distributes the request to the corresponding methods
    * by signatures.
    */
   public void simulateMethod(SootMethod method,
-			     ReferenceVariable thisVar,
-			     ReferenceVariable returnVar,
-			     ReferenceVariable params[]){
+                             ReferenceVariable thisVar,
+                             ReferenceVariable returnVar,
+                             ReferenceVariable params[]) {
 
     String subSignature = method.getSubSignature();
 
-    if (subSignature.equals("java.lang.Thread currentThread()")){
+    if (subSignature.equals("java.lang.Thread currentThread()")) {
       java_lang_Thread_currentThread(method, thisVar, returnVar, params);
       return;
 
@@ -58,16 +61,15 @@ public class JavaLangThreadNative extends NativeMethodClass {
   /*************************** java.lang.Thread **********************/
   /**
    * Returns the single variable pointing to all thread objects.
-   * 
+   * <p>
    * This makes our analysis conservative on thread objects.
-   *
+   * <p>
    * public static native java.lang.Thread currentThread();
    */
-  public 
-    void java_lang_Thread_currentThread(SootMethod method,
-					ReferenceVariable thisVar,
-					ReferenceVariable returnVar,
-					ReferenceVariable params[]){
+  public void java_lang_Thread_currentThread(SootMethod method,
+                                             ReferenceVariable thisVar,
+                                             ReferenceVariable returnVar,
+                                             ReferenceVariable params[]) {
     helper.assignObjectTo(returnVar, Environment.v().getThreadObject());
   }
 

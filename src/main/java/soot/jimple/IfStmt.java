@@ -18,28 +18,32 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
 package soot.jimple;
 
-import soot.*;
+import soot.Unit;
+import soot.UnitBox;
+import soot.Value;
+import soot.ValueBox;
 
-public interface IfStmt extends Stmt
-{
-    public Value getCondition();
-    /**
-	 * condition must be soot.jimple.ConditionExpr
-	 */
-	public void setCondition(Value condition);
-    public ValueBox getConditionBox();
-    public Stmt getTarget();
-    public void setTarget(Unit target);
-    public UnitBox getTargetBox();
+public interface IfStmt extends Stmt {
+  public Value getCondition();
+
+  /**
+   * condition must be soot.jimple.ConditionExpr
+   */
+  public void setCondition(Value condition);
+
+  public ValueBox getConditionBox();
+
+  public Stmt getTarget();
+
+  public void setTarget(Unit target);
+
+  public UnitBox getTargetBox();
 }

@@ -19,9 +19,9 @@
 
 package soot.toolkits.exceptions;
 
-import soot.Unit;
-import soot.Singletons;
 import soot.G;
+import soot.Singletons;
+import soot.Unit;
 import soot.baf.ThrowInst;
 import soot.jimple.ThrowStmt;
 
@@ -35,68 +35,66 @@ import soot.jimple.ThrowStmt;
  */
 public class PedanticThrowAnalysis extends AbstractThrowAnalysis {
 
-    /**
-     * Constructs a <code>PedanticThrowAnalysis</code> for inclusion in 
-     * Soot's global variable manager, {@link G}.
-     *
-     * @param g guarantees that the constructor may only be called 
-     * from {@link Singletons}.
-     */
-    public PedanticThrowAnalysis(Singletons.Global g) {}
+  /**
+   * Constructs a <code>PedanticThrowAnalysis</code> for inclusion in
+   * Soot's global variable manager, {@link G}.
+   *
+   * @param g guarantees that the constructor may only be called
+   *          from {@link Singletons}.
+   */
+  public PedanticThrowAnalysis(Singletons.Global g) {
+  }
 
-    /**
-     * Returns the single instance of <code>PedanticThrowAnalysis</code>.
-     *
-     * @return Soot's <code>PedanticThrowAnalysis</code>.
-     */
-    public static PedanticThrowAnalysis v() { 
-	return G.v().soot_toolkits_exceptions_PedanticThrowAnalysis(); 
-    }
-
-
-    /**
-     * Returns the set of all <code>Throwable</code>s as the set
-     * of types that the specified unit might throw, regardless of the
-     * unit's identity.
-     *
-     * @param u {@link Unit} whose exceptions are to be returned.
-     *
-     * @return the set of all <code>Throwable</code>s.
-     */
-    public ThrowableSet mightThrow(Unit u) {
-	return ThrowableSet.Manager.v().ALL_THROWABLES;
-    }
+  /**
+   * Returns the single instance of <code>PedanticThrowAnalysis</code>.
+   *
+   * @return Soot's <code>PedanticThrowAnalysis</code>.
+   */
+  public static PedanticThrowAnalysis v() {
+    return G.v().soot_toolkits_exceptions_PedanticThrowAnalysis();
+  }
 
 
-    /**
-     * Returns the set of all <code>Throwable</code>s as the set
-     * of types that a <code>throw</code> instruction may throw implicitly, 
-     * that is, the possible types of errors which might arise in
-     * the course of executing the <code>throw</code> instruction, rather
-     * than the type of the <code>throw</code>'s operand.
-     *
-     * @param t the {@link ThrowInst} whose exceptions are to be returned.
-     *
-     * @return the set of all <code>Throwable</code>s.
-     */
-    public ThrowableSet mightThrowImplicitly(ThrowInst t) {
-	return ThrowableSet.Manager.v().ALL_THROWABLES;
-    }
+  /**
+   * Returns the set of all <code>Throwable</code>s as the set
+   * of types that the specified unit might throw, regardless of the
+   * unit's identity.
+   *
+   * @param u {@link Unit} whose exceptions are to be returned.
+   * @return the set of all <code>Throwable</code>s.
+   */
+  public ThrowableSet mightThrow(Unit u) {
+    return ThrowableSet.Manager.v().ALL_THROWABLES;
+  }
 
 
-    /**
-     * Returns the set of all <code>Throwable</code>s as the set
-     * of types that a <code>throw</code> statement may throw implicitly, 
-     * that is, the possible types of errors which might arise in
-     * the course of executing the <code>throw</code> statement, rather
-     * than the type of the <code>throw</code>'s operand.
-     *
-     * @param t the {@link ThrowStmt} whose exceptions are to be returned.
-     *
-     * @return the set of all <code>Throwable</code>s.
-     */
-    public ThrowableSet mightThrowImplicitly(ThrowStmt t) {
-	return ThrowableSet.Manager.v().ALL_THROWABLES;
-    }
+  /**
+   * Returns the set of all <code>Throwable</code>s as the set
+   * of types that a <code>throw</code> instruction may throw implicitly,
+   * that is, the possible types of errors which might arise in
+   * the course of executing the <code>throw</code> instruction, rather
+   * than the type of the <code>throw</code>'s operand.
+   *
+   * @param t the {@link ThrowInst} whose exceptions are to be returned.
+   * @return the set of all <code>Throwable</code>s.
+   */
+  public ThrowableSet mightThrowImplicitly(ThrowInst t) {
+    return ThrowableSet.Manager.v().ALL_THROWABLES;
+  }
+
+
+  /**
+   * Returns the set of all <code>Throwable</code>s as the set
+   * of types that a <code>throw</code> statement may throw implicitly,
+   * that is, the possible types of errors which might arise in
+   * the course of executing the <code>throw</code> statement, rather
+   * than the type of the <code>throw</code>'s operand.
+   *
+   * @param t the {@link ThrowStmt} whose exceptions are to be returned.
+   * @return the set of all <code>Throwable</code>s.
+   */
+  public ThrowableSet mightThrowImplicitly(ThrowStmt t) {
+    return ThrowableSet.Manager.v().ALL_THROWABLES;
+  }
 }
 

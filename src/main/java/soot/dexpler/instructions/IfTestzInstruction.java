@@ -1,10 +1,10 @@
 /* Soot - a Java Optimization Framework
  * Copyright (C) 2012 Michael Markert, Frank Hartmann
- * 
+ *
  * (c) 2012 University of Luxembourg - Interdisciplinary Centre for
  * Security Reliability and Trust (SnT) - All rights reserved
  * Alexandre Bartel
- * 
+ *
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,6 @@ package soot.dexpler.instructions;
 
 import org.jf.dexlib2.iface.instruction.Instruction;
 import org.jf.dexlib2.iface.instruction.formats.Instruction21t;
-
 import soot.dexpler.DexBody;
 import soot.dexpler.IDalvikTyper;
 import soot.jimple.BinopExpr;
@@ -34,23 +33,23 @@ import soot.jimple.IfStmt;
 import soot.jimple.Jimple;
 
 public class IfTestzInstruction extends ConditionalJumpInstruction {
-  
-    public IfTestzInstruction (Instruction instruction, int codeAdress) {
-        super(instruction, codeAdress);
-    }
 
-    @Override
-	protected IfStmt ifStatement(DexBody body) {
-        Instruction21t i = (Instruction21t) instruction;
-        BinopExpr condition = getComparisonExpr(body, i.getRegisterA());
-        IfStmt jif = Jimple.v().newIfStmt(condition,
-                                    targetInstruction.getUnit());
-        // setUnit() is called in ConditionalJumpInstruction
-        
-        
-        addTags(jif);
-		if (IDalvikTyper.ENABLE_DVKTYPER) {
-			//Debug.printDbg(IDalvikTyper.DEBUG, "constraint: "+ jif);
+  public IfTestzInstruction(Instruction instruction, int codeAdress) {
+    super(instruction, codeAdress);
+  }
+
+  @Override
+  protected IfStmt ifStatement(DexBody body) {
+    Instruction21t i = (Instruction21t) instruction;
+    BinopExpr condition = getComparisonExpr(body, i.getRegisterA());
+    IfStmt jif = Jimple.v().newIfStmt(condition,
+        targetInstruction.getUnit());
+    // setUnit() is called in ConditionalJumpInstruction
+
+
+    addTags(jif);
+    if (IDalvikTyper.ENABLE_DVKTYPER) {
+      //Debug.printDbg(IDalvikTyper.DEBUG, "constraint: "+ jif);
 			/*
            int op = instruction.getOpcode().value;
            switch (op) {
@@ -68,9 +67,9 @@ public class IfTestzInstruction extends ConditionalJumpInstruction {
              throw new RuntimeException("error: unknown op: 0x"+ Integer.toHexString(op));
            }
            */
-        }
-		
-		return jif;
-        
     }
+
+    return jif;
+
+  }
 }

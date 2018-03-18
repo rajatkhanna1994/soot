@@ -19,67 +19,74 @@
 
 package soot.jimple.toolkits.pointer.representations;
 
-import soot.*;
-import soot.options.*;
+import soot.AnySubType;
+import soot.G;
+import soot.PhaseOptions;
+import soot.RefType;
+import soot.Singletons;
+import soot.Type;
+import soot.options.CGOptions;
 
 public class TypeConstants {
-    public static TypeConstants v() { return G.v().soot_jimple_toolkits_pointer_representations_TypeConstants(); }
-  
-  public Type OBJECTCLASS; 
+  public Type OBJECTCLASS;
   public Type STRINGCLASS;
   public Type CLASSLOADERCLASS;
   public Type PROCESSCLASS;
   public Type THREADCLASS;
   public Type CLASSCLASS;
   public Type LEASTCLASS;
-  public Type FIELDCLASS; 
+  public Type FIELDCLASS;
   public Type METHODCLASS;
   public Type CONSTRUCTORCLASS;
   public Type FILESYSTEMCLASS;
   public Type PRIVILEGEDACTIONEXCEPTION;
 
-    public TypeConstants( Singletons.Global g ) {
-        int jdkver = 
-            new CGOptions(PhaseOptions.v().getPhaseOptions("cg")).jdkver();
+  public TypeConstants(Singletons.Global g) {
+    int jdkver =
+        new CGOptions(PhaseOptions.v().getPhaseOptions("cg")).jdkver();
 
-        OBJECTCLASS = 
+    OBJECTCLASS =
         RefType.v("java.lang.Object");
 
-        STRINGCLASS =
+    STRINGCLASS =
         RefType.v("java.lang.String");
 
-        CLASSLOADERCLASS =
-        AnySubType.v( RefType.v("java.lang.ClassLoader") );
+    CLASSLOADERCLASS =
+        AnySubType.v(RefType.v("java.lang.ClassLoader"));
 
-        PROCESSCLASS =
-        AnySubType.v( RefType.v("java.lang.Process") );
+    PROCESSCLASS =
+        AnySubType.v(RefType.v("java.lang.Process"));
 
-        THREADCLASS =
-        AnySubType.v( RefType.v( "java.lang.Thread"));
+    THREADCLASS =
+        AnySubType.v(RefType.v("java.lang.Thread"));
 
-        CLASSCLASS =
+    CLASSCLASS =
         RefType.v("java.lang.Class");
 
-        LEASTCLASS =
-        AnySubType.v( RefType.v( "java.lang.Object" ) );
+    LEASTCLASS =
+        AnySubType.v(RefType.v("java.lang.Object"));
 
-        FIELDCLASS = 
+    FIELDCLASS =
         RefType.v("java.lang.reflect.Field");
 
-        METHODCLASS =
+    METHODCLASS =
         RefType.v("java.lang.reflect.Method");
 
-        CONSTRUCTORCLASS =
+    CONSTRUCTORCLASS =
         RefType.v("java.lang.reflect.Constructor");
 
-        if(jdkver >= 2) {
-            FILESYSTEMCLASS =
-            AnySubType.v( RefType.v("java.io.FileSystem") );
-        }
-
-        if(jdkver >= 2) {
-            PRIVILEGEDACTIONEXCEPTION =
-            AnySubType.v( RefType.v("java.security.PrivilegedActionException") );
-        }
+    if (jdkver >= 2) {
+      FILESYSTEMCLASS =
+          AnySubType.v(RefType.v("java.io.FileSystem"));
     }
+
+    if (jdkver >= 2) {
+      PRIVILEGEDACTIONEXCEPTION =
+          AnySubType.v(RefType.v("java.security.PrivilegedActionException"));
+    }
+  }
+
+  public static TypeConstants v() {
+    return G.v().soot_jimple_toolkits_pointer_representations_TypeConstants();
+  }
 }

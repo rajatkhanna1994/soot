@@ -1,6 +1,6 @@
 /* Soot - a J*va Optimization Framework
- * Copyright (C) 2008 Ben Bellamy 
- * 
+ * Copyright (C) 2008 Ben Bellamy
+ *
  * All rights reserved.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 package soot.jimple.toolkits.typing.fast;
 
 import soot.G;
@@ -29,18 +30,18 @@ import soot.Type;
  */
 public class BottomType extends Type {
 
-    public static BottomType v() {
-        return G.v().soot_jimple_toolkits_typing_fast_BottomType();
-    }
+  public BottomType(Singletons.Global g) {
+  }
 
-    public BottomType(Singletons.Global g) {
-    }
+  public static BottomType v() {
+    return G.v().soot_jimple_toolkits_typing_fast_BottomType();
+  }
 
-    public String toString() {
-        return "bottom_type";
-    }
+  public String toString() {
+    return "bottom_type";
+  }
 
-    public boolean equals(Object t) {
-        return this == t;
-    }
+  public boolean equals(Object t) {
+    return this == t;
+  }
 }

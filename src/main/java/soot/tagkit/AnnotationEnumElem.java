@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -28,48 +28,47 @@ package soot.tagkit;
 import soot.util.Switch;
 
 
-/** 
+/**
  * Represents the base class of annotation elements
- * each annotation can have several elements 
+ * each annotation can have several elements
  * for Java 1.5.
  */
 
-public class AnnotationEnumElem extends AnnotationElem
-{
+public class AnnotationEnumElem extends AnnotationElem {
 
-    String typeName;
-    String constantName;
+  String typeName;
+  String constantName;
 
-    public AnnotationEnumElem(String t, String c, char kind, String name){
-        super(kind, name);
-        this.typeName = t;
-        this.constantName = c;
-    }
-    
-    @Override
-	public String toString(){
-        return super.toString()+" type name: "+typeName+" constant name: "+constantName;
-    }
+  public AnnotationEnumElem(String t, String c, char kind, String name) {
+    super(kind, name);
+    this.typeName = t;
+    this.constantName = c;
+  }
 
-    public String getTypeName(){
-        return typeName;
-    }
-    
-    public void setTypeName(String newValue) {
-    	typeName = newValue;
-    }
-    
-    public String getConstantName(){
-        return constantName;
-    }
-    
-    public void setConstantName(String newValue) {
-    	constantName = newValue;
-    }
-    
-	@Override
-	public void apply(Switch sw) {
-		((IAnnotationElemTypeSwitch) sw).caseAnnotationEnumElem(this);
-	}
+  @Override
+  public String toString() {
+    return super.toString() + " type name: " + typeName + " constant name: " + constantName;
+  }
+
+  public String getTypeName() {
+    return typeName;
+  }
+
+  public void setTypeName(String newValue) {
+    typeName = newValue;
+  }
+
+  public String getConstantName() {
+    return constantName;
+  }
+
+  public void setConstantName(String newValue) {
+    constantName = newValue;
+  }
+
+  @Override
+  public void apply(Switch sw) {
+    ((IAnnotationElemTypeSwitch) sw).caseAnnotationEnumElem(this);
+  }
 }
 

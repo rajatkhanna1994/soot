@@ -18,34 +18,41 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
 package soot.jimple.internal;
 
-import soot.*;
-import soot.jimple.*;
-import soot.baf.*;
-import soot.util.*;
+import soot.Type;
+import soot.Value;
+import soot.baf.Baf;
+import soot.jimple.AndExpr;
+import soot.jimple.ExprSwitch;
+import soot.jimple.Jimple;
+import soot.util.Switch;
 
-public class JAndExpr extends AbstractJimpleIntLongBinopExpr implements AndExpr
-{
-    public JAndExpr(Value op1, Value op2) { super(op1, op2); }
-    public final String getSymbol() { return " & "; }
-    public void apply(Switch sw) { ((ExprSwitch) sw).caseAndExpr(this); }
+public class JAndExpr extends AbstractJimpleIntLongBinopExpr implements AndExpr {
+  public JAndExpr(Value op1, Value op2) {
+    super(op1, op2);
+  }
 
-    Object makeBafInst(Type opType) { return Baf.v().newAndInst(this.getOp1().getType()); }
+  public final String getSymbol() {
+    return " & ";
+  }
 
-    public Object clone() 
-    {
-            return new JAndExpr(Jimple.cloneIfNecessary(getOp1()), Jimple.cloneIfNecessary(getOp2()));
-    }
+  public void apply(Switch sw) {
+    ((ExprSwitch) sw).caseAndExpr(this);
+  }
+
+  Object makeBafInst(Type opType) {
+    return Baf.v().newAndInst(this.getOp1().getType());
+  }
+
+  public Object clone() {
+    return new JAndExpr(Jimple.cloneIfNecessary(getOp1()), Jimple.cloneIfNecessary(getOp2()));
+  }
 
 }

@@ -19,128 +19,145 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 package soot.jimple.internal;
 
-import soot.*;
-import soot.jimple.*;
-import soot.baf.*;
-import soot.util.*;
+import java.util.List;
 
-import java.util.*;
+import soot.DoubleType;
+import soot.LongType;
+import soot.SootMethodRef;
+import soot.Type;
+import soot.Unit;
+import soot.UnitPrinter;
+import soot.ValueBox;
+import soot.VoidType;
+import soot.baf.Baf;
+import soot.jimple.ConvertToBaf;
+import soot.jimple.ExprSwitch;
+import soot.jimple.InterfaceInvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleToBafContext;
+import soot.util.Switch;
 
 @SuppressWarnings("serial")
 public abstract class AbstractInterfaceInvokeExpr extends AbstractInstanceInvokeExpr
-		implements InterfaceInvokeExpr, ConvertToBaf {
-	protected AbstractInterfaceInvokeExpr(ValueBox baseBox, SootMethodRef methodRef, ValueBox[] argBoxes) {
-		super(methodRef, baseBox, argBoxes);
-		if (methodRef.isStatic())
-			throw new RuntimeException("wrong static-ness");
-	}
+    implements InterfaceInvokeExpr, ConvertToBaf {
+  protected AbstractInterfaceInvokeExpr(ValueBox baseBox, SootMethodRef methodRef, ValueBox[] argBoxes) {
+    super(methodRef, baseBox, argBoxes);
+    if (methodRef.isStatic()) {
+      throw new RuntimeException("wrong static-ness");
+    }
+  }
 
-	public boolean equivTo(Object o) {
-		if (o instanceof AbstractInterfaceInvokeExpr) {
-			AbstractInterfaceInvokeExpr ie = (AbstractInterfaceInvokeExpr) o;
-			if (!(baseBox.getValue().equivTo(ie.baseBox.getValue()) && getMethod().equals(ie.getMethod())
-					&& (argBoxes == null ? 0 : argBoxes.length) == (ie.argBoxes == null ? 0 : ie.argBoxes.length)))
-				return false;
-			if (argBoxes != null) {
-				for (int i = 0; i < argBoxes.length; i++) {
-					if (!(argBoxes[i]).getValue().equivTo(ie.argBoxes[i].getValue()))
-						return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
+  private static int sizeOfType(Type t) {
+    if (t instanceof DoubleType || t instanceof LongType) {
+      return 2;
+    } else if (t instanceof VoidType) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
 
-	/**
-	 * Returns a hash code for this object, consistent with structural equality.
-	 */
-	public int equivHashCode() {
-		return baseBox.getValue().equivHashCode() * 101 + getMethod().equivHashCode() * 17;
-	}
+  private static int argCountOf(SootMethodRef m) {
+    int argCount = 0;
+    for (Type t : m.parameterTypes()) {
+      argCount += sizeOfType(t);
+    }
 
-	public abstract Object clone();
+    return argCount;
+  }
 
-	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+  public boolean equivTo(Object o) {
+    if (o instanceof AbstractInterfaceInvokeExpr) {
+      AbstractInterfaceInvokeExpr ie = (AbstractInterfaceInvokeExpr) o;
+      if (!(baseBox.getValue().equivTo(ie.baseBox.getValue()) && getMethod().equals(ie.getMethod())
+          && (argBoxes == null ? 0 : argBoxes.length) == (ie.argBoxes == null ? 0 : ie.argBoxes.length))) {
+        return false;
+      }
+      if (argBoxes != null) {
+        for (int i = 0; i < argBoxes.length; i++) {
+          if (!(argBoxes[i]).getValue().equivTo(ie.argBoxes[i].getValue())) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    return false;
+  }
 
-		buffer.append(
-				Jimple.INTERFACEINVOKE + " " + baseBox.getValue().toString() + "." + methodRef.getSignature() + "(");
+  /**
+   * Returns a hash code for this object, consistent with structural equality.
+   */
+  public int equivHashCode() {
+    return baseBox.getValue().equivHashCode() * 101 + getMethod().equivHashCode() * 17;
+  }
 
-		if (argBoxes != null) {
-			for (int i = 0; i < argBoxes.length; i++) {
-				if (i != 0)
-					buffer.append(", ");
-	
-				buffer.append(argBoxes[i].getValue().toString());
-			}
-		}
+  public abstract Object clone();
 
-		buffer.append(")");
+  public String toString() {
+    StringBuffer buffer = new StringBuffer();
 
-		return buffer.toString();
-	}
+    buffer.append(
+        Jimple.INTERFACEINVOKE + " " + baseBox.getValue().toString() + "." + methodRef.getSignature() + "(");
 
-	public void toString(UnitPrinter up) {
-		up.literal(Jimple.INTERFACEINVOKE);
-		up.literal(" ");
-		baseBox.toString(up);
-		up.literal(".");
-		up.methodRef(methodRef);
-		up.literal("(");
+    if (argBoxes != null) {
+      for (int i = 0; i < argBoxes.length; i++) {
+        if (i != 0) {
+          buffer.append(", ");
+        }
 
-		if (argBoxes != null) {
-			for (int i = 0; i < argBoxes.length; i++) {
-				if (i != 0)
-					up.literal(", ");
-	
-				argBoxes[i].toString(up);
-			}
-		}
+        buffer.append(argBoxes[i].getValue().toString());
+      }
+    }
 
-		up.literal(")");
-	}
+    buffer.append(")");
 
-	public void apply(Switch sw) {
-		((ExprSwitch) sw).caseInterfaceInvokeExpr(this);
-	}
+    return buffer.toString();
+  }
 
-	private static int sizeOfType(Type t) {
-		if (t instanceof DoubleType || t instanceof LongType)
-			return 2;
-		else if (t instanceof VoidType)
-			return 0;
-		else
-			return 1;
-	}
+  public void toString(UnitPrinter up) {
+    up.literal(Jimple.INTERFACEINVOKE);
+    up.literal(" ");
+    baseBox.toString(up);
+    up.literal(".");
+    up.methodRef(methodRef);
+    up.literal("(");
 
-	private static int argCountOf(SootMethodRef m) {
-		int argCount = 0;
-		for (Type t : m.parameterTypes()) {
-			argCount += sizeOfType(t);
-		}
+    if (argBoxes != null) {
+      for (int i = 0; i < argBoxes.length; i++) {
+        if (i != 0) {
+          up.literal(", ");
+        }
 
-		return argCount;
-	}
+        argBoxes[i].toString(up);
+      }
+    }
 
-	public void convertToBaf(JimpleToBafContext context, List<Unit> out) {
-		((ConvertToBaf) getBase()).convertToBaf(context, out);
+    up.literal(")");
+  }
 
-		if (argBoxes != null) {
-			for (ValueBox element : argBoxes) {
-				((ConvertToBaf) (element.getValue())).convertToBaf(context, out);
-			}
-		}
+  public void apply(Switch sw) {
+    ((ExprSwitch) sw).caseInterfaceInvokeExpr(this);
+  }
 
-		Unit u = Baf.v().newInterfaceInvokeInst(methodRef, argCountOf(methodRef));
-		out.add(u);
-		u.addAllTagsOf(context.getCurrentUnit());
-	}
+  public void convertToBaf(JimpleToBafContext context, List<Unit> out) {
+    ((ConvertToBaf) getBase()).convertToBaf(context, out);
+
+    if (argBoxes != null) {
+      for (ValueBox element : argBoxes) {
+        ((ConvertToBaf) (element.getValue())).convertToBaf(context, out);
+      }
+    }
+
+    Unit u = Baf.v().newInterfaceInvokeInst(methodRef, argCountOf(methodRef));
+    out.add(u);
+    u.addAllTagsOf(context.getCurrentUnit());
+  }
 }

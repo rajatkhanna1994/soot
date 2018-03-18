@@ -18,21 +18,16 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
 
-
-
-
-
-
 package soot.coffi;
 // for storing statistical or informative data about a class file
 
-import java.io.*;
+import java.io.PrintStream;
 
 class Info {
 
@@ -49,7 +44,9 @@ class Info {
   public int attribcpsave;// savings through cp compression after attribute elim.
   public int psave;       // savings through renaming privates
 
-  public Info(ClassFile newcf) { cf = newcf; }
+  public Info(ClassFile newcf) {
+    cf = newcf;
+  }
 
   public void verboseReport(PrintStream ps) {
     int total;
@@ -58,22 +55,25 @@ class Info {
     ps.println("<INFO>   Length: " + flength);
     ps.println("<INFO>       CP: " + cp + " reduced to " + cf.constant_pool_count);
     ps.println("<INFO>   Fields: " + fields + " (" + pfields + " private)" +
-               " reduced to " + cf.fields_count);
+        " reduced to " + cf.fields_count);
     ps.println("<INFO>  Methods: " + methods + " (" + pmethods + " private)" +
-               " reduced to " + cf.methods_count);
-    total = attribsave+attribcpsave+psave;
-    if (total>0) {
+        " reduced to " + cf.methods_count);
+    total = attribsave + attribcpsave + psave;
+    if (total > 0) {
       ps.println("<INFO> -- Savings through debigulation --");
-      if (attribsave > 0)
+      if (attribsave > 0) {
         ps.println("<INFO>         Attributes: " + attribsave);
-      if (attribcpsave > 0)
+      }
+      if (attribcpsave > 0) {
         ps.println("<INFO>     CP Compression: " + attribcpsave);
-      if (psave > 0)
+      }
+      if (psave > 0) {
         ps.println("<INFO>   Private renaming: " + psave);
+      }
       ps.println("<INFO>  Total savings: " + total);
-      double d = ((total)*100000.0)/(flength);
-      int x = (int)d;
-      d = (x)/1000.0;
+      double d = ((total) * 100000.0) / (flength);
+      int x = (int) d;
+      d = (x) / 1000.0;
       ps.println("<INFO>          ratio: " + d + "%");
     }
   }

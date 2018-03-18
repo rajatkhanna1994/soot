@@ -18,7 +18,7 @@
  */
 
 /*
- * Modified by the Sable Research Group and others 1997-1999.  
+ * Modified by the Sable Research Group and others 1997-1999.
  * See the 'credits' file distributed with Soot for the complete list of
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
@@ -31,39 +31,36 @@ import java.util.Map;
 import soot.Unit;
 
 
-
 /**
- *  This class  must be extended  by Attributes that can 
- *  be emitted in Jasmin. The attributes must format their data
- *  in Base64 and if Unit references they may contain must be emitted as
- *  labels embedded and
- *  escaped in the attribute's Base64 data stream at the location where the value
- *  of their pc is to occur. For example:
-<pre> 
-    aload_1
-    iload_2
-    label2:
-    iaload
- label3:
-    iastore
-    iinc 2 1
-    label0:
-    iload_2
-    aload_0
-    arraylength
- label4:
-   if_icmplt label1
-   return
- .code_attribute ArrayCheckAttribute "%label2%Aw==%label3%Ag==%label4%Ag=="
-
-</pre>
- * 
+ * This class  must be extended  by Attributes that can
+ * be emitted in Jasmin. The attributes must format their data
+ * in Base64 and if Unit references they may contain must be emitted as
+ * labels embedded and
+ * escaped in the attribute's Base64 data stream at the location where the value
+ * of their pc is to occur. For example:
+ * <pre>
+ * aload_1
+ * iload_2
+ * label2:
+ * iaload
+ * label3:
+ * iastore
+ * iinc 2 1
+ * label0:
+ * iload_2
+ * aload_0
+ * arraylength
+ * label4:
+ * if_icmplt label1
+ * return
+ * .code_attribute ArrayCheckAttribute "%label2%Aw==%label3%Ag==%label4%Ag=="
+ *
+ * </pre>
  */
 
 
-public abstract class JasminAttribute implements Attribute
-{
-    abstract public byte[] decode(String attr, Hashtable<String, Integer> labelToPc);
-    
-    abstract public String getJasminValue(Map<Unit, String> instToLabel);
+public abstract class JasminAttribute implements Attribute {
+  abstract public byte[] decode(String attr, Hashtable<String, Integer> labelToPc);
+
+  abstract public String getJasminValue(Map<Unit, String> instToLabel);
 }
