@@ -110,7 +110,8 @@ public class ToppedSet<T> extends AbstractFlowSet<T> {
       return;
     }
 
-    ToppedSet<T> other = (ToppedSet<T>) o, dest = (ToppedSet<T>) d;
+    ToppedSet<T> other = (ToppedSet<T>) o;
+    ToppedSet<T> dest = (ToppedSet<T>) d;
 
     if (other.isTop()) {
       copy(dest);
@@ -123,7 +124,8 @@ public class ToppedSet<T> extends AbstractFlowSet<T> {
   }
 
   public void difference(FlowSet<T> o, FlowSet<T> d) {
-    ToppedSet<T> other = (ToppedSet<T>) o, dest = (ToppedSet<T>) d;
+    ToppedSet<T> other = (ToppedSet<T>) o;
+    ToppedSet<T> dest = (ToppedSet<T>) d;
 
     if (isTop()) {
       if (other.isTop()) {

@@ -196,6 +196,7 @@ public class InteractionHandler {
     try {
       this.wait();
     } catch (InterruptedException e) {
+      ;
     }
 
   }

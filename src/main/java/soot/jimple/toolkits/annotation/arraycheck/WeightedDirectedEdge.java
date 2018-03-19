@@ -26,7 +26,8 @@
 package soot.jimple.toolkits.annotation.arraycheck;
 
 class WeightedDirectedEdge {
-  Object from, to;
+  Object from;
+  Object to;
   int weight;
 
   public WeightedDirectedEdge(Object from, Object to, int weight) {

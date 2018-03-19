@@ -11,7 +11,8 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.Stmt;
 
 public class Main {
-  static int yes = 0, no = 0;
+  static int yes = 0;
+  static int no = 0;
 
   /**
    * @param args

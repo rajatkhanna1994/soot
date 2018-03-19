@@ -20,7 +20,8 @@ class CriticalSection extends SynchronizedRegion {
   public String name;
 
   public Value origLock;
-  public CodeBlockRWSet read, write;
+  public CodeBlockRWSet read;
+  public CodeBlockRWSet write;
   public HashSet<Unit> invokes;
   public HashSet<Unit> units;
   public HashMap<Unit, CodeBlockRWSet> unitToRWSet;

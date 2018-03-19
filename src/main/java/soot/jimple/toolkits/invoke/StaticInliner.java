@@ -192,7 +192,8 @@ public class StaticInliner extends SceneTransformer {
   }
 
   private void computeAverageMethodSizeAndSaveOriginalSizes() {
-    long sum = 0, count = 0;
+    long sum = 0;
+    long count = 0;
     Iterator classesIt = Scene.v().getApplicationClasses().iterator();
 
     while (classesIt.hasNext()) {

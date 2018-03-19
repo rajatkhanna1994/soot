@@ -104,8 +104,8 @@ public class SharedListSet extends PointsToSetInternal {
         || (mask != null && (!(mask.get(other.elem.getNumber()))));
   }
 
-  private ListNode union(ListNode first, ListNode other, ListNode exclude, BitVector mask
-      , boolean detachChildren) {
+  private ListNode union(ListNode first, ListNode other, ListNode exclude, BitVector mask,
+                         boolean detachChildren) {
     //This algorithm must be recursive because we don't know whether to detach until
     //we know the rest of the list.
 
@@ -129,9 +129,8 @@ public class SharedListSet extends PointsToSetInternal {
         //the reference count.)
       } else {
         exclude = advanceExclude(exclude, other);
-        if (excluded(exclude, other, mask))
-        //If the first element of other is to be excluded
-        {
+        if (excluded(exclude, other, mask)) {
+          //If the first element of other is to be excluded
           return union(first, other.next, exclude, mask, detachChildren);
         } else {
           return makeNode(other.elem, union(first, other.next, exclude, mask, detachChildren));
@@ -149,9 +148,8 @@ public class SharedListSet extends PointsToSetInternal {
         //it's to be excluded.
 
         exclude = advanceExclude(exclude, other);
-        if (excluded(exclude, other, mask))
-        //If the first element of other is to be excluded
-        {
+        if (excluded(exclude, other, mask)) {
+          //If the first element of other is to be excluded
           retVal = union(first, other.next, exclude, mask, detachChildren);
         } else {
           retVal = makeNode(other.elem, union(first, other.next, exclude, mask, detachChildren));
@@ -220,8 +218,8 @@ public class SharedListSet extends PointsToSetInternal {
         || (exclude != null && !(exclude instanceof SharedListSet))) {
       return super.addAll(other, exclude);
     } else {
-      SharedListSet realOther = (SharedListSet) other,
-          realExclude = (SharedListSet) exclude;
+      SharedListSet realOther = (SharedListSet) other;
+      SharedListSet realExclude = (SharedListSet) exclude;
 
       BitVector mask = getBitMask(realOther, pag);
 
@@ -236,9 +234,8 @@ public class SharedListSet extends PointsToSetInternal {
   private ListNode makeNode(Node elem, ListNode next) {
     Pair p = new Pair(elem, next);
     ListNode retVal = (AllSharedListNodes.v().allNodes.get(p));
-    if (retVal == null)
-    //if it's not an existing node
-    {
+    if (retVal == null) {
+      //if it's not an existing node
       retVal = new ListNode(elem, next);
       if (next != null) {
         next.incRefCount();   //next now has an extra
@@ -301,9 +298,8 @@ public class SharedListSet extends PointsToSetInternal {
     }
 
     public void decRefCount() {
-      if (--refCount == 0)
-      //if it's not being shared
-      {
+      if (--refCount == 0) {
+        //if it's not being shared
         //Remove the list from the HashMap if it's no longer used; otherwise
         //the sharing won't really gain us memory.
         AllSharedListNodes.v().allNodes.remove(new Pair(elem, next));

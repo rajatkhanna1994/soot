@@ -48,7 +48,8 @@ import soot.util.Chain;
 public class UnconditionalBranchFolder extends BodyTransformer {
   static final int JUMPOPT_TYPES = 6;
   private static final Logger logger = LoggerFactory.getLogger(UnconditionalBranchFolder.class);
-  int numFound[], numFixed[];
+  int numFound[];
+  int numFixed[];
   HashMap<Stmt, Stmt> stmtMap;
 
   public UnconditionalBranchFolder(Singletons.Global g) {
@@ -82,7 +83,9 @@ public class UnconditionalBranchFolder extends BodyTransformer {
 
     // find goto and if-goto statements
     Iterator<Unit> stmtIt = units.iterator();
-    Stmt stmt, target, newTarget;
+    Stmt stmt;
+    Stmt target;
+    Stmt newTarget;
     while (stmtIt.hasNext()) {
       stmt = (Stmt) stmtIt.next();
       if (stmt instanceof GotoStmt) {
@@ -145,7 +148,8 @@ public class UnconditionalBranchFolder extends BodyTransformer {
   }
 
   private Stmt getFinalTarget(Stmt stmt) {
-    Stmt finalTarget = null, target;
+    Stmt finalTarget = null;
+    Stmt target;
 
     // if not a goto, this is the final target
     if (!(stmt instanceof GotoStmt)) {
@@ -161,9 +165,8 @@ public class UnconditionalBranchFolder extends BodyTransformer {
     if (stmtMap.containsKey(target)) {
       // see if it maps to itself
       finalTarget = stmtMap.get(target);
-      if (finalTarget == target)
-      // this is part of a cycle
-      {
+      if (finalTarget == target) {
+        // this is part of a cycle
         finalTarget = null;
       }
     } else {

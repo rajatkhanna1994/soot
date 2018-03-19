@@ -56,7 +56,8 @@ import soot.options.Options;
 public class OnTheFlyJimpleBasedICFG extends AbstractJimpleBasedICFG {
 
   @SynchronizedBy("by use of synchronized LoadingCache class")
-  protected final LoadingCache<Body, LocalMustNotAliasAnalysis> bodyToLMNAA = IDESolver.DEFAULT_CACHE_BUILDER.build(new CacheLoader<Body, LocalMustNotAliasAnalysis>() {
+  protected final LoadingCache<Body, LocalMustNotAliasAnalysis> bodyToLMNAA = IDESolver.DEFAULT_CACHE_BUILDER.build(new CacheLoader<Body,
+                                                                                                                    LocalMustNotAliasAnalysis>() {
     @Override
     public LocalMustNotAliasAnalysis load(Body body) throws Exception {
       return new LocalMustNotAliasAnalysis(getOrCreateUnitGraph(body), body);
@@ -145,7 +146,8 @@ public class OnTheFlyJimpleBasedICFG extends AbstractJimpleBasedICFG {
         Set<SootMethod> worklist = new LinkedHashSet<SootMethod>();
         Set<SootMethod> visited = new HashSet<SootMethod>();
         worklist.add(mainMethod);
-        int monomorphic = 0, polymorphic = 0;
+        int monomorphic = 0;
+        int polymorphic = 0;
         while (!worklist.isEmpty()) {
           Iterator<SootMethod> iter = worklist.iterator();
           SootMethod currMethod = iter.next();

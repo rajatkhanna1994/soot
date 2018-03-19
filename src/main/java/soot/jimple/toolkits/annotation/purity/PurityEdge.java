@@ -37,7 +37,8 @@ package soot.jimple.toolkits.annotation.purity;
  */
 public class PurityEdge {
   private String field;
-  private PurityNode source, target;
+  private PurityNode source;
+  private PurityNode target;
   private boolean inside;
 
   PurityEdge(PurityNode source, String field, PurityNode target, boolean inside) {

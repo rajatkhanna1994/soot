@@ -136,7 +136,8 @@ public class SiteInliner {
         //    the argument passed to the method is not the same type.
         // For instance, Bottle.price_static takes a cost.
         // Cost is an interface implemented by Bottle.
-        SootClass localType, parameterType;
+        SootClass localType;
+        SootClass parameterType;
         localType = ((RefType) ((InstanceInvokeExpr) ie).getBase().getType()).getSootClass();
         parameterType = inlinee.getDeclaringClass();
 
@@ -155,8 +156,7 @@ public class SiteInliner {
     // (If enabled), add a null pointer check.
     {
       if (enableNullPointerCheckInsertion && ie instanceof InstanceInvokeExpr) {
-        boolean caught = TrapManager.isExceptionCaughtAt
-            (Scene.v().getSootClass("java.lang.NullPointerException"), toInline, containerB);
+        boolean caught = TrapManager.isExceptionCaughtAt(Scene.v().getSootClass("java.lang.NullPointerException"), toInline, containerB);
 
         /* Ah ha.  Caught again! */
         if (caught) {
@@ -174,8 +174,7 @@ public class SiteInliner {
         } else {
           Stmt throwPoint =
               ThrowManager.getNullPointerExceptionThrower(containerB);
-          containerB.getUnits().insertBefore
-              (Jimple.v().newIfStmt(Jimple.v().newEqExpr(((InstanceInvokeExpr) ie).getBase(),
+          containerB.getUnits().insertBefore(Jimple.v().newIfStmt(Jimple.v().newEqExpr(((InstanceInvokeExpr) ie).getBase(),
                   NullConstant.v()), throwPoint), toInline);
         }
       }
@@ -236,8 +235,7 @@ public class SiteInliner {
 
     // Backpatch the newly-inserted units using newly-constructed maps.
     {
-      Iterator<Unit> it = containerUnits.iterator
-          (containerUnits.getSuccOf(toInline),
+      Iterator<Unit> it = containerUnits.iterator(containerUnits.getSuccOf(toInline),
               containerUnits.getPredOf(exitPoint));
 
       while (it.hasNext()) {
@@ -271,9 +269,9 @@ public class SiteInliner {
     {
       Trap prevTrap = null;
       for (Trap t : inlineeB.getTraps()) {
-        Stmt newBegin = oldUnitsToNew.get(t.getBeginUnit()),
-            newEnd = oldUnitsToNew.get(t.getEndUnit()),
-            newHandler = oldUnitsToNew.get(t.getHandlerUnit());
+        Stmt newBegin = oldUnitsToNew.get(t.getBeginUnit());
+        Stmt newEnd = oldUnitsToNew.get(t.getEndUnit());
+        Stmt newHandler = oldUnitsToNew.get(t.getHandlerUnit());
 
         if (newBegin == null || newEnd == null || newHandler == null) {
           throw new RuntimeException("couldn't map trap!");
@@ -292,8 +290,7 @@ public class SiteInliner {
 
     // Handle identity stmt's and returns.
     {
-      Iterator<Unit> it = containerUnits.iterator
-          (containerUnits.getSuccOf(toInline),
+      Iterator<Unit> it = containerUnits.iterator(containerUnits.getSuccOf(toInline),
               containerUnits.getPredOf(exitPoint));
       ArrayList<Unit> cuCopy = new ArrayList<Unit>();
 
@@ -328,8 +325,7 @@ public class SiteInliner {
           }
 
           if (!(toInline instanceof AssignStmt)) {
-            throw new RuntimeException
-                ("invoking stmt neither InvokeStmt nor AssignStmt!??!?!");
+            throw new RuntimeException("invoking stmt neither InvokeStmt nor AssignStmt!??!?!");
           }
           Value ro = ((ReturnStmt) s).getOp();
           Value lhs = ((AssignStmt) toInline).getLeftOp();

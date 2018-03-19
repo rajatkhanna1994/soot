@@ -187,7 +187,8 @@ public class SynchronizerManager {
       }
 
       IdentityStmt is = (IdentityStmt) s;
-      Value lo = is.getLeftOp(), ro = is.getRightOp();
+      Value lo = is.getLeftOp();
+      Value ro = is.getRightOp();
 
       if (!(ro instanceof ParameterRef)) {
         continue;
@@ -208,7 +209,8 @@ public class SynchronizerManager {
       }
 
       AssignStmt as = (AssignStmt) s;
-      Value retVal = as.getLeftOp(), ie = as.getRightOp();
+      Value retVal = as.getLeftOp();
+      Value ie = as.getRightOp();
 
       if (!ie.toString()
           .equals(".staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>(" + lo + ")")) {
@@ -280,7 +282,12 @@ public class SynchronizerManager {
 
       method.setActiveBody(body);
       Chain units = body.getUnits();
-      Local l_r0, l_r1, l_r2, l_r3, l_r4, l_r5;
+      Local l_r0;
+      Local l_r1;
+      Local l_r2;
+      Local l_r3;
+      Local l_r4;
+      Local l_r5;
 
       // Add some locals
       l_r0 = Jimple.v().newLocal("r0", RefType.v("java.lang.String"));

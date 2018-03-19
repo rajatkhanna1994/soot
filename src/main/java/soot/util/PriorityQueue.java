@@ -227,6 +227,7 @@ abstract public class PriorityQueue<E> extends AbstractQueue<E> {
       }
       return remove(getOrdinal(o));
     } catch (NoSuchElementException e) {
+      ;
     }
     return false;
   }
@@ -246,6 +247,7 @@ abstract public class PriorityQueue<E> extends AbstractQueue<E> {
 
       return contains(getOrdinal(o));
     } catch (NoSuchElementException e) {
+      ;
     }
     return false;
   }

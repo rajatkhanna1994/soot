@@ -58,7 +58,8 @@ public class ConditionalBranchFolder extends BodyTransformer {
   protected void internalTransform(Body body, String phaseName, Map<String, String> options) {
     StmtBody stmtBody = (StmtBody) body;
 
-    int numTrue = 0, numFalse = 0;
+    int numTrue = 0;
+    int numFalse = 0;
 
     if (Options.v().verbose()) {
       logger.debug("[" + stmtBody.getMethod().getName() +

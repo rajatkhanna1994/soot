@@ -277,8 +277,8 @@ public class ProcessData {
               metricList.add(((Node) textFNList.item(0)).getNodeValue().trim());
             }
 
-          }//end of if clause
-        }//end of for loop with s var
+          } //end of if clause
+        } //end of for loop with s var
       } catch (SAXParseException err) {
         System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
         System.out.println(" " + err.getMessage());
@@ -767,7 +767,7 @@ public class ProcessData {
           } catch (Throwable t) {
             t.printStackTrace();
           }
-        }//done with all files for this benchmark
+        } //done with all files for this benchmark
 
         //print closing for the table for this benchmark
         if (CSV) {
@@ -775,7 +775,7 @@ public class ProcessData {
         } else {
           printTexTableFooter(bench, "");
         }
-      }//done with all benchmarks
+      } //done with all benchmarks
 
       closeWriteFile(bench, newClassName);
 
@@ -913,8 +913,8 @@ public class ProcessData {
             throw new RuntimeException("\n\n not an integer not a double unhandled!!!!");
           }
         }
-      }//end of if metricNode is an element_Node
-    }//end of for loop with s var
+      } //end of if metricNode is an element_Node
+    } //end of for loop with s var
     return numClasses;
   }
 
@@ -1030,15 +1030,15 @@ public class ProcessData {
               data += "\\\\";
             }
 
-          }//end of if metricNode is an element_Node
-        }//end of for loop with s var
+          } //end of if metricNode is an element_Node
+        } //end of for loop with s var
 
 
         classData.put(className, data);
 
 
-      }//end of if classNode is an element_Node
-    }//end of for loop with cl
+      } //end of if classNode is an element_Node
+    } //end of for loop with cl
 
     //writerOut.println();
     //writerOut.println();

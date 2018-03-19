@@ -119,7 +119,8 @@ public class GeomEvaluator {
    * Summarize the geometric points-to analysis and report the basic metrics.
    */
   public void profileGeomBasicMetrics(boolean testSpark) {
-    int n_legal_var = 0, n_alloc_dot_fields = 0;
+    int n_legal_var = 0;
+    int n_alloc_dot_fields = 0;
 
     int[] limits = new int[] {1, 5, 10, 25, 50, 75, 100};
     evalRes.pts_size_bar_geom = new Histogram(limits);
@@ -220,7 +221,8 @@ public class GeomEvaluator {
    */
   private void test_1cfa_call_graph(LocalVarNode vn, SootMethod caller,
                                     SootMethod callee_signature, Histogram ce_range) {
-    long l, r;
+    long l;
+    long r;
     IVarAbstraction pn = ptsProvider.findInternalNode(vn);
     if (pn == null) {
       return;
@@ -260,7 +262,7 @@ public class GeomEvaluator {
           tgts.add(hierarchy.resolveConcreteDispatch(
               ((RefType) t).getSootClass(), callee_signature));
         } catch (Exception e) {
-
+          ;
         }
       }
 
@@ -701,25 +703,35 @@ public class GeomEvaluator {
 class EvalResults {
   // Basic metrics
   public int loc = 0;
-  public long total_geom_ins_pts = 0, total_spark_pts = 0;
-  public double avg_geom_ins_pts = .0, avg_spark_pts = .0;
-  public int max_pts_geom = 0, max_pts_spark = 0;
-  public Histogram pts_size_bar_geom = null, pts_size_bar_spark = null;
+  public long total_geom_ins_pts = 0;
+  public long total_spark_pts = 0;
+  public double avg_geom_ins_pts = .0;
+  public double avg_spark_pts = .0;
+  public int max_pts_geom = 0;
+  public int max_pts_spark = 0;
+  public Histogram pts_size_bar_geom = null;
+  public Histogram pts_size_bar_spark = null;
 
   // Call graph metrics
-  public int n_callsites = 0, n_user_callsites = 0;
-  public int n_geom_call_edges = 0, n_geom_user_edges = 0;
-  public int n_geom_solved_all = 0, n_geom_solved_app = 0;
+  public int n_callsites = 0;
+  public int n_user_callsites = 0;
+  public int n_geom_call_edges = 0;
+  public int n_geom_user_edges = 0;
+  public int n_geom_solved_all = 0;
+  public int n_geom_solved_app = 0;
   public Histogram total_call_edges = null;
 
   // Alias metrics
   public long n_alias_pairs = 0;
-  public long n_hs_alias = 0, n_hi_alias = 0;
+  public long n_hs_alias = 0;
+  public long n_hi_alias = 0;
 
   // Static cast metrics
   public int total_casts = 0;
-  public int geom_solved_casts = 0, spark_solved_casts = 0;
+  public int geom_solved_casts = 0;
+  public int spark_solved_casts = 0;
 
   // Heap def-use graph metrics
-  public long n_geom_du_pairs = 0, n_spark_du_pairs = 0;
+  public long n_geom_du_pairs = 0;
+  public long n_spark_du_pairs = 0;
 }

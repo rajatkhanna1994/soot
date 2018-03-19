@@ -45,7 +45,8 @@ public class StronglyConnectedComponentsFast<N> {
 
   protected int index = 0;
 
-  protected Map<N, Integer> indexForNode, lowlinkForNode;
+  protected Map<N, Integer> indexForNode;
+  protected Map<N, Integer> lowlinkForNode;
 
   protected Stack<N> s;
 

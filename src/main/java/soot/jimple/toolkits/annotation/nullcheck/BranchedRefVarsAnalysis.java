@@ -918,8 +918,8 @@ public class BranchedRefVarsAnalysis extends ForwardBranchedFlowAnalysis {
 
 
   protected void copy(Object source, Object dest) {
-    FlowSet sourceSet = (FlowSet) source,
-        destSet = (FlowSet) dest;
+    FlowSet sourceSet = (FlowSet) source;
+    FlowSet destSet = (FlowSet) dest;
 
     sourceSet.copy(destSet);
   } // end copy

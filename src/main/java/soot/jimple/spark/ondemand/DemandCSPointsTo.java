@@ -99,7 +99,8 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
   private final boolean lazy;
   protected Stack<Pair<Integer, ImmutableStack<Integer>>> callGraphStack = new Stack<Pair<Integer, ImmutableStack<Integer>>>();
   protected HashMap<List<Object>, Set<SootMethod>> callTargetsArgCache = new HashMap<List<Object>, Set<SootMethod>>();
-  protected Map<VarAndContext, Pair<PointsToSetInternal, AllocAndContextSet>> contextsForAllocsCache = new HashMap<VarAndContext, Pair<PointsToSetInternal, AllocAndContextSet>>();
+  protected Map<VarAndContext, Pair<PointsToSetInternal, AllocAndContextSet>> contextsForAllocsCache =
+            new HashMap<VarAndContext, Pair<PointsToSetInternal, AllocAndContextSet>>();
   /**
    * if <code>true</code>, compute full points-to set for queried
    * variable
@@ -116,9 +117,11 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
   protected int recursionDepth = -1;
   protected boolean refiningCallSite = false;
   protected OTFMethodSCCManager sccManager;
-  protected Map<VarContextAndUp, Map<AllocAndContext, CallingContextSet>> upContextCache = new HashMap<VarContextAndUp, Map<AllocAndContext, CallingContextSet>>();
+  protected Map<VarContextAndUp, Map<AllocAndContext, CallingContextSet>> upContextCache =
+            new HashMap<VarContextAndUp, Map<AllocAndContext, CallingContextSet>>();
   protected ValidMatches vMatches;
-  protected Map<Local, PointsToSet> reachingObjectsCache, reachingObjectsCacheNoCGRefinement;
+  protected Map<Local, PointsToSet> reachingObjectsCache;
+  protected Map<Local, PointsToSet> reachingObjectsCacheNoCGRefinement;
   protected boolean useCache;
   /**
    * if <code>true</code>, refine the pre-computed call graph
@@ -262,6 +265,7 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
         refineP2Set(new VarAndContext(v, EMPTY_CALLSTACK), null);
         contextSensitiveResult = pointsTo;
       } catch (TerminateEarlyException e) {
+        ;
       }
       if (!fieldCheckHeuristic.runNewPass()) {
         break;
@@ -453,7 +457,7 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
         result = getFlowsToHelper(new AllocAndContext(alloc,
             EMPTY_CALLSTACK));
       } catch (TerminateEarlyException e) {
-
+        ;
       }
       if (result != null) {
         if (smallest == null || result.size() < smallest.size()) {
@@ -532,6 +536,7 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
         return false;
       }
     }
+
     Helper h = new Helper();
     h.handle(v);
     // logger.debug(""+dotGraph.numEdges() + " edges on path");
@@ -958,7 +963,7 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
         }
 
       }
-      ;
+
       UpContextEdgeHandler edgeHandler = new UpContextEdgeHandler();
       processIncomingEdges(edgeHandler, worklist);
       nesting--;
@@ -1660,7 +1665,7 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
         }
       }
     }
-    ;
+
     final Helper h = new Helper();
     h.prop(new VarAndContext(receiver, origContext));
     while (!worklist.isEmpty()) {
@@ -1945,6 +1950,7 @@ public final class DemandCSPointsTo implements PointsToAnalysis {
         }
       }
     } finally {
+      ;
     }
   }
 

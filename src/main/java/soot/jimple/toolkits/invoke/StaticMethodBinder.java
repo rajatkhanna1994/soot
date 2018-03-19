@@ -180,7 +180,8 @@ public class StaticMethodBinder extends SceneTransformer {
               Iterator newUnits = ct.getActiveBody().getUnits().iterator();
 
               while (newUnits.hasNext()) {
-                Stmt oldStmt, newStmt;
+                Stmt oldStmt;
+                Stmt newStmt;
                 oldStmt = (Stmt) oldUnits.next();
                 newStmt = (Stmt) newUnits.next();
 
@@ -235,7 +236,8 @@ public class StaticMethodBinder extends SceneTransformer {
             // type.
             // For instance, Bottle.price_static takes a cost.
             // Cost is an interface implemented by Bottle.
-            SootClass localType, parameterType;
+            SootClass localType;
+            SootClass parameterType;
             localType = ((RefType) ((InstanceInvokeExpr) ie).getBase().getType()).getSootClass();
             parameterType = target.getDeclaringClass();
 

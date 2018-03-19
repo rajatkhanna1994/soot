@@ -227,7 +227,9 @@ class ConstraintCollector extends AbstractStmtSwitch {
         }
       }
     } else if (r instanceof DoubleConstant) {
+      ;
     } else if (r instanceof FloatConstant) {
+      ;
     } else if (r instanceof IntConstant) {
       int value = ((IntConstant) r).value;
 
@@ -249,9 +251,13 @@ class ConstraintCollector extends AbstractStmtSwitch {
         right = resolver.INT;
       }
     } else if (r instanceof LongConstant) {
+      ;
     } else if (r instanceof NullConstant) {
+      ;
     } else if (r instanceof StringConstant) {
+      ;
     } else if (r instanceof ClassConstant) {
+      ;
     } else if (r instanceof BinopExpr) {
       // ******** BINOP EXPR ********
 
@@ -269,7 +275,9 @@ class ConstraintCollector extends AbstractStmtSwitch {
           lop = resolver.typeVariable((Local) lv);
         }
       } else if (lv instanceof DoubleConstant) {
+        ;
       } else if (lv instanceof FloatConstant) {
+        ;
       } else if (lv instanceof IntConstant) {
         int value = ((IntConstant) lv).value;
 
@@ -291,9 +299,13 @@ class ConstraintCollector extends AbstractStmtSwitch {
           lop = resolver.INT;
         }
       } else if (lv instanceof LongConstant) {
+        ;
       } else if (lv instanceof NullConstant) {
+        ;
       } else if (lv instanceof StringConstant) {
+        ;
       } else if (lv instanceof ClassConstant) {
+        ;
       } else {
         throw new RuntimeException("Unhandled binary expression left operand type: " + lv.getClass());
       }
@@ -304,7 +316,9 @@ class ConstraintCollector extends AbstractStmtSwitch {
           rop = resolver.typeVariable((Local) rv);
         }
       } else if (rv instanceof DoubleConstant) {
+        ;
       } else if (rv instanceof FloatConstant) {
+        ;
       } else if (rv instanceof IntConstant) {
         int value = ((IntConstant) rv).value;
 
@@ -326,9 +340,13 @@ class ConstraintCollector extends AbstractStmtSwitch {
           rop = resolver.INT;
         }
       } else if (rv instanceof LongConstant) {
+        ;
       } else if (rv instanceof NullConstant) {
+        ;
       } else if (rv instanceof StringConstant) {
+        ;
       } else if (rv instanceof ClassConstant) {
+        ;
       } else {
         throw new RuntimeException("Unhandled binary expression right operand type: " + rv.getClass());
       }
@@ -429,6 +447,7 @@ class ConstraintCollector extends AbstractStmtSwitch {
         }
       }
     } else if (r instanceof NewExpr) {
+      ;
     } else if (r instanceof NewMultiArrayExpr) {
       NewMultiArrayExpr nmae = (NewMultiArrayExpr) r;
 
@@ -460,7 +479,9 @@ class ConstraintCollector extends AbstractStmtSwitch {
           right = v;
         }
       } else if (ne.getOp() instanceof DoubleConstant) {
+        ;
       } else if (ne.getOp() instanceof FloatConstant) {
+        ;
       } else if (ne.getOp() instanceof IntConstant) {
         int value = ((IntConstant) ne.getOp()).value;
 
@@ -482,6 +503,7 @@ class ConstraintCollector extends AbstractStmtSwitch {
           right = resolver.INT;
         }
       } else if (ne.getOp() instanceof LongConstant) {
+        ;
       } else {
         throw new RuntimeException("Unhandled neg expression operand type: " + ne.getOp().getClass());
       }
@@ -552,7 +574,9 @@ class ConstraintCollector extends AbstractStmtSwitch {
           lop = resolver.typeVariable((Local) lv);
         }
       } else if (lv instanceof DoubleConstant) {
+        ;
       } else if (lv instanceof FloatConstant) {
+        ;
       } else if (lv instanceof IntConstant) {
         int value = ((IntConstant) lv).value;
 
@@ -574,9 +598,13 @@ class ConstraintCollector extends AbstractStmtSwitch {
           lop = resolver.INT;
         }
       } else if (lv instanceof LongConstant) {
+        ;
       } else if (lv instanceof NullConstant) {
+        ;
       } else if (lv instanceof StringConstant) {
+        ;
       } else if (lv instanceof ClassConstant) {
+        ;
       } else {
         throw new RuntimeException("Unhandled binary expression left operand type: " + lv.getClass());
       }
@@ -587,7 +615,9 @@ class ConstraintCollector extends AbstractStmtSwitch {
           rop = resolver.typeVariable((Local) rv);
         }
       } else if (rv instanceof DoubleConstant) {
+        ;
       } else if (rv instanceof FloatConstant) {
+        ;
       } else if (rv instanceof IntConstant) {
         int value = ((IntConstant) rv).value;
 
@@ -609,9 +639,13 @@ class ConstraintCollector extends AbstractStmtSwitch {
           rop = resolver.INT;
         }
       } else if (rv instanceof LongConstant) {
+        ;
       } else if (rv instanceof NullConstant) {
+        ;
       } else if (rv instanceof StringConstant) {
+        ;
       } else if (rv instanceof ClassConstant) {
+        ;
       } else {
         throw new RuntimeException("Unhandled binary expression right operand type: " + rv.getClass());
       }

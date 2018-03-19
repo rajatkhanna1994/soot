@@ -258,19 +258,17 @@ public class SharedHybridSet extends PointsToSetInternal {
         add(newBitVector, exclude.overflow);
         exclude = new SharedHybridSet(type, pag);
         exclude.bitVector = newBitVector;
-      }
-
-      //It's possible at this point that exclude could have been passed in non-null,
-      //but with no elements.  Simplify the rest of the algorithm by setting it to null
-      //in that case.
-      else if (exclude.bitVector == null) {
+      } else if (exclude.bitVector == null) {
+        //It's possible at this point that exclude could have been passed in non-null,
+        //but with no elements.  Simplify the rest of the algorithm by setting it to null
+        //in that case.
         exclude = null;
       }
     }
 
-    int originalSize = size(),
-        originalOnes = originalSize - overflow.size(),
-        otherBitVectorSize = other.size() - other.overflow.size();
+    int originalSize = size();
+    int originalOnes = originalSize - overflow.size();
+    int otherBitVectorSize = other.size() - other.overflow.size();
 
     // Decide on the base bitvector
     if (bitVector == null) {
@@ -315,9 +313,9 @@ public class SharedHybridSet extends PointsToSetInternal {
           }
         }
 
-        if (!newBitVectorCreated)  //if it was, then toReAdd has
-        //already been re-added
-        {
+        if (!newBitVectorCreated) {
+          //if it was, then toReAdd has
+          //already been re-added
           for (OverflowList.ListNode i = toReAdd.overflow; i != null; i = i.next) {
             add(i.elem);
           }
@@ -335,9 +333,9 @@ public class SharedHybridSet extends PointsToSetInternal {
 
       newBitVector.or(bitVector);
 
-      if (!newBitVector.equals(bitVector)) // if some elements were
-      // actually added
-      {
+      if (!newBitVector.equals(bitVector)) {
+        // if some elements were
+        // actually added
 
         //At this point newBitVector is bitVector + some new bits
 

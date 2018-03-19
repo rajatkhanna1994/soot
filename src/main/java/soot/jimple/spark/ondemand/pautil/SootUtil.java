@@ -236,7 +236,8 @@ public class SootUtil {
   }
 
   public static PointsToSetInternal constructIntersection(final PointsToSetInternal set1, final PointsToSetInternal set2, PAG pag) {
-    HybridPointsToSet hybridSet1 = null, hybridSet2 = null;
+    HybridPointsToSet hybridSet1 = null;
+    HybridPointsToSet hybridSet2 = null;
     hybridSet1 = convertToHybrid(set1);
     hybridSet2 = convertToHybrid(set2);
     HybridPointsToSet intersection = HybridPointsToSet.intersection(hybridSet1, hybridSet2, pag);
@@ -367,7 +368,8 @@ public class SootUtil {
       }
 
     };
-    return notRefTypePred.test(method.getReturnType()) && soot.jimple.spark.ondemand.genericutil.Util.forAll(method.getParameterTypes(), notRefTypePred);
+    return notRefTypePred.test(method.getReturnType()) &&
+        soot.jimple.spark.ondemand.genericutil.Util.forAll(method.getParameterTypes(), notRefTypePred);
   }
 
   public static SootMethod getMainMethod() {

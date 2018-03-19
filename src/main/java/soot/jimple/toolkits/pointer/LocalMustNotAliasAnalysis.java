@@ -53,7 +53,7 @@ import soot.toolkits.scalar.ForwardFlowAnalysis;
  * @author Patrick Lam
  */
 public class LocalMustNotAliasAnalysis extends ForwardFlowAnalysis<Unit, HashMap<Local, Set<NewExpr>>> {
-  @SuppressWarnings( {"serial", "unchecked"})
+  @SuppressWarnings({"serial", "unchecked"})
   protected static final NewExpr UNKNOWN = new AbstractNewExpr() {
     public String toString() {
       return "UNKNOWN";
@@ -88,7 +88,8 @@ public class LocalMustNotAliasAnalysis extends ForwardFlowAnalysis<Unit, HashMap
   protected void merge(HashMap<Local, Set<NewExpr>> in1, HashMap<Local, Set<NewExpr>> in2, HashMap<Local, Set<NewExpr>> o) {
 
     for (Local l : locals) {
-      Set<NewExpr> l1 = in1.get(l), l2 = in2.get(l);
+      Set<NewExpr> l1 = in1.get(l);
+      Set<NewExpr> l2 = in2.get(l);
       Set<NewExpr> out = o.get(l);
       out.clear();
       if (l1.contains(UNKNOWN) || l2.contains(UNKNOWN)) {

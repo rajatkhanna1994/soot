@@ -91,6 +91,7 @@ public class DotGraph implements Renderable {
       render(out, 0);
       out.close();
     } catch (IOException ioe) {
+      ;
     }
   }
 

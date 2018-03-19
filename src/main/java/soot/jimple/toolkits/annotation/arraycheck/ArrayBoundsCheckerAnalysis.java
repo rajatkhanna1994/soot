@@ -220,8 +220,8 @@ class ArrayBoundsCheckerAnalysis {
 
   /* merge all preds' out set */
   private void mergebunch(Object ins[], Object s, Object prevOut, Object out) {
-    WeightedDirectedSparseGraph prevgraph = (WeightedDirectedSparseGraph) prevOut,
-        outgraph = (WeightedDirectedSparseGraph) out;
+    WeightedDirectedSparseGraph prevgraph = (WeightedDirectedSparseGraph) prevOut;
+    WeightedDirectedSparseGraph outgraph = (WeightedDirectedSparseGraph) out;
 
     WeightedDirectedSparseGraph[] ingraphs
         = new WeightedDirectedSparseGraph[ins.length];
@@ -1103,7 +1103,8 @@ class ArrayBoundsCheckerAnalysis {
     // EqExpr, GeExpr, GtExpr, LeExpr, LtExpr, NeExpr
     if ((cmpcond instanceof EqExpr) ||
         (cmpcond instanceof NeExpr)) {
-      Object node1 = op1, node2 = op2;
+      Object node1 = op1;
+      Object node2 = op2;
       int weight = 0;
       if (node1 instanceof IntConstant) {
         weight = ((IntConstant) node1).value;
@@ -1128,7 +1129,8 @@ class ArrayBoundsCheckerAnalysis {
       if ((cmpcond instanceof GtExpr) ||
           // i >= j
           (cmpcond instanceof GeExpr)) {
-        Object node1 = op1, node2 = op2;
+        Object node1 = op1;
+        Object node2 = op2;
         int weight = 0;
 
         if (node1 instanceof IntConstant) {
@@ -1156,7 +1158,8 @@ class ArrayBoundsCheckerAnalysis {
         // i < j
         if ((cmpcond instanceof LtExpr) ||
             (cmpcond instanceof LeExpr)) {
-          Object node1 = op1, node2 = op2;
+          Object node1 = op1;
+          Object node2 = op2;
           int weight = 0;
 
           if (node1 instanceof IntConstant) {

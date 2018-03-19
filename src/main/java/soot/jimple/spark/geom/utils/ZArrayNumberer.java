@@ -139,7 +139,8 @@ public class ZArrayNumberer<E extends Numberable>
    * We shift the objects to the empty slots in order to ensure ids of the objects are less than the filledCells.
    */
   public void reassign() {
-    int i, j;
+    int i;
+    int j;
 
     for (i = 0, j = lastNumber - 1; i < j; ++i) {
       if (numberToObj[i] != null) {

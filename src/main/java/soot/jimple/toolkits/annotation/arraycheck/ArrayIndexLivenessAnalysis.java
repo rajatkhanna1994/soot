@@ -88,7 +88,8 @@ class ArrayIndexLivenessAnalysis extends BackwardFlowAnalysis {
   // s --> true
   HashMap<DefinitionStmt, Boolean> killAllArrayRef;
   IntContainer zero = new IntContainer(0);
-  HashMap<Object, HashSet<Value>> localToFieldRef, fieldToFieldRef;
+  HashMap<Object, HashSet<Value>> localToFieldRef;
+  HashMap<Object, HashSet<Value>> fieldToFieldRef;
   HashSet<Value> allFieldRefs;
   HashMap localToArrayRef;
   HashSet allArrayRefs;
@@ -213,9 +214,8 @@ class ArrayIndexLivenessAnalysis extends BackwardFlowAnalysis {
                 }
                 refs.add(rhs);
               }
-            }
-            // a * b, a * c, c * a
-            else if (rhs instanceof MulExpr) {
+            } else if (rhs instanceof MulExpr) {
+              // a * b, a * c, c * a
               HashSet<Value> refs = localToExpr.get(op1);
               if (refs == null) {
                 refs = new HashSet<Value>();
@@ -560,7 +560,8 @@ class ArrayIndexLivenessAnalysis extends BackwardFlowAnalysis {
     }
   }
 
-  private void getGenAndKillSet(Body body, HashMap<Stmt, HashSet<Value>> absgen, HashMap<Stmt, HashSet<Object>> gen, HashMap<Stmt, HashSet<Value>> kill, HashMap<Stmt, HashSet<Value>> condition) {
+  private void getGenAndKillSet(Body body, HashMap<Stmt, HashSet<Value>> absgen, HashMap<Stmt, HashSet<Object>> gen, HashMap<Stmt,
+                                HashSet<Value>> kill, HashMap<Stmt, HashSet<Value>> condition) {
     for (Unit u : body.getUnits()) {
       Stmt stmt = (Stmt) u;
 
