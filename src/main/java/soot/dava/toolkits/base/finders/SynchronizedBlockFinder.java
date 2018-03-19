@@ -68,7 +68,8 @@ public class SynchronizedBlockFinder implements FactFinder {
    * are used in monitors monitorEnterSet contains all enterMonitorStmts
    * Statements
    */
-  private IterableSet monitorLocalSet, monitorEnterSet;
+  private IterableSet monitorLocalSet;
+  private IterableSet monitorEnterSet;
 
   public SynchronizedBlockFinder(Singletons.Global g) {
   }
@@ -194,10 +195,10 @@ public class SynchronizedBlockFinder implements FactFinder {
                     + body.getUnits()
                     + "===============================================================\n");
           }
-        }// non null synch set for this enter monitor stmt
-      }// if the augmented stmt was a enter monitor stmt
+        } // non null synch set for this enter monitor stmt
+      } // if the augmented stmt was a enter monitor stmt
       previousStmt = as;
-    }// going through all augmented stmts
+    } // going through all augmented stmts
 
     IterableSet<AugmentedStmt> monitorFacts = body.get_MonitorFacts();
     monitorFacts.clear();
@@ -222,7 +223,8 @@ public class SynchronizedBlockFinder implements FactFinder {
     StronglyConnectedComponentsFast scc = new StronglyConnectedComponentsFast(
         asg);
     IterableSet viSeeds = new IterableSet();
-    HashMap as2color = new HashMap(), as2rml = new HashMap();
+    HashMap as2color = new HashMap();
+    HashMap as2rml = new HashMap();
 
     // as2rml contains each augmented stmt as key with a local2Level mapping
     // as value
@@ -372,11 +374,11 @@ public class SynchronizedBlockFinder implements FactFinder {
     if (s instanceof MonitorStmt) {
       Value local = ((MonitorStmt) s).getOp();
 
-      if (s instanceof EnterMonitorStmt) {// its an enter hence increase
+      if (s instanceof EnterMonitorStmt) { // its an enter hence increase
         // level for this local
         local2level.put(local, new Integer(local2level.get(local)
             .intValue() + 1));
-      } else {// its an exit stmt hence reduce level
+      } else { // its an exit stmt hence reduce level
         local2level.put(local, new Integer(local2level.get(local)
             .intValue() - 1));
       }
@@ -490,9 +492,7 @@ public class SynchronizedBlockFinder implements FactFinder {
           if (sas.get_Dominators().contains(headAs)
               && (sml >= monitorLevel)
               && (worklist.contains(sas) == false)
-              && (synchSet.contains(sas) == false))
-
-          {
+              && (synchSet.contains(sas) == false)) {
             worklist.addLast(sas);
           }
         }
@@ -607,9 +607,9 @@ public class SynchronizedBlockFinder implements FactFinder {
               .intValue();
           Stmt ps = pas.get_Stmt();
 
-          if (predLevel == UNKNOWN) // Already marked as variable
-          // increasing.
-          {
+          if (predLevel == UNKNOWN) {
+            // Already marked as variable
+            // increasing.
             continue;
           }
 
@@ -921,12 +921,12 @@ public class SynchronizedBlockFinder implements FactFinder {
             // dont remove
             remove = false;
           }
-        }// going through preds of the synchAs
+        } // going through preds of the synchAs
         if (remove) {
           // all preds not present in synchBody
           toRemove.add(synchAs);
         }
-      }// going through the synchBody
+      } // going through the synchBody
       if (toRemove.size() > 0) {
         // none of the preds of synchAs are in the synchBody hence this
         // stmt is unreachable

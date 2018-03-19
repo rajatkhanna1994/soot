@@ -263,7 +263,7 @@ public class Aggregator extends BodyTransformer {
           // usepair.unit.removeAllTags();
           usepair.unit.addAllTagsOf(s);
         }
-      } else {/*
+      } else { /*
        * if(Options.v().verbose()) {
        * logger.debug("[debug] failed aggregation");
        * logger.debug("[debug] tried to put "+aggregatee+

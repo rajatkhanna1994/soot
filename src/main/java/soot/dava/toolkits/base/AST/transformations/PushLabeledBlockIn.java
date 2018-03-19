@@ -206,7 +206,7 @@ public class PushLabeledBlockIn extends DepthFirstAdapter {
           for (AugmentedStmt as : stmtSeq.getStatements()) {
             Stmt s = as.get_Stmt();
             String labelBroken = isAbrupt(s);
-            if (labelBroken != null) {// stmt breaks some label
+            if (labelBroken != null) { // stmt breaks some label
               if (labelBroken.compareTo(toReplace) == 0) {
                 // we have found a break breaking this label
                 // replace the label with "replaceWith"
@@ -215,8 +215,8 @@ public class PushLabeledBlockIn extends DepthFirstAdapter {
               }
             }
           }
-        }// if it was a StmtSeq node
-        else {
+        } else {
+          // if it was a StmtSeq nodes
           // otherwise recursion
           boolean returnVal = replaceBreakLabels(temp, toReplace,
               replaceWith);
@@ -224,7 +224,7 @@ public class PushLabeledBlockIn extends DepthFirstAdapter {
             toReturn = true;
           }
         }
-      }// end of while
+      } // end of while
     }
     return toReturn;
   }
@@ -240,7 +240,7 @@ public class PushLabeledBlockIn extends DepthFirstAdapter {
         for (AugmentedStmt as : stmtSeq.getStatements()) {
           Stmt s = as.get_Stmt();
           String labelBroken = breaksLabel(s);
-          if (labelBroken != null && outerLabel != null) {// stmt
+          if (labelBroken != null && outerLabel != null) { // stmt
             // breaks
             // some
             // label
@@ -250,8 +250,8 @@ public class PushLabeledBlockIn extends DepthFirstAdapter {
             }
           }
         }
-      }// if it was a StmtSeq node
-      else {
+      } else {
+        // if it was a StmtSeq node
         // otherwise recursion
         // getSubBodies
         List<Object> subBodies = temp.get_SubBodies();
@@ -274,7 +274,7 @@ public class PushLabeledBlockIn extends DepthFirstAdapter {
         }
       }
       nodeNumber++;
-    }// end of while
+    } // end of while
 
     return -1;
   }

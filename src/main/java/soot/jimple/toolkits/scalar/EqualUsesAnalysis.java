@@ -80,7 +80,7 @@ public class EqualUsesAnalysis extends ForwardFlowAnalysis<Unit, FlowSet> {
     return areEqualUses(stmtToLocal, new ArrayList());
   }
 
-  public boolean areEqualUses(Map<Stmt, Local> stmtToLocal, List boundaryStmts) {// You may optionally specify start and end statements... for if you're interested only in a certain part of the method
+  public boolean areEqualUses(Map<Stmt, Local> stmtToLocal, List boundaryStmts) { // You may optionally specify start and end statements... for if you're interested only in a certain part of the method
     this.stmtToLocal = stmtToLocal;
     this.useStmts = stmtToLocal.keySet();
     this.useLocals = stmtToLocal.values();
@@ -170,15 +170,15 @@ public class EqualUsesAnalysis extends ForwardFlowAnalysis<Unit, FlowSet> {
     Iterator<Local> useLocalsIt = useLocals.iterator();
     while (useLocalsIt.hasNext()) {
       Local useLocal = useLocalsIt.next();
-      if (newDefs.contains(useLocal)) // if a relevant local was (re)def'd here
-      {
+      if (newDefs.contains(useLocal)) {
+        // if a relevant local was (re)def'd here
         Iterator<?> outIt = out.iterator();
         while (outIt.hasNext()) {
           Object o = outIt.next();
           if (o instanceof Stmt) {
             Stmt s = (Stmt) o;
-            if (stmtToLocal.get(s) == useLocal) // if a use of this local exists in the flow set
-            {
+            if (stmtToLocal.get(s) == useLocal) {
+              // if a use of this local exists in the flow set
               redefStmts.add(stmt); // mark this as an active redef stmt
             }
           }

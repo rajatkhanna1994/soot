@@ -277,7 +277,7 @@ public class Util {
         Iterator it = s.getDefBoxes().iterator();
         while (it.hasNext()) {
           soot.ValueBox vb = (soot.ValueBox) it.next();
-          if ((vb.getValue() instanceof soot.Local) && (fh.canStoreType(type, vb.getValue().getType()))) {// (vb.getValue().getType().equals(type))){
+          if ((vb.getValue() instanceof soot.Local) && (fh.canStoreType(type, vb.getValue().getType()))) { // (vb.getValue().getType().equals(type))){
             correctLocal = (soot.Local) vb.getValue();
           }
         }
@@ -295,7 +295,7 @@ public class Util {
         Iterator it = s.getDefBoxes().iterator();
         while (it.hasNext()) {
           soot.ValueBox vb = (soot.ValueBox) it.next();
-          if ((vb.getValue() instanceof soot.Local) && (fh.canStoreType(type, vb.getValue().getType()))) {// (vb.getValue().getType().equals(type))){
+          if ((vb.getValue() instanceof soot.Local) && (fh.canStoreType(type, vb.getValue().getType()))) { // (vb.getValue().getType().equals(type))){
             return true;
           }
         }

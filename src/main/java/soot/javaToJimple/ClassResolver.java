@@ -175,11 +175,9 @@ public class ClassResolver {
         addOuterClassThisRefToInit(outerType);
         addOuterClassThisRefField(outerType);
       }
-    }
-
-    // add outer class ref to constructors of inner classes
-    // and out class field ref (only for non-static inner classes
-    else if (cDecl.type().isNested() && !cDecl.flags().isStatic()) {
+    } else if (cDecl.type().isNested() && !cDecl.flags().isStatic()) {
+      // add outer class ref to constructors of inner classes
+      // and out class field ref (only for non-static inner classes
       polyglot.types.ClassType outerType = cDecl.type().outer();
       addOuterClassThisRefToInit(outerType);
       addOuterClassThisRefField(outerType);
@@ -436,7 +434,8 @@ public class ClassResolver {
     AnonLocalClassInfo info = InitialResolver.v().finalLocalInfo()
         .get(new polyglot.util.IdentityKey(aNew.anonType()));
 
-    if (aNew.qualifier() != null) {// && (!(aNew.qualifier() instanceof
+    if (aNew.qualifier() != null) {
+      // && (!(aNew.qualifier() instanceof
       // polyglot.ast.Special &&
       // ((polyglot.ast.Special)aNew.qualifier()).kind()
       // == polyglot.ast.Special.THIS)) ){

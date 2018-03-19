@@ -181,14 +181,14 @@ public class ASTCleanerTwo extends DepthFirstAdapter {
                   throw new RuntimeException("Please report benchmark to programmer");
                 }
               }
-            }//newBody was not null
+            } //newBody was not null
           }
         }
         temp.apply(this);
         nodeNumber++;
       }
       subBodyNumber++;
-    }//end of going over subBodies
+    } //end of going over subBodies
   }
 
   public void caseASTTryNode(ASTTryNode node) {
@@ -223,7 +223,7 @@ public class ASTCleanerTwo extends DepthFirstAdapter {
             G.v().ASTTransformations_modified = true;
             //System.out.println("BROKE IFELSE 10");
             return;
-          }//newBody was not null
+          } //newBody was not null
         }
       }
       temp.apply(this);
@@ -281,7 +281,7 @@ public class ASTCleanerTwo extends DepthFirstAdapter {
               G.v().ASTTransformations_modified = true;
               //System.out.println("BROKE IFELSE 11");
               return;
-            }//newBody was not null
+            } //newBody was not null
           }
         }
         temp.apply(this);
@@ -300,7 +300,7 @@ public class ASTCleanerTwo extends DepthFirstAdapter {
     Map<Object, List<Object>> index2BodyList = node.getIndex2BodyList();
 
     Iterator<Object> it = indexList.iterator();
-    while (it.hasNext()) {//going through all the cases of the switch statement
+    while (it.hasNext()) { //going through all the cases of the switch statement
       Object currentIndex = it.next();
       List<Object> body = index2BodyList.get(currentIndex);
 
@@ -334,7 +334,7 @@ public class ASTCleanerTwo extends DepthFirstAdapter {
                 G.v().ASTTransformations_modified = true;
                 //System.out.println("BROKE IFELSE 12");
                 return;
-              }//newBody was not null
+              } //newBody was not null
             }
           }
           temp.apply(this);

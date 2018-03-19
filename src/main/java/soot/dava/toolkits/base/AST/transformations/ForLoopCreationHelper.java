@@ -157,7 +157,7 @@ public class ForLoopCreationHelper {
         varToStmtMap = new HashMap<String, Integer>();
       }
       stmtNum++;
-    }// going through all statements
+    } // going through all statements
     return toReturn;
   }
 
@@ -395,7 +395,7 @@ public class ForLoopCreationHelper {
           return toReturn;
         }
       }
-    }// going through ASTNodes
+    } // going through ASTNodes
 
     return toReturn;
   }

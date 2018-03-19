@@ -348,8 +348,8 @@ public class CopyPropagation extends DepthFirstAdapter {
           }
         }
       }
-    }// end unary condition
-    else if (cond instanceof ASTBinaryCondition) {
+    } else if (cond instanceof ASTBinaryCondition) {
+      // end unary condition
       // get uses from binaryCondition
       Value val = ((ASTBinaryCondition) cond).getConditionExpr();
       Iterator it = val.getUseBoxes().iterator();

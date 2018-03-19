@@ -93,7 +93,7 @@ public class EmptyElseRemover {
         //there is no other case something is wrong if we get here
         return;
       }
-    } else {//its an ASTIfElseNode
+    } else { //its an ASTIfElseNode
       //if its an ASIfElseNode then check which Subbody has the labeledBlock
       if (subBodyNumber != 0 && subBodyNumber != 1) {
         //something bad is happening dont do nothin
@@ -127,13 +127,13 @@ public class EmptyElseRemover {
         //System.out.println("REMOVED ELSE BODY");
         G.v().ASTTransformations_modified = true;
         ((ASTIfElseNode) node).replaceBody((List<Object>) subBodies.get(0), newBody);
-      } else {//realllly shouldnt come here
+      } else { //realllly shouldnt come here
         //something bad is happening dont do nothin
         //System.out.println("Error-------not modifying AST");
         return;
       }
 
-    }//end of ASTIfElseNode
+    } //end of ASTIfElseNode
   }
 
 

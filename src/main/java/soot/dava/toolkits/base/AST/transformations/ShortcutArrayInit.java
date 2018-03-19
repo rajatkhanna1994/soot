@@ -136,7 +136,7 @@ public class ShortcutArrayInit extends DepthFirstAdapter {
           array[i] = ((DefinitionStmt) augS).getRightOpBox();
           toRemove.add(aug);
         }
-      }// end checking for 1D pattern
+      } // end checking for 1D pattern
 
       if (success) {
         DArrayInitExpr tempExpr = new DArrayInitExpr(array, arrayType);
@@ -176,7 +176,7 @@ public class ShortcutArrayInit extends DepthFirstAdapter {
         }
         break;
       }
-    }// end going through stmt seq node
+    } // end going through stmt seq node
     if (success) {
       // means we did a transformation remove the stmts
       List<AugmentedStmt> newStmtList = new ArrayList<AugmentedStmt>();
@@ -351,7 +351,7 @@ public class ShortcutArrayInit extends DepthFirstAdapter {
           toRemove.add(augOne);
           toRemove.add(augTwo);
         }
-      }// end checking for 1D pattern
+      } // end checking for 1D pattern
 
       if (success) {
         DArrayInitExpr tempExpr = new DArrayInitExpr(array, arrayType);
@@ -391,7 +391,7 @@ public class ShortcutArrayInit extends DepthFirstAdapter {
 
         break;
       }
-    }// end going through stmt seq node
+    } // end going through stmt seq node
     if (success) {
       // means we did a transformation remove the stmts
       List<AugmentedStmt> newStmtList = new ArrayList<AugmentedStmt>();

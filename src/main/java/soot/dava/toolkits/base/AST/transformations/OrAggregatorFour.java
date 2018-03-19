@@ -174,14 +174,14 @@ public class OrAggregatorFour extends DepthFirstAdapter {
     List subBody = (List) subBodies.get(0);
     Iterator it = subBody.iterator();
     int nodeNumber = 0;
-    while (it.hasNext()) {//going through the ASTNodes
+    while (it.hasNext()) { //going through the ASTNodes
       //look for a labeledBlock
       ASTNode temp = (ASTNode) it.next();
       if (temp instanceof ASTLabeledBlockNode) {
         //see if the inner pattern matches
         ASTLabeledBlockNode labeledNode = (ASTLabeledBlockNode) temp;
         String innerLabel = labeledNode.get_Label().toString();
-        if (innerLabel == null) {//label better not be null
+        if (innerLabel == null) { //label better not be null
           nodeNumber++;
           continue;
         }
@@ -211,9 +211,9 @@ public class OrAggregatorFour extends DepthFirstAdapter {
         if (whileBody != null) {
           return whileBody;
         }
-      }//if its an ASTLabeledBlockNode
+      } //if its an ASTLabeledBlockNode
       nodeNumber++;
-    }//end of going through ASTNodes
+    } //end of going through ASTNodes
     return null;
   }
 
@@ -293,7 +293,7 @@ public class OrAggregatorFour extends DepthFirstAdapter {
         //System.out.println("new"+cond);
         toReturn.add(cond);
       }
-    }//end of while
+    } //end of while
     return toReturn;
   }
 
@@ -318,7 +318,7 @@ public class OrAggregatorFour extends DepthFirstAdapter {
         //stmt does not follow the pattern
         return false;
       }
-    }//end of while going through all the bodies of the secondlabel
+    } //end of while going through all the bodies of the secondlabel
 
     //if we get here that means everything was according to the pattern
     return true;

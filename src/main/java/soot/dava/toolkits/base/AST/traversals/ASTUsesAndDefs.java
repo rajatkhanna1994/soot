@@ -124,7 +124,7 @@ public class ASTUsesAndDefs extends DepthFirstAdapter {
     while (it.hasNext()) {
       Local local = (Local) it.next();
       createUDDUChain(local, useNodeOrStatement);
-    }// end of going through all locals uses in statement
+    } // end of going through all locals uses in statement
 
     /*
      * see if this is a def stmt in which case add an empty entry into the
@@ -245,7 +245,7 @@ public class ASTUsesAndDefs extends DepthFirstAdapter {
       Local local = (Local) it.next();
       // System.out.println("creating uddu for "+local);
       createUDDUChain(local, node);
-    }// end of going through all locals uses in condition
+    } // end of going through all locals uses in condition
   }
 
   /*
@@ -270,7 +270,7 @@ public class ASTUsesAndDefs extends DepthFirstAdapter {
       Local local = (Local) it.next();
       // System.out.println(local);
       createUDDUChain(local, node);
-    }// end of going through all locals uses in switch key
+    } // end of going through all locals uses in switch key
     // System.out.println("SWITCH uses end:");
   }
 

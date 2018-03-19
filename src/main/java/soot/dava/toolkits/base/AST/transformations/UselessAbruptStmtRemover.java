@@ -172,7 +172,7 @@ public class UselessAbruptStmtRemover extends DepthFirstAdapter {
       }
 
       remove = as;
-    }//end of while going through the statement sequence
+    } //end of while going through the statement sequence
 
     if (remove != null) {
       List<AugmentedStmt> stmts = node.getStatements();

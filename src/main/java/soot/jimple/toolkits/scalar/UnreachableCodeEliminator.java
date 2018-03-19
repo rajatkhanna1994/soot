@@ -155,8 +155,7 @@ public class UnreachableCodeEliminator extends BodyTransformer {
       if (visited.add(t)) {
         q.addAll(g.getSuccsOf(t));
       }
-    }
-    while (!q.isEmpty());
+    } while (!q.isEmpty());
 
     return visited;
   }

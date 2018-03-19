@@ -127,10 +127,10 @@ public class LocalVariableCleaner extends DepthFirstAdapter {
             //in this case method returns true
             redo = removeStmt(ds);
           }
-        }//while going through defs
+        } //while going through defs
 
-      }//end else defs was not zero
-    }//going through each stmt
+      } //end else defs was not zero
+    } //going through each stmt
 
     //go through the removeList and remove all locals
     Iterator<Local> remIt = removeList.iterator();

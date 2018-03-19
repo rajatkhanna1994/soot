@@ -230,7 +230,7 @@ class MhpAnalysis {
         }
 
       }
-    }//end while
+    } //end while
     //System.err.println("finish compute genset and kill set for each nodes");
     //	testmaps();
     //testGen();
@@ -422,7 +422,7 @@ class MhpAnalysis {
           }
 
 
-        }//System.out.println("======end symmetry====");
+        } //System.out.println("======end symmetry====");
 
         //end do the symmetry step for all new nodes in M(n)
 
@@ -484,9 +484,8 @@ class MhpAnalysis {
         //System.out.print("c");
 
 
-      }
-      //if the current node is JPegStmt
-      else {
+      } else {
+        //if the current node is JPegStmt
         JPegStmt currentNode = (JPegStmt) currentObj;
 
         Tag tag = (Tag) currentNode.getTags().get(0);
@@ -548,7 +547,7 @@ class MhpAnalysis {
             throw new RuntimeException("Fail to find waiting node for: " + currentObj);
           }
 
-        }//end if notifynodes
+        } //end if notifynodes
 
         //testNotifySucc();
 
@@ -579,7 +578,7 @@ class MhpAnalysis {
                 waitingPred.getCaller().equals(currentNode.getCaller())) {
               break;
             }
-          }//end while
+          } //end while
 
 
           /* compute the notified-entry set for "obj" in (obj, notified-entry, *)
@@ -623,7 +622,7 @@ class MhpAnalysis {
               }
             }
             if (!unitToM.containsKey(waitingPredNode)) {
-
+              ;
             } else {
               FlowSet mWaitingPredM = unitToM.get(waitingPredNode);
               if (mWaitingPredM.contains(waitingPred)) {
@@ -646,7 +645,7 @@ class MhpAnalysis {
             }
           }
 
-        }//end compute GENnotifyAll(n)
+        } //end compute GENnotifyAll(n)
 
         //compute M(n) set
         FlowSet notifyPredUnion = new ArraySparseSet();
@@ -914,9 +913,7 @@ class MhpAnalysis {
               if ((JPegStmt) localSucc instanceof NotifiedEntryStmt) {
                 continue;
               } else {
-                if (!workList.contains(localSucc))
-
-                {
+                if (!workList.contains(localSucc)) {
                   workList.addLast(localSucc);
                 }
               }
@@ -947,6 +944,7 @@ class MhpAnalysis {
             //if (currentNode.getName().equals("start")){
             Map<JPegStmt, List> startToThread = g.getStartToThread();
             if (!startToThread.containsKey(currentNode)) {
+              ;
             } else {
 
               Iterator it = startToThread.get(currentNode).iterator();
@@ -985,7 +983,7 @@ class MhpAnalysis {
         //System.out.print("c");
       }
 
-    }//end while
+    } //end while
 
   }
 

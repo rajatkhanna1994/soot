@@ -208,12 +208,12 @@ public class PegChain extends HashChain {
 
             return;
           }
-        }//end if RefType
+        } //end if RefType
 
-      }//end if Local
+      } //end if Local
 
 
-    }//end if MonitorStmt
+    } //end if MonitorStmt
 
     if (((Stmt) unit).containsInvokeExpr()) {
 
@@ -361,8 +361,8 @@ public class PegChain extends HashChain {
           pg.getStartToAllocNodes().put(pegStmt, threadAllocNodesList);
 
 
-        }//end if (name.equals("start") )
-        else {
+        } else {
+          //end if (name.equals("start") )
           if (name.equals("join") && method.getDeclaringClass().getName().equals("java.lang.Thread")) {
 
             //If the may-alias of "join" has more that one elements, we can NOT kill anything.
@@ -402,7 +402,7 @@ public class PegChain extends HashChain {
                   list.add(unit);
                   joinNeedReconsidered.add(list);
                   //throw new RuntimeException("allocNodeToThread does not contains key: "+allocNode);
-                } else {//If the mayAlias contains one 1 element, then use the threadName as
+                } else { //If the mayAlias contains one 1 element, then use the threadName as
                   // the Obj of the JPegStmt.
                   //String callerName = (String)allocNodeToCaller.get(allocNode);
                   Chain thread = pg.getAllocNodeToThread().get(allocNode);
@@ -508,12 +508,10 @@ public class PegChain extends HashChain {
         }
 
 
-      }//end else if ("wait")
+      } //end else if ("wait")
 
-    }// end if containsInvokeExpr()
-
-    else {
-
+    } else {
+      // end if containsInvokeExpr()
       newAndAddElement(unit, graph, threadName, sm);
     }
 
@@ -734,7 +732,7 @@ public class PegChain extends HashChain {
       if (!pg.getAllocNodeToThread().containsKey(allocNode)) {
 
         throw new RuntimeException("allocNodeToThread does not contains key: " + allocNode);
-      } else {//If the mayAlias contains one 1 element, then use the threadName as
+      } else { //If the mayAlias contains one 1 element, then use the threadName as
         // the Obj of the JPegStmt.
         //String callerName = (String)allocNodeToCaller.get(allocNode);
         Chain thread = pg.getAllocNodeToThread().get(allocNode);

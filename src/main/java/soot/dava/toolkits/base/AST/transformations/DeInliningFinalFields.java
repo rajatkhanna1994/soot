@@ -196,8 +196,8 @@ public class DeInliningFinalFields extends DepthFirstAdapter {
           // System.out.println("adding string constant"+val);
           finalFields.put(val, f);
         }
-      }// end if final
-    }// going through fields
+      } // end if final
+    } // going through fields
   }
 
   /*
@@ -286,7 +286,7 @@ public class DeInliningFinalFields extends DepthFirstAdapter {
 
         Integer myInt = null;
         try {
-          if (myString.charAt(0) == '\'') {// character
+          if (myString.charAt(0) == '\'') { // character
             if (myString.length() < 2) {
               return null;
             }

@@ -97,8 +97,8 @@ public class DecrementIncrementStmtCreation extends DepthFirstAdapter {
             as.set_Stmt(newStmt);
           }
         }
-      }//right expr was addExpr
-    }//going through statements
+      } //right expr was addExpr
+    } //going through statements
   }
 }
 

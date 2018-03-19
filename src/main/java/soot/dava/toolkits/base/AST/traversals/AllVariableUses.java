@@ -157,7 +157,7 @@ public class AllVariableUses extends DepthFirstAdapter {
       Local local = (Local) it.next();
 
       addLocalUse(local, node);
-    }// end of going through all locals uses in switch key
+    } // end of going through all locals uses in switch key
 
     // fieldUses stores FieldRef
     it = fieldUses.iterator();
@@ -166,7 +166,7 @@ public class AllVariableUses extends DepthFirstAdapter {
       SootField sootField = field.getField();
 
       addFieldUse(sootField, node);
-    }// end of going through all FieldRef uses in switch key
+    } // end of going through all FieldRef uses in switch key
   }
 
   public void inASTStatementSequenceNode(ASTStatementSequenceNode node) {
@@ -244,7 +244,7 @@ public class AllVariableUses extends DepthFirstAdapter {
         SootField sootField = field.getField();
         addFieldUse(sootField, node);
       }
-    }// end of going through all locals uses in condition
+    } // end of going through all locals uses in condition
   }
 
   /*

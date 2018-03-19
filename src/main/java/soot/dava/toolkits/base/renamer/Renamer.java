@@ -230,7 +230,7 @@ public class Renamer {
             classNameToUse = null;
             break;
           }
-        }//going through class names stored
+        } //going through class names stored
         if (classNameToUse != null) {
           debug("castedObject", "found a classNametoUse through cast expr");
           /*
@@ -248,8 +248,8 @@ public class Renamer {
           }
           setName(tempLocal, newName);
         }
-      }//not already changed
-    }//going through locals
+      } //not already changed
+    } //going through locals
   }
 
   /*
@@ -283,7 +283,7 @@ public class Renamer {
             classNameToUse = null;
             break;
           }
-        }//going through class names stored
+        } //going through class names stored
         if (classNameToUse != null) {
           debug("newClassName", "found a classNametoUse");
           /*
@@ -301,8 +301,8 @@ public class Renamer {
           }
           setName(tempLocal, newName);
         }
-      }//not already changed
-    }//going through locals
+      } //not already changed
+    } //going through locals
 
   }
 
@@ -341,9 +341,9 @@ public class Renamer {
           }
 
           setName(tempLocal, fieldName);
-        }//only one field assigned to this local
-      }//not changed
-    }//going through locals
+        } //only one field assigned to this local
+      } //not changed
+    } //going through locals
   }
 
 

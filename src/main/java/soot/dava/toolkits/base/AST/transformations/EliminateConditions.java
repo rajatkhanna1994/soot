@@ -122,13 +122,13 @@ public class EliminateConditions extends DepthFirstAdapter {
           }
         }
         temp.apply(this);
-      }// end while going through nodes in subBody
+      } // end while going through nodes in subBody
 
       boolean changed = change(returned, temp);
       if (changed) {
         modified = true;
       }
-    }// end of going over subBodies
+    } // end of going over subBodies
 
     if (modified) {
       // repeat the whole thing
@@ -325,7 +325,7 @@ public class EliminateConditions extends DepthFirstAdapter {
         }
       }
       temp.apply(this);
-    }// end while
+    } // end while
 
     boolean changed = change(returned, temp);
     if (changed) {
@@ -503,7 +503,7 @@ public class EliminateConditions extends DepthFirstAdapter {
         if (changed) {
           modified = true;
         }
-      }// end while changed
+      } // end while changed
     }
   }
 }

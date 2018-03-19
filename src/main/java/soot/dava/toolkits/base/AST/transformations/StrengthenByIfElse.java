@@ -114,7 +114,7 @@ public class StrengthenByIfElse {
           String labelBroken = label.toString();
           String loopLabel = ((ASTLabeledNode) loopNode).get_Label()
               .toString();
-          if (labelBroken != null && loopLabel != null) {// stmt
+          if (labelBroken != null && loopLabel != null) { // stmt
             // breaks
             // some
             // label
@@ -159,12 +159,12 @@ public class StrengthenByIfElse {
               }
               return toReturn;
 
-            }// labels matched
-          }// non null labels
-        }// end of break stmt
-      }// stmt is an abrupt stmt
-      else if (stmt instanceof ReturnStmt
+            } // labels matched
+          } // non null labels
+        } // end of break stmt
+      } else if (stmt instanceof ReturnStmt
           || stmt instanceof ReturnVoidStmt) {
+        // stmt is an abrupt stmt
         if (!(loopNode instanceof ASTUnconditionalLoopNode)) {
           // this pattern is only possible for while(true)
           return null;
@@ -187,10 +187,10 @@ public class StrengthenByIfElse {
         List<AugmentedStmt> newStmts = new ArrayList<AugmentedStmt>(statements);
         toReturn.add(new ASTStatementSequenceNode(newStmts));
         return toReturn;
-      }// if stmt was a return stmt
-    }// going through the stmts
+      } // if stmt was a return stmt
+    } // going through the stmts
     return null;
-  }// end of method
+  } // end of method
 
   private static ASTWhileNode makeWhileNode(ASTIfElseNode ifElseNode,
                                             ASTNode loopNode) {
@@ -214,4 +214,4 @@ public class StrengthenByIfElse {
     return new ASTWhileNode(newLabel, newCond, loopBody);
   }
 
-}// end class
+} // end class

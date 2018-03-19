@@ -238,7 +238,7 @@ public class OrAggregatorOne extends DepthFirstAdapter {
 
       //if we get here that means this is not a break breaking the label we want
       return false;
-    }//end of while going through all the bodies of the secondlabel
+    } //end of while going through all the bodies of the secondlabel
 
     //if we get here that means everything was according to the pattern
     return true;
@@ -331,7 +331,7 @@ public class OrAggregatorOne extends DepthFirstAdapter {
         cond.flip();
         toReturn.add(cond);
       }
-    }//end of while
+    } //end of while
     return toReturn;
   }
 }

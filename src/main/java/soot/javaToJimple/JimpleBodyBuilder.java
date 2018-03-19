@@ -502,12 +502,11 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
       soot.jimple.AssignStmt assign = soot.jimple.Jimple.v().newAssignStmt(fieldLocal, fieldRef);
       body.getUnits().add(assign);
       return fieldLocal;
-    }
-    /*
-     * else { throw new
-     * RuntimeException("Trying unsuccessfully to get local: "+li.name()); }
-     */
-    else {
+    } else {
+      /*
+       * else { throw new
+       * RuntimeException("Trying unsuccessfully to get local: "+li.name()); }
+       */
       // else create access meth in outer for val$fieldname
       // get the this$0 field to find the type of an outer class - has
       // to have one because local/anon inner can't declare static
@@ -803,12 +802,11 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
         // add line and pos tags
         Util.addLnPosTags(ifStmt.getConditionBox(), expr.position());
         Util.addLnPosTags(ifStmt, expr.position());
-      }
-      // for an "if(true) goto tgt" we have to branch always; for an
-      // "if(true) goto tgt" we just
-      // do nothing at all
-      // (if boto is false then we have to reverse the meaning)
-      else if (sootCond instanceof IntConstant && (((IntConstant) sootCond).value == 1) == boto) {
+      } else if (sootCond instanceof IntConstant && (((IntConstant) sootCond).value == 1) == boto) {
+        // for an "if(true) goto tgt" we have to branch always; for an
+        // "if(true) goto tgt" we just
+        // do nothing at all
+        // (if boto is false then we have to reverse the meaning)
         soot.jimple.GotoStmt gotoStmt = soot.jimple.Jimple.v().newGotoStmt(tgt);
         body.getUnits().add(gotoStmt);
         // add line and pos tags
@@ -1141,6 +1139,7 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
               localDecl.position().column(), localDecl.position().endColumn());
         }
       } else {
+        ;
       }
       if (expr != null) {
         Util.addLnPosTags(stmt.getRightOpBox(), expr.position());
@@ -1720,9 +1719,9 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
       // try block
       soot.jimple.Stmt stopNoop = soot.jimple.Jimple.v().newNopStmt();
       body.getUnits().add(stopNoop);
-      if (beforeReturn != null) // add to the list(s) of returns to be
-      // handled in the createSynch method
-      {
+      if (beforeReturn != null) {
+        // add to the list(s) of returns to be
+        // handled in the createSynch method
         for (List<Stmt> v : beforeReturn) {
           v.add(stopNoop);
         }
@@ -1786,9 +1785,9 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
     // point of the synch try block
     soot.jimple.Stmt startNoop = soot.jimple.Jimple.v().newNopStmt();
     body.getUnits().add(startNoop);
-    if (afterReturn != null) // add to the list(s) of returns to be handled
-    // in the createSynch method
-    {
+    if (afterReturn != null) {
+      // add to the list(s) of returns to be handled
+      // in the createSynch method
       for (List<Stmt> v : afterReturn) {
         v.add(startNoop);
       }
@@ -2115,11 +2114,7 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
       return getUnaryLocal((polyglot.ast.Unary) expr);
     } else if (expr instanceof polyglot.ast.Cast) {
       return getCastLocal((polyglot.ast.Cast) expr);
-    }
-    // else if (expr instanceof polyglot.ast.ArrayInit) {
-    // array init are special and get created elsewhere
-    // }
-    else if (expr instanceof polyglot.ast.ArrayAccess) {
+    } else if (expr instanceof polyglot.ast.ArrayAccess) {
       return getArrayRefLocal((polyglot.ast.ArrayAccess) expr);
     } else if (expr instanceof polyglot.ast.NewArray) {
       return getNewArrayLocal((polyglot.ast.NewArray) expr);
@@ -3749,146 +3744,146 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
       } else {
         return tmp2;
       }
-    }
-    /*
-     * if (op == polyglot.ast.Unary.POST_INC){ soot.Local retLocal =
-     * generateLocal(expr.type()); soot.Value sootExpr =
-     * base().createExpr(expr); soot.jimple.AssignStmt preStmt =
-     * soot.jimple.Jimple.v().newAssignStmt(retLocal, sootExpr);
-     * body.getUnits().add(preStmt);
-     *
-     * soot.jimple.AddExpr addExpr =
-     * soot.jimple.Jimple.v().newAddExpr(sootExpr,
-     * getConstant(retLocal.getType(), 1));
-     *
-     * Util.addLnPosTags(addExpr.getOp1Box(), expr.position());
-     *
-     * soot.Local local = generateLocal(expr.type()); soot.jimple.AssignStmt
-     * stmt = soot.jimple.Jimple.v().newAssignStmt(local, addExpr);
-     * body.getUnits().add(stmt);
-     *
-     * Util.addLnPosTags(stmt, expr.position()); soot.jimple.AssignStmt
-     * aStmt = soot.jimple.Jimple.v().newAssignStmt(sootExpr, local);
-     * body.getUnits().add(aStmt);
-     *
-     * Util.addLnPosTags(aStmt, expr.position()); Util.addLnPosTags(aStmt,
-     * unary.position());
-     *
-     * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
-     * polyglot.ast.ArrayAccess)) { //if ((expr instanceof
-     * polyglot.ast.Field) &&
-     * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
-     * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
-     * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
-     * else { soot.Value actualUnaryExpr = createLHS(expr);
-     * soot.jimple.AssignStmt s =
-     * soot.jimple.Jimple.v().newAssignStmt(actualUnaryExpr, local);
-     * body.getUnits().add(s); Util.addLnPosTags(s, expr.position());
-     * Util.addLnPosTags(s.getLeftOpBox(), expr.position()); }
-     *
-     * } return retLocal;
-     *
-     * } else if (op == polyglot.ast.Unary.POST_DEC) { soot.Local retLocal =
-     * generateLocal(expr.type());
-     *
-     * soot.Value sootExpr = base().createExpr(expr);
-     *
-     * soot.jimple.AssignStmt preStmt =
-     * soot.jimple.Jimple.v().newAssignStmt(retLocal, sootExpr);
-     * body.getUnits().add(preStmt);
-     *
-     * soot.jimple.SubExpr subExpr =
-     * soot.jimple.Jimple.v().newSubExpr(sootExpr,
-     * getConstant(retLocal.getType(), 1));
-     * Util.addLnPosTags(subExpr.getOp1Box(), expr.position());
-     *
-     * soot.Local local = generateLocal(expr.type()); soot.jimple.AssignStmt
-     * stmt = soot.jimple.Jimple.v().newAssignStmt(local, subExpr);
-     * body.getUnits().add(stmt); Util.addLnPosTags(stmt, expr.position());
-     *
-     * soot.jimple.AssignStmt aStmt =
-     * soot.jimple.Jimple.v().newAssignStmt(sootExpr, local);
-     * body.getUnits().add(aStmt);
-     *
-     * Util.addLnPosTags(aStmt, expr.position()); Util.addLnPosTags(aStmt,
-     * unary.position());
-     *
-     * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
-     * polyglot.ast.ArrayAccess)) { //if ((expr instanceof
-     * polyglot.ast.Field) &&
-     * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
-     * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
-     * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
-     * else { soot.Value actualUnaryExpr = createLHS(expr);
-     * soot.jimple.AssignStmt s =
-     * soot.jimple.Jimple.v().newAssignStmt(actualUnaryExpr, local);
-     * body.getUnits().add(s);
-     *
-     * Util.addLnPosTags(s, expr.position());
-     * Util.addLnPosTags(s.getLeftOpBox(), expr.position()); } }
-     *
-     * return retLocal;
-     *
-     * } else if (op == polyglot.ast.Unary.PRE_INC) {
-     *
-     * soot.Value sootExpr = base().createExpr(expr);
-     *
-     * soot.jimple.AddExpr addExpr =
-     * soot.jimple.Jimple.v().newAddExpr(sootExpr,
-     * getConstant(sootExpr.getType(), 1));
-     * Util.addLnPosTags(addExpr.getOp1Box(), expr.position());
-     *
-     * soot.Local local = generateLocal(expr.type());
-     *
-     * soot.jimple.AssignStmt stmt =
-     * soot.jimple.Jimple.v().newAssignStmt(local, addExpr);
-     *
-     * body.getUnits().add(stmt); Util.addLnPosTags(stmt, expr.position());
-     *
-     * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
-     * polyglot.ast.ArrayAccess) || (expr instanceof polyglot.ast.Local)) {
-     * //if ((expr instanceof polyglot.ast.Field) &&
-     * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
-     * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
-     * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
-     * else { soot.Value actualUnaryExpr = createLHS(expr);
-     * body.getUnits().add(soot.jimple.Jimple.v().newAssignStmt(
-     * actualUnaryExpr, local)); } }
-     *
-     * return local;
-     *
-     * } else if (op == polyglot.ast.Unary.PRE_DEC) {
-     *
-     * soot.Value sootExpr = base().createExpr(expr);
-     *
-     * soot.jimple.SubExpr subExpr =
-     * soot.jimple.Jimple.v().newSubExpr(sootExpr,
-     * getConstant(sootExpr.getType(), 1));
-     * Util.addLnPosTags(subExpr.getOp1Box(), expr.position());
-     *
-     * soot.Local local = generateLocal(expr.type());
-     *
-     * soot.jimple.AssignStmt stmt =
-     * soot.jimple.Jimple.v().newAssignStmt(local, subExpr);
-     *
-     * body.getUnits().add(stmt); Util.addLnPosTags(stmt, expr.position());
-     *
-     * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
-     * polyglot.ast.ArrayAccess) || (expr instanceof polyglot.ast.Local)) {
-     *
-     * //if ((expr instanceof polyglot.ast.Field) &&
-     * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
-     * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
-     * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
-     * else { soot.Value actualUnaryExpr = createLHS(expr);
-     * body.getUnits().add(soot.jimple.Jimple.v().newAssignStmt(
-     * actualUnaryExpr, local)); } }
-     *
-     * return local;
-     *
-     * }
-     */
-    else if (op == polyglot.ast.Unary.BIT_NOT) {
+    } else if (op == polyglot.ast.Unary.BIT_NOT) {
+      /*
+       * if (op == polyglot.ast.Unary.POST_INC){ soot.Local retLocal =
+       * generateLocal(expr.type()); soot.Value sootExpr =
+       * base().createExpr(expr); soot.jimple.AssignStmt preStmt =
+       * soot.jimple.Jimple.v().newAssignStmt(retLocal, sootExpr);
+       * body.getUnits().add(preStmt);
+       *
+       * soot.jimple.AddExpr addExpr =
+       * soot.jimple.Jimple.v().newAddExpr(sootExpr,
+       * getConstant(retLocal.getType(), 1));
+       *
+       * Util.addLnPosTags(addExpr.getOp1Box(), expr.position());
+       *
+       * soot.Local local = generateLocal(expr.type()); soot.jimple.AssignStmt
+       * stmt = soot.jimple.Jimple.v().newAssignStmt(local, addExpr);
+       * body.getUnits().add(stmt);
+       *
+       * Util.addLnPosTags(stmt, expr.position()); soot.jimple.AssignStmt
+       * aStmt = soot.jimple.Jimple.v().newAssignStmt(sootExpr, local);
+       * body.getUnits().add(aStmt);
+       *
+       * Util.addLnPosTags(aStmt, expr.position()); Util.addLnPosTags(aStmt,
+       * unary.position());
+       *
+       * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
+       * polyglot.ast.ArrayAccess)) { //if ((expr instanceof
+       * polyglot.ast.Field) &&
+       * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
+       * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
+       * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
+       * else { soot.Value actualUnaryExpr = createLHS(expr);
+       * soot.jimple.AssignStmt s =
+       * soot.jimple.Jimple.v().newAssignStmt(actualUnaryExpr, local);
+       * body.getUnits().add(s); Util.addLnPosTags(s, expr.position());
+       * Util.addLnPosTags(s.getLeftOpBox(), expr.position()); }
+       *
+       * } return retLocal;
+       *
+       * } else if (op == polyglot.ast.Unary.POST_DEC) { soot.Local retLocal =
+       * generateLocal(expr.type());
+       *
+       * soot.Value sootExpr = base().createExpr(expr);
+       *
+       * soot.jimple.AssignStmt preStmt =
+       * soot.jimple.Jimple.v().newAssignStmt(retLocal, sootExpr);
+       * body.getUnits().add(preStmt);
+       *
+       * soot.jimple.SubExpr subExpr =
+       * soot.jimple.Jimple.v().newSubExpr(sootExpr,
+       * getConstant(retLocal.getType(), 1));
+       * Util.addLnPosTags(subExpr.getOp1Box(), expr.position());
+       *
+       * soot.Local local = generateLocal(expr.type()); soot.jimple.AssignStmt
+       * stmt = soot.jimple.Jimple.v().newAssignStmt(local, subExpr);
+       * body.getUnits().add(stmt); Util.addLnPosTags(stmt, expr.position());
+       *
+       * soot.jimple.AssignStmt aStmt =
+       * soot.jimple.Jimple.v().newAssignStmt(sootExpr, local);
+       * body.getUnits().add(aStmt);
+       *
+       * Util.addLnPosTags(aStmt, expr.position()); Util.addLnPosTags(aStmt,
+       * unary.position());
+       *
+       * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
+       * polyglot.ast.ArrayAccess)) { //if ((expr instanceof
+       * polyglot.ast.Field) &&
+       * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
+       * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
+       * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
+       * else { soot.Value actualUnaryExpr = createLHS(expr);
+       * soot.jimple.AssignStmt s =
+       * soot.jimple.Jimple.v().newAssignStmt(actualUnaryExpr, local);
+       * body.getUnits().add(s);
+       *
+       * Util.addLnPosTags(s, expr.position());
+       * Util.addLnPosTags(s.getLeftOpBox(), expr.position()); } }
+       *
+       * return retLocal;
+       *
+       * } else if (op == polyglot.ast.Unary.PRE_INC) {
+       *
+       * soot.Value sootExpr = base().createExpr(expr);
+       *
+       * soot.jimple.AddExpr addExpr =
+       * soot.jimple.Jimple.v().newAddExpr(sootExpr,
+       * getConstant(sootExpr.getType(), 1));
+       * Util.addLnPosTags(addExpr.getOp1Box(), expr.position());
+       *
+       * soot.Local local = generateLocal(expr.type());
+       *
+       * soot.jimple.AssignStmt stmt =
+       * soot.jimple.Jimple.v().newAssignStmt(local, addExpr);
+       *
+       * body.getUnits().add(stmt); Util.addLnPosTags(stmt, expr.position());
+       *
+       * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
+       * polyglot.ast.ArrayAccess) || (expr instanceof polyglot.ast.Local)) {
+       * //if ((expr instanceof polyglot.ast.Field) &&
+       * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
+       * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
+       * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
+       * else { soot.Value actualUnaryExpr = createLHS(expr);
+       * body.getUnits().add(soot.jimple.Jimple.v().newAssignStmt(
+       * actualUnaryExpr, local)); } }
+       *
+       * return local;
+       *
+       * } else if (op == polyglot.ast.Unary.PRE_DEC) {
+       *
+       * soot.Value sootExpr = base().createExpr(expr);
+       *
+       * soot.jimple.SubExpr subExpr =
+       * soot.jimple.Jimple.v().newSubExpr(sootExpr,
+       * getConstant(sootExpr.getType(), 1));
+       * Util.addLnPosTags(subExpr.getOp1Box(), expr.position());
+       *
+       * soot.Local local = generateLocal(expr.type());
+       *
+       * soot.jimple.AssignStmt stmt =
+       * soot.jimple.Jimple.v().newAssignStmt(local, subExpr);
+       *
+       * body.getUnits().add(stmt); Util.addLnPosTags(stmt, expr.position());
+       *
+       * if ((expr instanceof polyglot.ast.Field) || (expr instanceof
+       * polyglot.ast.ArrayAccess) || (expr instanceof polyglot.ast.Local)) {
+       *
+       * //if ((expr instanceof polyglot.ast.Field) &&
+       * (needsPrivateAccessor((polyglot.ast.Field)expr) ||
+       * needsProtectedAccessor((polyglot.ast.Field)expr))){ if
+       * (base().needsAccessor(expr)){ handlePrivateFieldSet(expr, local); }
+       * else { soot.Value actualUnaryExpr = createLHS(expr);
+       * body.getUnits().add(soot.jimple.Jimple.v().newAssignStmt(
+       * actualUnaryExpr, local)); } }
+       *
+       * return local;
+       *
+       * }
+       */
+
       soot.jimple.IntConstant int1 = soot.jimple.IntConstant.v(-1);
 
       soot.Local retLocal = generateLocal(expr.type());
@@ -4148,11 +4143,9 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
 
     if ((info != null) && (!info.inStaticMethod())) {
       return true;
-    }
-
-    // other nested
-    else if (typeToInvoke.isNested() && !typeToInvoke.flags().isStatic() && !typeToInvoke.isAnonymous()
+    } else if (typeToInvoke.isNested() && !typeToInvoke.flags().isStatic() && !typeToInvoke.isAnonymous()
         && !typeToInvoke.isLocal()) {
+      // other nested
       return true;
     }
 
@@ -4223,7 +4216,7 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
 
     polyglot.types.ClassType objType = (polyglot.types.ClassType) cInst.container();
     soot.Local qVal = null;
-    if (cCall.qualifier() != null) {// && (!(cCall.qualifier() instanceof
+    if (cCall.qualifier() != null) { // && (!(cCall.qualifier() instanceof
       // polyglot.ast.Special &&
       // ((polyglot.ast.Special)cCall.qualifier()).kind()
       // == polyglot.ast.Special.THIS)) ){
@@ -4345,7 +4338,7 @@ public class JimpleBodyBuilder extends AbstractJimpleBodyBuilder {
     soot.Value qVal = null;
     // System.out.println("new qualifier: "+newExpr.qualifier());
     // if (newExpr.qualifier() != null) {
-    if (newExpr.qualifier() != null) {// && (!(newExpr.qualifier()
+    if (newExpr.qualifier() != null) { // && (!(newExpr.qualifier()
       // instanceof polyglot.ast.Special
       // &&
       // ((polyglot.ast.Special)newExpr.qualifier()).kind()

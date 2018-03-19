@@ -178,16 +178,16 @@ public class ForLoopCreator extends DepthFirstAdapter {
                       throw new RuntimeException("Please report benchmark to programmer.");
                     }
                   }
-                }//newBody was not null
-              }//for loop creation pattern matched
-            }//the next node was a whilenode
-          }//there is a next node
-        }//temp is a stmtSeqNode
+                } //newBody was not null
+              } //for loop creation pattern matched
+            } //the next node was a whilenode
+          } //there is a next node
+        } //temp is a stmtSeqNode
         temp.apply(this);
         nodeNumber++;
-      }//end of going over nodes
+      } //end of going over nodes
       subBodyNumber++;
-    }//end of going over subBodies
+    } //end of going over subBodies
   }
 
   public void caseASTTryNode(ASTTryNode node) {
@@ -222,14 +222,14 @@ public class ForLoopCreator extends DepthFirstAdapter {
                 G.v().ASTTransformations_modified = true;
                 //System.out.println("FOR LOOP CREATED");
                 return;
-              }//newBody was not null
-            }//for loop creation pattern matched
-          }//the next node was a whilenode
-        }//there is a next node
-      }//temp is a stmtSeqNode
+              } //newBody was not null
+            } //for loop creation pattern matched
+          } //the next node was a whilenode
+        } //there is a next node
+      } //temp is a stmtSeqNode
       temp.apply(this);
       nodeNumber++;
-    }//end of while going through tryBody
+    } //end of while going through tryBody
 
 
     Map<Object, Object> exceptionMap = node.get_ExceptionMap();
@@ -284,11 +284,11 @@ public class ForLoopCreator extends DepthFirstAdapter {
                   G.v().ASTTransformations_modified = true;
                   //System.out.println("FOR LOOP CREATED");
                   return;
-                }//newBody was not null
-              }//for loop creation pattern matched
-            }//the next node was a whilenode
-          }//there is a next node
-        }//temp is a stmtSeqNode
+                } //newBody was not null
+              } //for loop creation pattern matched
+            } //the next node was a whilenode
+          } //there is a next node
+        } //temp is a stmtSeqNode
 
         temp.apply(this);
         nodeNumber++;
@@ -306,7 +306,7 @@ public class ForLoopCreator extends DepthFirstAdapter {
     Map<Object, List<Object>> index2BodyList = node.getIndex2BodyList();
 
     Iterator<Object> it = indexList.iterator();
-    while (it.hasNext()) {//going through all the cases of the switch statement
+    while (it.hasNext()) { //going through all the cases of the switch statement
       Object currentIndex = it.next();
       List<Object> body = index2BodyList.get(currentIndex);
 
@@ -345,11 +345,11 @@ public class ForLoopCreator extends DepthFirstAdapter {
                     G.v().ASTTransformations_modified = true;
                     //System.out.println("FOR LOOP CREATED");
                     return;
-                  }//newBody was not null
-                }//for loop creation pattern matched
-              }//the next node was a whilenode
-            }//there is a next node
-          }//temp is a stmtSeqNode
+                  } //newBody was not null
+                } //for loop creation pattern matched
+              } //the next node was a whilenode
+            } //there is a next node
+          } //temp is a stmtSeqNode
           temp.apply(this);
           nodeNumber++;
         }

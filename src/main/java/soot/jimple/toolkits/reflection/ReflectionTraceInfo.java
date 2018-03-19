@@ -306,5 +306,5 @@ public class ReflectionTraceInfo {
     return fieldGetReceivers.get(container);
   }
 
-  public enum Kind {ClassForName, ClassNewInstance, ConstructorNewInstance, MethodInvoke, FieldSet, FieldGet}
+  public enum Kind { ClassForName, ClassNewInstance, ConstructorNewInstance, MethodInvoke, FieldSet, FieldGet }
 }

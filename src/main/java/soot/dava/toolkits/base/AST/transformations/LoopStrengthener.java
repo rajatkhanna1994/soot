@@ -166,7 +166,7 @@ public class LoopStrengthener extends DepthFirstAdapter {
         nodeNumber++;
       }
       subBodyNumber++;
-    }//end of going over subBodies
+    } //end of going over subBodies
   }
 
   public void caseASTTryNode(ASTTryNode node) {
@@ -206,7 +206,7 @@ public class LoopStrengthener extends DepthFirstAdapter {
             UselessLabelFinder.v().findAndKill(node);
           }
         }
-      }//it was a loop node
+      } //it was a loop node
       temp.apply(this);
       nodeNumber++;
     }
@@ -268,7 +268,7 @@ public class LoopStrengthener extends DepthFirstAdapter {
               UselessLabelFinder.v().findAndKill(node);
             }
           }
-        }//it was a loop node
+        } //it was a loop node
         temp.apply(this);
         nodeNumber++;
       }
@@ -284,7 +284,7 @@ public class LoopStrengthener extends DepthFirstAdapter {
     Map<Object, List<Object>> index2BodyList = node.getIndex2BodyList();
 
     Iterator<Object> it = indexList.iterator();
-    while (it.hasNext()) {//going through all the cases of the switch statement
+    while (it.hasNext()) { //going through all the cases of the switch statement
       Object currentIndex = it.next();
       List<Object> body = index2BodyList.get(currentIndex);
 
@@ -324,7 +324,7 @@ public class LoopStrengthener extends DepthFirstAdapter {
                 UselessLabelFinder.v().findAndKill(node);
               }
             }
-          }//it was a loop node
+          } //it was a loop node
           temp.apply(this);
           nodeNumber++;
         }
@@ -420,7 +420,7 @@ public class LoopStrengthener extends DepthFirstAdapter {
         //there is no other case something is wrong if we get here
         return;
       }
-    } else {//its an ASTIfElseNode
+    } else { //its an ASTIfElseNode
       //if its an ASIfElseNode then check which Subbody has the labeledBlock
       if (subBodyNumber != 0 && subBodyNumber != 1) {
         //something bad is happening dont do nothin
@@ -454,13 +454,13 @@ public class LoopStrengthener extends DepthFirstAdapter {
         //System.out.println("Stenghtened Loop");
         G.v().ASTTransformations_modified = true;
         ((ASTIfElseNode) node).replaceBody((List<Object>) subBodies.get(0), newBody);
-      } else {//realllly shouldnt come here
+      } else { //realllly shouldnt come here
         //something bad is happening dont do nothin
         //System.out.println("Error-------not modifying AST");
         return;
       }
 
-    }//end of ASTIfElseNode
+    } //end of ASTIfElseNode
   }
 
 }
