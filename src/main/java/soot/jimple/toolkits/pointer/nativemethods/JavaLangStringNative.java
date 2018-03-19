@@ -91,6 +91,7 @@ public class JavaLangStringNative extends NativeMethodClass {
    * <p>
    * public native java.lang.String intern();
    */
+
   public void java_lang_String_intern(SootMethod method,
                                       ReferenceVariable thisVar,
                                       ReferenceVariable returnVar,

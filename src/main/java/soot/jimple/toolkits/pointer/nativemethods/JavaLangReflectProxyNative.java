@@ -69,6 +69,7 @@ public class JavaLangReflectProxyNative extends NativeMethodClass {
    * java.lang.String,
    * byte[], int, int);
    */
+
   public void java_lang_reflect_Proxy_defineClass0(SootMethod method,
                                                    ReferenceVariable thisVar,
                                                    ReferenceVariable returnVar,

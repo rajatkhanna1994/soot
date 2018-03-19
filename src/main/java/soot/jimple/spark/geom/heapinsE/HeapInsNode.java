@@ -68,7 +68,8 @@ public class HeapInsNode extends IVarAbstraction {
   // Apply the inference rules
   private static boolean add_new_points_to_tuple(SegmentNode pts, SegmentNode pe,
                                                  AllocNode obj, HeapInsNode qn) {
-    long interI, interJ;
+    long interI;
+    long interJ;
     int code = 0;
 
     // Special Cases
@@ -295,12 +296,19 @@ public class HeapInsNode extends IVarAbstraction {
    */
   @Override
   public void propagate(GeomPointsTo ptAnalyzer, IWorklist worklist) {
-    int i, j;
+    int i;
+    int j;
     AllocNode obj;
-    SegmentNode pts, pe, int_entry1[], int_entry2[];
-    HeapInsIntervalManager him1, him2;
-    HeapInsNode qn, objn;
-    boolean added, has_new_edges;
+    SegmentNode pts;
+    SegmentNode pe;
+    SegmentNode int_entry1[];
+    SegmentNode int_entry2[];
+    HeapInsIntervalManager him1;
+    HeapInsIntervalManager him2;
+    HeapInsNode qn;
+    HeapInsNode objn;
+    boolean added;
+    boolean has_new_edges;
 
     // We first build the new flow edges via the field dereferences
     if (complex_cons != null) {
@@ -468,9 +476,13 @@ public class HeapInsNode extends IVarAbstraction {
    */
   @Override
   public boolean heap_sensitive_intersection(IVarAbstraction qv) {
-    int i, j;
+    int i;
+    int j;
     HeapInsNode qn;
-    SegmentNode p, q, pt[], qt[];
+    SegmentNode p;
+    SegmentNode q;
+    SegmentNode pt[];
+    SegmentNode qt[];
 
     qn = (HeapInsNode) qv;
 
@@ -618,7 +630,8 @@ public class HeapInsNode extends IVarAbstraction {
         SegmentNode p = int_entry[i];
         while (p != null) {
           long R = p.I1 + p.L;
-          long objL = -1, objR = -1;
+          long objL = -1;
+          long objR = -1;
 
           // Now we compute which context sensitive objects are pointed to by this pointer
           if (i == HeapInsIntervalManager.ALL_TO_MANY) {

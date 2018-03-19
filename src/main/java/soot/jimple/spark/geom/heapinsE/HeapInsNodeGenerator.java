@@ -49,9 +49,11 @@ public class HeapInsNodeGenerator extends IEncodingBroker {
   public void initFlowGraph(GeomPointsTo ptAnalyzer) {
     int k;
     int n_legal_cons;
-    int nf1, nf2;
+    int nf1;
+    int nf2;
     int code;
-    IVarAbstraction my_lhs, my_rhs;
+    IVarAbstraction my_lhs;
+    IVarAbstraction my_rhs;
 
     // Visit all the simple constraints
     n_legal_cons = 0;

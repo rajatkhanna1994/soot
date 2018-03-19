@@ -100,7 +100,9 @@ public class ConstructorConfuser extends BodyTransformer implements
       return;
     }
 
-    int lowi = -1, lowest = 99999999, rand = Rand.getInt(4);
+    int lowi = -1;
+    int lowest = 99999999;
+    int rand = Rand.getInt(4);
     for (int i = 0; i < instances.length; i++) {
       if (lowest > instances[i]) {
         lowest = instances[i];

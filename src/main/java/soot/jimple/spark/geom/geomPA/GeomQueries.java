@@ -55,7 +55,9 @@ public class GeomQueries {
   protected CgEdge call_graph[];
 
   // Basic call graph info copied from geomPTA
-  protected int vis_cg[], rep_cg[], scc_size[];
+  protected int vis_cg[];
+  protected int rep_cg[];
+  protected int scc_size[];
   protected int block_num[];
   protected long max_context_size_block[];
 
@@ -234,7 +236,8 @@ public class GeomQueries {
     long offset = (L - 1) % block_size;
     long ctxtLength = R - L;
     long block_offset = 0;
-    long lEnd, rEnd;
+    long lEnd;
+    long rEnd;
 
     // We iterate all blocks of target method
     for (int i = 0; i < n_blocks; ++i) {

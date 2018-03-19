@@ -65,6 +65,7 @@ public class JavaLangThrowableNative extends NativeMethodClass {
    * <p>
    * public native java.lang.Throwable fillInStackTrace();
    */
+
   public void java_lang_Throwable_fillInStackTrace(SootMethod method,
                                                    ReferenceVariable thisVar,
                                                    ReferenceVariable returnVar,

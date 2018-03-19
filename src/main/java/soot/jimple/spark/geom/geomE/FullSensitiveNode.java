@@ -82,7 +82,8 @@ public class FullSensitiveNode extends IVarAbstraction {
    * Implement the inference rules when the input points-to figure is a one-to-one mapping.
    */
   private static int infer_pts_is_one_to_one(SegmentNode pts, SegmentNode pe, int code) {
-    long interI, interJ;
+    long interI;
+    long interJ;
 
     // The left-end is the larger one
     interI = pe.I1 < pts.I1 ? pts.I1 : pe.I1;
@@ -115,7 +116,8 @@ public class FullSensitiveNode extends IVarAbstraction {
    * Implement the inference rules when the input points-to figure is a many-to-many mapping.
    */
   private static int infer_pts_is_many_to_many(RectangleNode pts, SegmentNode pe, int code) {
-    long interI, interJ;
+    long interI;
+    long interJ;
 
     // The left-end is the larger one
     interI = pe.I1 < pts.I1 ? pts.I1 : pe.I1;
@@ -450,12 +452,19 @@ public class FullSensitiveNode extends IVarAbstraction {
    */
   @Override
   public void propagate(GeomPointsTo ptAnalyzer, IWorklist worklist) {
-    int i, j;
+    int i;
+    int j;
     AllocNode obj;
-    SegmentNode pts, pe, entry_pts[], entry_pe[];
-    GeometricManager gm1, gm2;
-    FullSensitiveNode qn, objn;
-    boolean added, hasNewPointsTo;
+    SegmentNode pts;
+    SegmentNode pe;
+    SegmentNode entry_pts[];
+    SegmentNode entry_pe[];
+    GeometricManager gm1;
+    GeometricManager gm2;
+    FullSensitiveNode qn;
+    FullSensitiveNode objn;
+    boolean added;
+    boolean hasNewPointsTo;
 
     if (pt_objs.size() == 0) {
       return;
@@ -670,9 +679,13 @@ public class FullSensitiveNode extends IVarAbstraction {
 
   @Override
   public boolean heap_sensitive_intersection(IVarAbstraction qv) {
-    int i, j;
+    int i;
+    int j;
     FullSensitiveNode qn;
-    SegmentNode p, q, pt[], qt[];
+    SegmentNode p;
+    SegmentNode q;
+    SegmentNode pt[];
+    SegmentNode qt[];
     boolean localToSameMethod;
 
     qn = (FullSensitiveNode) qv;
@@ -825,7 +838,8 @@ public class FullSensitiveNode extends IVarAbstraction {
         while (p != null) {
           long L = p.I1;
           long R = L + p.L;
-          long objL = -1, objR = -1;
+          long objL = -1;
+          long objR = -1;
 
           // Now we compute which context sensitive objects are pointed to by this pointer
           if (l <= L && L < r) {

@@ -52,7 +52,11 @@ public class OfflineProcessor {
   GeomPointsTo geomPTA;
   ZArrayNumberer<IVarAbstraction> int2var;
   ArrayList<off_graph_edge> varGraph;
-  int pre[], low[], count[], rep[], repsize[];
+  int pre[];
+  int low[];
+  int count[];
+  int rep[];
+  int repsize[];
   Deque<Integer> queue;
   int pre_cnt;
   int n_var;
@@ -523,7 +527,8 @@ public class OfflineProcessor {
    */
   protected void computeWeightsForPts() {
     int i;
-    int s, t;
+    int s;
+    int t;
     off_graph_edge p;
     IVarAbstraction node;
 
@@ -685,7 +690,8 @@ public class OfflineProcessor {
 
   class off_graph_edge {
     // Start and end of this edge
-    int s, t;
+    int s;
+    int t;
     // If this edge is created via complex constraint (e.g. p.f = q), base_var = p
     IVarAbstraction base_var;
 

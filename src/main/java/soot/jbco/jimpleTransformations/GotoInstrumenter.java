@@ -99,7 +99,8 @@ public class GotoInstrumenter extends BodyTransformer implements IJbcoTransform 
     }
 
     Chain<Trap> traps = b.getTraps();
-    int i = 0, rand = 0;
+    int i = 0;
+    int rand = 0;
     while (i++ < 10) {
       rand = Rand.getInt(size);
       if (rand < 1) {
@@ -194,6 +195,7 @@ public class GotoInstrumenter extends BodyTransformer implements IJbcoTransform 
       b.getTraps().add(Jimple.v().newTrap(throwable.getSootClass(), (Unit) units.getPredOf(oldFirst), trapEnd, handler));
       trapsAdded++;
     } catch (Exception exc) {
+      ;
     }
     gotosInstrumented++;
   }

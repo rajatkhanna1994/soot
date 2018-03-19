@@ -32,7 +32,8 @@ public class CgEdge {
   // The edge structure in soot
   public Edge sootEdge;
   // The source/destination
-  public int s, t;
+  public int s;
+  public int t;
   // The starting context of function t
   // Thus, the interval is: (1, |s|, map_offset + |s| - 1)
   public long map_offset;

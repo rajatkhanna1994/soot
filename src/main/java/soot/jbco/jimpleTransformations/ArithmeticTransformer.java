@@ -102,7 +102,8 @@ public class ArithmeticTransformer extends BodyTransformer implements IJbcoTrans
 
           MulExpr me = (MulExpr) v;
           Value op1 = me.getOp1();
-          Value op = null, op2 = me.getOp2();
+          Value op = null;
+          Value op2 = me.getOp2();
           NumericConstant nc = null;
           if (op1 instanceof NumericConstant) {
             nc = (NumericConstant) op1;
@@ -138,7 +139,8 @@ public class ArithmeticTransformer extends BodyTransformer implements IJbcoTrans
 
                 Expr e;
                 if (shft_rem[1] != null) { // if there is an additive floating component
-                  Local tmp2 = null, tmp1 = Jimple.v().newLocal(
+                  Local tmp2 = null;
+                  Local tmp1 = Jimple.v().newLocal(
                       "__tmp_shft_lcl" + localCount++, opType);
                   locals.add(tmp1);
 

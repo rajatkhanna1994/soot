@@ -30,7 +30,8 @@ public class IntervalContextVar extends ContextVar
     implements Comparable<IntervalContextVar> {
 
   // The interval is [L, R), which stands for a set of consecutive contexts
-  public long L = 0, R = 0;
+  public long L = 0;
+  public long R = 0;
 
   public IntervalContextVar() {
   }

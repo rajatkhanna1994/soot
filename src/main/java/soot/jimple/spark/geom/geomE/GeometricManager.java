@@ -248,7 +248,8 @@ public class GeometricManager extends IFigureManager {
    */
   private void filterOutDuplicates(int code, SegmentNode p) {
     boolean flag;
-    SegmentNode q_head, q_tail;
+    SegmentNode q_head;
+    SegmentNode q_tail;
     SegmentNode pold;
     int countAll;
 
@@ -325,8 +326,10 @@ public class GeometricManager extends IFigureManager {
    * @return
    */
   private RectangleNode mergeManyToMany() {
-    long x_min = Long.MAX_VALUE, y_min = Long.MAX_VALUE;
-    long x_max = Long.MIN_VALUE, y_max = Long.MIN_VALUE;
+    long x_min = Long.MAX_VALUE;
+    long y_min = Long.MAX_VALUE;
+    long x_max = Long.MIN_VALUE;
+    long y_max = Long.MIN_VALUE;
 
     RectangleNode p = (RectangleNode) header[GeometricManager.MANY_TO_MANY];
     header[GeometricManager.MANY_TO_MANY] = null;
@@ -365,8 +368,10 @@ public class GeometricManager extends IFigureManager {
    * @return
    */
   private RectangleNode mergeOneToOne() {
-    long x_min = Long.MAX_VALUE, y_min = Long.MAX_VALUE;
-    long x_max = Long.MIN_VALUE, y_max = Long.MIN_VALUE;
+    long x_min = Long.MAX_VALUE;
+    long y_min = Long.MAX_VALUE;
+    long x_max = Long.MIN_VALUE;
+    long y_max = Long.MIN_VALUE;
 
     SegmentNode p = header[GeometricManager.ONE_TO_ONE];
     header[GeometricManager.ONE_TO_ONE] = null;

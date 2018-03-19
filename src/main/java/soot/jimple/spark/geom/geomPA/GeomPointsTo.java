@@ -108,13 +108,18 @@ public class GeomPointsTo extends PAG {
    * Context size records the total number of instances for a function.
    * max_context_size_block is the context size of the largest block for a function in cycle
    */
-  public long context_size[], max_context_size_block[];
+  public long context_size[];
+  public long max_context_size_block[];
   // Number of context blocks for a function
   public int block_num[];
   // Analysis statistics
-  public int max_scc_size, max_scc_id;
-  public int n_func, n_calls;
-  public int n_reach_methods, n_reach_user_methods, n_reach_spark_user_methods;
+  public int max_scc_size;
+  public int max_scc_id;
+  public int n_func;
+  public int n_calls;
+  public int n_reach_methods;
+  public int n_reach_user_methods;
+  public int n_reach_spark_user_methods;
   public int n_init_constraints;
   // Output options
   public String dump_dir = null;
@@ -144,7 +149,11 @@ public class GeomPointsTo extends PAG {
   protected Deque<Integer> queue_cg = null;
 
   // Containers used for call graph traversal
-  protected int vis_cg[], low_cg[], rep_cg[], indeg_cg[], scc_size[];
+  protected int vis_cg[];
+  protected int low_cg[];
+  protected int rep_cg[];
+  protected int indeg_cg[];
+  protected int scc_size[];
   protected int pre_cnt;            // preorder time-stamp for constructing the SCC condensed call graph
 
   // The mappings between Soot functions and call edges to our internal representations
@@ -296,7 +305,7 @@ public class GeomPointsTo extends PAG {
       } catch (FileNotFoundException e) {
         validMethods = null;
       } catch (IOException e) {
-
+        ;
       }
     }
 
@@ -335,7 +344,8 @@ public class GeomPointsTo extends PAG {
    */
   private void preprocess() {
     int id;
-    int s, t;
+    int s;
+    int t;
 
     // Build the call graph
     n_func = Scene.v().getReachableMethods().size() + 1;
@@ -530,8 +540,10 @@ public class GeomPointsTo extends PAG {
    * If q has unique incoming edge p -> q, p and q are both local to the same function, and they have the same type, we merge them.
    */
   private void mergeLocalVariables() {
-    IVarAbstraction my_lhs, my_rhs;
-    Node lhs, rhs;
+    IVarAbstraction my_lhs;
+    IVarAbstraction my_rhs;
+    Node lhs;
+    Node rhs;
 
     int[] count = new int[pointers.size()];
 
@@ -649,8 +661,10 @@ public class GeomPointsTo extends PAG {
    * Also permit clients to decide whether to connect the disjoint parts in the call graph or not.
    */
   private void encodeContexts(boolean connectMissedEntries) {
-    int i, j;
-    int n_reachable = 0, n_scc_reachable = 0;
+    int i;
+    int j;
+    int n_reachable = 0;
+    int n_scc_reachable = 0;
     int n_full = 0;
     long max_contexts = Long.MIN_VALUE;
     Random rGen = new Random();
@@ -764,9 +778,8 @@ public class GeomPointsTo extends PAG {
               start = Constants.MAX_CONTEXTS - max_context_size_block[i];
               max_context_size_block[j] = Constants.MAX_CONTEXTS;
             } else {
-              if (max_context_size_block[j] < start + max_context_size_block[i])
-              // We compensate the difference
-              {
+              if (max_context_size_block[j] < start + max_context_size_block[i]) {
+                // We compensate the difference
                 max_context_size_block[j] = start + max_context_size_block[i];
               }
             }
@@ -806,9 +819,8 @@ public class GeomPointsTo extends PAG {
 
         // Put all the call edges back
         CgEdge p = call_graph[i];
-        while (p.next.s == i)
-        // p.next.s may not be i because it would be linked to another scc member
-        {
+        while (p.next.s == i) {
+          // p.next.s may not be i because it would be linked to another scc member
           p = p.next;
         }
 
@@ -907,7 +919,8 @@ public class GeomPointsTo extends PAG {
    * Remove unreachable call targets at the virtual callsites using the up-to-date points-to information.
    */
   private int updateCallGraph() {
-    int all_virtual_edges = 0, n_obsoleted = 0;
+    int all_virtual_edges = 0;
+    int n_obsoleted = 0;
 
     CallGraph cg = Scene.v().getCallGraph();
     ChunkedQueue<SootMethod> targetsQueue = new ChunkedQueue<SootMethod>();
@@ -1277,7 +1290,8 @@ public class GeomPointsTo extends PAG {
    * This function computes the whole program points-to information.
    */
   public void solve() {
-    long solve_time = 0, prepare_time = 0;
+    long solve_time = 0;
+    long prepare_time = 0;
     long mem;
     int rounds;
     int n_obs;
@@ -1379,7 +1393,8 @@ public class GeomPointsTo extends PAG {
    * @param qryNodes: the set of nodes that would be refined by geomPA.
    */
   public void ddSolve(Set<Node> qryNodes) {
-    long solve_time = 0, prepare_time = 0;
+    long solve_time = 0;
+    long prepare_time = 0;
 
     if (hasExecuted == false) {
       solve();
@@ -1558,9 +1573,8 @@ public class GeomPointsTo extends PAG {
    * Get the call edges calling into the method @param fid.
    */
   public LinkedList<CgEdge> getCallEdgesInto(int fid) {
-    if (rev_call_graph == null)
-    // We build the reversed call graph on demand
-    {
+    if (rev_call_graph == null) {
+      // We build the reversed call graph on demand
       buildRevCallGraph();
     }
 

@@ -56,8 +56,8 @@ abstract public class AbstractGrimpIntLongBinopExpr
     }
 
     if (op2 instanceof Precedence) {
-      int opPrec = ((Precedence) op2).getPrecedence(),
-          myPrec = getPrecedence();
+      int opPrec = ((Precedence) op2).getPrecedence();
+      int myPrec = getPrecedence();
 
       if ((opPrec < myPrec) ||
           ((opPrec == myPrec) && ((this instanceof SubExpr) || (this instanceof DivExpr)))) {
@@ -69,8 +69,10 @@ abstract public class AbstractGrimpIntLongBinopExpr
   }
 
   public String toString() {
-    Value op1 = op1Box.getValue(), op2 = op2Box.getValue();
-    String leftOp = op1.toString(), rightOp = op2.toString();
+    Value op1 = op1Box.getValue();
+    Value op2 = op2Box.getValue();
+    String leftOp = op1.toString();
+    String rightOp = op2.toString();
 
     return toString(op1, op2, leftOp, rightOp);
   }

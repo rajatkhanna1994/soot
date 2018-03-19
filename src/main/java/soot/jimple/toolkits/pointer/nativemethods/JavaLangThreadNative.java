@@ -66,6 +66,7 @@ public class JavaLangThreadNative extends NativeMethodClass {
    * <p>
    * public static native java.lang.Thread currentThread();
    */
+
   public void java_lang_Thread_currentThread(SootMethod method,
                                              ReferenceVariable thisVar,
                                              ReferenceVariable returnVar,

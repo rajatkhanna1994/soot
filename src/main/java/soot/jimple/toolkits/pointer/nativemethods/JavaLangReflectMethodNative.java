@@ -87,6 +87,7 @@ public class JavaLangReflectMethodNative extends NativeMethodClass {
    * java.lang.IllegalArgumentException,
    * java.lang.reflect.InvocationTargetException
    */
+
   public void java_lang_reflect_Method_invoke(SootMethod method,
                                               ReferenceVariable thisVar,
                                               ReferenceVariable returnVar,

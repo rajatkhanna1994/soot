@@ -52,7 +52,8 @@ public class DexArrayInitReducer extends BodyTransformer {
     }
 
     // Look for a chain of two constant assignments followed by an array put
-    Unit u1 = null, u2 = null;
+    Unit u1 = null;
+    Unit u2 = null;
     for (Iterator<Unit> uIt = b.getUnits().snapshotIterator(); uIt.hasNext(); ) {
       Unit u = uIt.next();
 
@@ -90,8 +91,10 @@ public class DexArrayInitReducer extends BodyTransformer {
 
           // Remove the unnecessary assignments
           Unit checkU = u;
-          boolean foundU1 = false, foundU2 = false,
-              doneU1 = false, doneU2 = false;
+          boolean foundU1 = false;
+          boolean foundU2 = false;
+          boolean doneU1 = false;
+          boolean doneU2 = false;
           while (!(doneU1 && doneU2) && !(foundU1 && foundU2) && checkU != null) {
             // Does the current statement use the value?
             for (ValueBox vb : checkU.getUseBoxes()) {

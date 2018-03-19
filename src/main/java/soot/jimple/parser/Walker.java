@@ -712,7 +712,9 @@ public class Walker extends DepthFirstAdapter {
 
   public void outACatchClause(ACatchClause node) {
     String exceptionName;
-    UnitBox withUnit, fromUnit, toUnit;
+    UnitBox withUnit;
+    UnitBox fromUnit;
+    UnitBox toUnit;
 
     withUnit = Jimple.v().newStmtBox(null);
     addBoxToPatch((String) mProductions.removeLast(), withUnit);
@@ -838,7 +840,8 @@ public class Walker extends DepthFirstAdapter {
     List<UnitBox> targets = new ArrayList<UnitBox>();
     UnitBox defaultTarget = null;
 
-    int lowIndex = 0, highIndex = 0;
+    int lowIndex = 0;
+    int highIndex = 0;
 
     if (node.getCaseStmt() != null) {
       int size = node.getCaseStmt().size();
@@ -1339,7 +1342,8 @@ public class Walker extends DepthFirstAdapter {
    */
 
   public void outAFieldSignature(AFieldSignature node) {
-    String className, fieldName;
+    String className;
+    String fieldName;
     Type t;
 
     fieldName = (String) mProductions.removeLast();
@@ -1478,7 +1482,8 @@ public class Walker extends DepthFirstAdapter {
   }
 
   public void outAUnnamedMethodSignature(AUnnamedMethodSignature node) {
-    String className, methodName;
+    String className;
+    String methodName;
     List parameterList = new ArrayList();
     if (node.getParameterList() != null) {
       parameterList = (List) mProductions.removeLast();
@@ -1498,7 +1503,8 @@ public class Walker extends DepthFirstAdapter {
    * [method_name]:name l_paren parameter_list? r_paren cmpgt;
    */
   public void outAMethodSignature(AMethodSignature node) {
-    String className, methodName;
+    String className;
+    String methodName;
     List parameterList = new ArrayList();
     if (node.getParameterList() != null) {
       parameterList = (List) mProductions.removeLast();

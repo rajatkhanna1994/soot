@@ -82,6 +82,7 @@ public class JavaLangReflectArrayNative extends NativeMethodClass {
    * throws java.lang.IllegalArgumentException,
    * java.lang.ArrayIndexOutOfBoundsException;
    */
+
   public void java_lang_reflect_Array_get(SootMethod method,
                                           ReferenceVariable thisVar,
                                           ReferenceVariable returnVar,

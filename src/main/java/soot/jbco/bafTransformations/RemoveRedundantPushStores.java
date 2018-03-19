@@ -42,7 +42,9 @@ public class RemoveRedundantPushStores extends BodyTransformer implements IJbcoT
     PatchingChain<Unit> units = b.getUnits();
     while (changed) {
       changed = false;
-      Unit prevprevprev = null, prevprev = null, prev = null;
+      Unit prevprevprev = null;
+      Unit prevprev = null;
+      Unit prev = null;
       ExceptionalUnitGraph eug = new ExceptionalUnitGraph(b);
       Iterator<Unit> it = units.snapshotIterator();
       while (it.hasNext()) {

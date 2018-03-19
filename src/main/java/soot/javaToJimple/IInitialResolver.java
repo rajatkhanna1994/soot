@@ -33,7 +33,8 @@ public interface IInitialResolver {
   public Dependencies resolveFromJavaFile(SootClass sc);
 
   public class Dependencies {
-    public final Set<Type> typesToHierarchy, typesToSignature;
+    public final Set<Type> typesToHierarchy;
+    public final Set<Type> typesToSignature;
 
     public Dependencies() {
       typesToHierarchy = new HashSet<Type>();

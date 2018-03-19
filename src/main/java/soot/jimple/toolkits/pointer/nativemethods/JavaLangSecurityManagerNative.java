@@ -81,6 +81,7 @@ public class JavaLangSecurityManagerNative extends NativeMethodClass {
    * <p>
    * protected native java.lang.Class getClassContext()[];
    */
+
   public void java_lang_SecurityManager_getClassContext(SootMethod method,
                                                         ReferenceVariable thisVar,
                                                         ReferenceVariable returnVar,

@@ -65,6 +65,7 @@ public class JavaIoFileSystemNative extends NativeMethodClass {
    * <p>
    * public static native java.io.FileSystem getFileSystem();
    */
+
   public void java_io_FileSystem_getFileSystem(SootMethod method,
                                                ReferenceVariable thisVar,
                                                ReferenceVariable returnVar,

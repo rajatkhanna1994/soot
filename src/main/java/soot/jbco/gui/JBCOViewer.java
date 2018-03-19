@@ -31,8 +31,15 @@ public class JBCOViewer extends javax.swing.JFrame {
   private static final Logger logger = LoggerFactory.getLogger(JBCOViewer.class);
   static int previousSelected = -1;
   static ListModel models[] = new ListModel[20];
-  static String[][] optionStrings = new String[][] {{"Rename Classes", "Rename Methods", "Rename Fields", "Build API Buffer Methods", "Build Library Buffer Classes", "Goto Instruction Augmentation", "Add Dead Switch Statements", "Convert Arith. Expr. To Bit Ops", "Convert Branches to JSR Instructions", "Disobey Constructor Conventions", "Reuse Duplicate Sequences", "Replace If(Non)Nulls with Try-Catch", "Indirect If Instructions", "Pack Locals into Bitfields", "Reorder Loads Above Ifs", "Combine Try and Catch Blocks", "Embed Constants in Fields", "Partially Trap Switches"},
-      {"wjtp.jbco_cr", "wjtp.jbco_mr", "wjtp.jbco_fr", "wjtp.jbco_bapibm", "wjtp.jbco_blbc", "jtp.jbco_gia", "jtp.jbco_adss", "jtp.jbco_cae2bo", "bb.jbco_cb2ji", "bb.jbco_dcc", "bb.jbco_rds", "bb.jbco_riitcb", "bb.jbco_iii", "bb.jbco_plvb", "bb.jbco_rlaii", "bb.jbco_ctbcb", "bb.jbco_ecvf", "bb.jbco_ptss"}};
+  static String[][] optionStrings = new String[][] {{"Rename Classes", "Rename Methods",
+      "Rename Fields", "Build API Buffer Methods", "Build Library Buffer Classes", "Goto Instruction Augmentation",
+      "Add Dead Switch Statements", "Convert Arith. Expr. To Bit Ops", "Convert Branches to JSR Instructions", "Disobey Constructor Conventions",
+      "Reuse Duplicate Sequences", "Replace If(Non)Nulls with Try-Catch", "Indirect If Instructions",
+      "Pack Locals into Bitfields", "Reorder Loads Above Ifs", "Combine Try and Catch Blocks", "Embed Constants in Fields",
+      "Partially Trap Switches"},
+      {"wjtp.jbco_cr", "wjtp.jbco_mr", "wjtp.jbco_fr", "wjtp.jbco_bapibm", "wjtp.jbco_blbc", "jtp.jbco_gia", "jtp.jbco_adss", "jtp.jbco_cae2bo",
+          "bb.jbco_cb2ji", "bb.jbco_dcc", "bb.jbco_rds", "bb.jbco_riitcb", "bb.jbco_iii", "bb.jbco_plvb", "bb.jbco_rlaii",
+          "bb.jbco_ctbcb", "bb.jbco_ecvf", "bb.jbco_ptss"}};
   static int[][] defaultWeights = new int[][] {{9, 9, 9, 9, 9, 9, 6, 9, 0, 0, 3, 9, 6, 3, 9, 9, 0, 0,},
       {0, 0, 0, 0, 9, 6, 0, 9, 9, 9, 0, 9, 0, 0, 9, 9, 0, 9,},
       {5, 5, 5, 6, 9, 9, 5, 9, 9, 5, 7, 9, 9, 2, 9, 9, 0, 9,}};
@@ -600,7 +607,8 @@ public class JBCOViewer extends javax.swing.JFrame {
                   }
                 }
 
-                Integer min = null, max = null;
+                Integer min = null;
+                Integer max = null;
                 try {
                   min = new Integer(TextFieldMinMem.getText());
                 } catch (NumberFormatException nfe) {

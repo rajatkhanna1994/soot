@@ -27,7 +27,8 @@ package soot.jimple.spark.geom.dataRep;
  */
 public class SimpleInterval
     implements Comparable<SimpleInterval> {
-  public long L, R;
+  public long L;
+  public long R;
 
   public SimpleInterval() {
     L = 0;

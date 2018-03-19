@@ -68,8 +68,10 @@ public class GArrayRef extends JArrayRef implements Precedence {
   }
 
   public String toString() {
-    Value op1 = getBase(), op2 = getIndex();
-    String leftOp = op1.toString(), rightOp = op2.toString();
+    Value op1 = getBase();
+    Value op2 = getIndex();
+    String leftOp = op1.toString();
+    String rightOp = op2.toString();
 
     return toString(op1, leftOp, rightOp);
   }

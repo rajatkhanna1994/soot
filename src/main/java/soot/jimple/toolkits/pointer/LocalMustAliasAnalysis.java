@@ -65,7 +65,8 @@ import soot.toolkits.scalar.ForwardFlowAnalysis;
  * P.S. The idea behind this analysis and the way it assigns numbers is very
  * similar to what is described in the paper:
  * Lapkowski, C. and Hendren, L. J. 1996. Extended SSA numbering: introducing SSA properties to languages with multi-level pointers.
- * In Proceedings of the 1996 Conference of the Centre For Advanced Studies on Collaborative Research (Toronto, Ontario, Canada, November 12 - 14, 1996).
+ * In Proceedings of the 1996 Conference of the Centre For Advanced Studies on Collaborative Research
+ * (Toronto, Ontario, Canada, November 12 - 14, 1996).
  * M. Bauer, K. Bennet, M. Gentleman, H. Johnson, K. Lyons, and J. Slonim, Eds. IBM Centre for Advanced Studies Conference. IBM Press, 23.
  * <p>
  * Only major differences: Here we only use primary numbers, no secondary numbers. Further, we use the call graph to determine fields
@@ -210,7 +211,8 @@ public class LocalMustAliasAnalysis extends ForwardFlowAnalysis<Unit, HashMap<Va
   @Override
   protected void merge(Unit succUnit, HashMap<Value, Integer> inMap1, HashMap<Value, Integer> inMap2, HashMap<Value, Integer> outMap) {
     for (Value l : localsAndFieldRefs) {
-      Integer i1 = inMap1.get(l), i2 = inMap2.get(l);
+      Integer i1 = inMap1.get(l);
+      Integer i2 = inMap2.get(l);
       if (i1 == null) {
         outMap.put(l, i2);
       } else if (i2 == null) {

@@ -40,7 +40,8 @@ public class DexFileProvider {
 
     @Override
     public int compare(DexContainer o1, DexContainer o2) {
-      String s1 = o1.getDexName(), s2 = o2.getDexName();
+      String s1 = o1.getDexName();
+      String s2 = o2.getDexName();
 
       // "classes.dex" has highest priority
       if (s1.equals("classes.dex")) {
@@ -135,7 +136,8 @@ public class DexFileProvider {
       List<File> dexFiles = getAllDexFilesInDirectory(dexSource);
       if (dexFiles.size() > 1 && !Options.v().process_multiple_dex()) {
         File file = dexFiles.get(0);
-        logger.warn("Multiple dex files detected, only processing '" + file.getCanonicalPath() + "'. Use '-process-multiple-dex' option to process them all.");
+        logger.warn("Multiple dex files detected, only processing '" + file.getCanonicalPath()
+            + "'. Use '-process-multiple-dex' option to process them all.");
         return Collections.singletonList(file);
       } else {
         return dexFiles;
@@ -196,7 +198,8 @@ public class DexFileProvider {
       String entryName = entryNameIterator.previous();
       DexBackedDexFile entry = dexContainer.getEntry(entryName);
       entryName = deriveDexName(entryName);
-      logger.debug("" + String.format("Found dex file '%s' with %d classes in '%s'", entryName, entry.getClasses().size(), dexSourceFile.getCanonicalPath()));
+      logger.debug("" + String.format("Found dex file '%s' with %d classes in '%s'",
+          entryName, entry.getClasses().size(), dexSourceFile.getCanonicalPath()));
 
       if (multiple_dex) {
         dexMap.put(entryName, new DexContainer(entry, entryName, dexSourceFile));
