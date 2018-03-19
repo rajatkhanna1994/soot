@@ -138,10 +138,10 @@ public class EqualLocalsAnalysis extends ForwardFlowAnalysis {
               out.remove(newDefsIt.next());
             }
           }
-        } else // before finding a def for l, just keep track of all definition statements
-        // note that if l is redefined, then we'll miss existing values that then
-        // become equal to l.  It is suboptimal but correct to miss these values.
-        {
+        } else {
+          // before finding a def for l, just keep track of all definition statements
+          // note that if l is redefined, then we'll miss existing values that then
+          // become equal to l.  It is suboptimal but correct to miss these values.
           out.add(stmt);
         }
       }

@@ -101,9 +101,8 @@ public class NullnessAnalysis extends ForwardBranchedFlowAnalysis<NullnessAnalys
     if (s instanceof JIfStmt) {
       JIfStmt ifStmt = (JIfStmt) s;
       handleIfStmt(ifStmt, in, out, outBranch);
-    }
-    //in case of a monitor statement, we know that if it succeeds, we have a non-null value
-    else if (s instanceof MonitorStmt) {
+    } else if (s instanceof MonitorStmt) {
+      //in case of a monitor statement, we know that if it succeeds, we have a non-null value
       MonitorStmt monitorStmt = (MonitorStmt) s;
       out.put(monitorStmt.getOp(), NON_NULL);
     }
@@ -188,13 +187,11 @@ public class NullnessAnalysis extends ForwardBranchedFlowAnalysis<NullnessAnalys
 
     //if we compare a local with null then process further...
     if (val != null && val instanceof Local) {
-      if (eqExpr instanceof JEqExpr)
-      //a==null
-      {
+      if (eqExpr instanceof JEqExpr) {
+        //a==null
         handleEquality(val, out, outBranch);
-      } else if (eqExpr instanceof JNeExpr)
-      //a!=null
-      {
+      } else if (eqExpr instanceof JNeExpr) {
+        //a!=null
         handleNonEquality(val, out, outBranch);
       } else {
         throw new IllegalStateException("unexpected condition: " + eqExpr.getClass());

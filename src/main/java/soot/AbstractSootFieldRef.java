@@ -106,10 +106,9 @@ public class AbstractSootFieldRef implements SootFieldRef {
       SootField clField = cl.getFieldUnsafe(name, type);
       if (clField != null) {
         return checkStatic(clField);
-      }
-      // If we have a phantom class, we directly construct a phantom field
-      // in it and don't care about superclasses.
-      else if (Scene.v().allowsPhantomRefs() && cl.isPhantom()) {
+      } else if (Scene.v().allowsPhantomRefs() && cl.isPhantom()) {
+        // If we have a phantom class, we directly construct a phantom field
+        // in it and don't care about superclasses.
         synchronized (cl) {
           // Check that no other thread has created the field in the
           // meantime

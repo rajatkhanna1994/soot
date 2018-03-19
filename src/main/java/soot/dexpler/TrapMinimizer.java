@@ -105,9 +105,9 @@ public class TrapMinimizer extends TrapTransformer {
           // unit before the
           // current unit 'u'.
           updateTrap = true;
-          if (firstTrapStmt == u) // do not add an empty trap, but set
-          // updateTrap to true
-          {
+          if (firstTrapStmt == u) {
+            // do not add an empty trap, but set
+            // updateTrap to true
             continue;
           }
           Trap t = Jimple.v().newTrap(tr.getException(), firstTrapStmt, u, tr.getHandlerUnit());

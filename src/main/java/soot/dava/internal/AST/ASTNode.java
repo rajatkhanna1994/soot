@@ -30,9 +30,8 @@ import soot.dava.toolkits.base.AST.ASTAnalysis;
 import soot.dava.toolkits.base.AST.analysis.Analysis;
 
 public abstract class ASTNode extends AbstractUnit {
-  public static final String
-      TAB = "    ",
-      NEWLINE = "\n";
+  public static final String TAB = "    ";
+  public static final String NEWLINE = "\n";
 
   protected List<Object> subBodies;
 

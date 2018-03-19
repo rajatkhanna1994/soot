@@ -47,7 +47,10 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
   private HashMap<AugmentedStmt, AugmentedStmt> original2clone;
   private IterableSet<AugmentedStmt> aug_list;
   private IterableSet<Stmt> stmt_list;
-  private List<AugmentedStmt> bheads, btails, cheads, ctails;
+  private List<AugmentedStmt> bheads;
+  private List<AugmentedStmt> btails;
+  private List<AugmentedStmt> cheads;
+  private List<AugmentedStmt> ctails;
 
   public AugmentedStmtGraph(AugmentedStmtGraph other) {
     this();
@@ -425,7 +428,8 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
   private void mirror_PredsSuccs(AugmentedStmt as, UnitGraph ug) {
     Stmt s = as.get_Stmt();
 
-    LinkedList<AugmentedStmt> preds = new LinkedList<AugmentedStmt>(), succs = new LinkedList<AugmentedStmt>();
+    LinkedList<AugmentedStmt> preds = new LinkedList<AugmentedStmt>();
+    LinkedList<AugmentedStmt> succs = new LinkedList<AugmentedStmt>();
 
     // mirror the predecessors
     for (Unit u : ug.getPredsOf(s)) {
@@ -471,8 +475,8 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
   }
 
   public IterableSet<AugmentedStmt> clone_Body(IterableSet<AugmentedStmt> oldBody) {
-    HashMap<AugmentedStmt, AugmentedStmt> old2new = new HashMap<AugmentedStmt, AugmentedStmt>(),
-        new2old = new HashMap<AugmentedStmt, AugmentedStmt>();
+    HashMap<AugmentedStmt, AugmentedStmt> old2new = new HashMap<AugmentedStmt, AugmentedStmt>();
+    HashMap<AugmentedStmt, AugmentedStmt> new2old = new HashMap<AugmentedStmt, AugmentedStmt>();
 
     IterableSet<AugmentedStmt> newBody = new IterableSet<AugmentedStmt>();
 
@@ -511,10 +515,12 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
     for (AugmentedStmt nas : newBody) {
       AugmentedStmt oas = (AugmentedStmt) new2old.get(nas);
 
-      Stmt ns = nas.get_Stmt(), os = oas.get_Stmt();
+      Stmt ns = nas.get_Stmt();
+      Stmt os = oas.get_Stmt();
 
       if (os instanceof IfStmt) {
-        Unit target = ((IfStmt) os).getTarget(), newTgt = null;
+        Unit target = ((IfStmt) os).getTarget();
+        Unit newTgt = null;
 
         if ((newTgt = so2n.get(target)) != null) {
           ((IfStmt) ns).setTarget(newTgt);
@@ -522,9 +528,11 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
           ((IfStmt) ns).setTarget(target);
         }
       } else if (os instanceof TableSwitchStmt) {
-        TableSwitchStmt otss = (TableSwitchStmt) os, ntss = (TableSwitchStmt) ns;
+        TableSwitchStmt otss = (TableSwitchStmt) os;
+        TableSwitchStmt ntss = (TableSwitchStmt) ns;
 
-        Unit target = otss.getDefaultTarget(), newTgt = null;
+        Unit target = otss.getDefaultTarget();
+        Unit newTgt = null;
 
         if ((newTgt = so2n.get(target)) != null) {
           ntss.setDefaultTarget(newTgt);
@@ -547,9 +555,11 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
         }
         ntss.setTargets(new_target_list);
       } else if (os instanceof LookupSwitchStmt) {
-        LookupSwitchStmt olss = (LookupSwitchStmt) os, nlss = (LookupSwitchStmt) ns;
+        LookupSwitchStmt olss = (LookupSwitchStmt) os;
+        LookupSwitchStmt nlss = (LookupSwitchStmt) ns;
 
-        Unit target = olss.getDefaultTarget(), newTgt = null;
+        Unit target = olss.getDefaultTarget();
+        Unit newTgt = null;
 
         if ((newTgt = so2n.get(target)) != null) {
           nlss.setDefaultTarget(newTgt);
@@ -647,11 +657,9 @@ public class AugmentedStmtGraph implements DirectedGraph<AugmentedStmt> {
             pred_intersection.add(pas);
           }
           first_pred = false;
-        }
-
-        // for the subsequent predecessors remove the ones they do not
-        // have from the intersection
-        else {
+        } else {
+          // for the subsequent predecessors remove the ones they do not
+          // have from the intersection
           Iterator<AugmentedStmt> piit = pred_intersection
               .snapshotIterator();
           while (piit.hasNext()) {

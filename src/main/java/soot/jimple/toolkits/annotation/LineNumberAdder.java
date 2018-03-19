@@ -83,9 +83,8 @@ public class LineNumberAdder extends SceneTransformer {
           // already taken
           if (lineToMeth.containsKey(new Integer(line_num))) {
             meth.addTag(new LineNumberTag(line_num + 1));
-          }
-          // still available - so use it for this meth
-          else {
+          } else {
+            // still available - so use it for this meth
             meth.addTag(new LineNumberTag(line_num));
           }
         }

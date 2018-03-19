@@ -32,9 +32,8 @@ public class AllSharedHybridNodes {
     //speed/memory tradeoff
 
     public void add(int size, PointsToBitVector toAdd) {
-      if (map.length < size + 1)
-      // if the `map' array isn't big enough
-      {
+      if (map.length < size + 1) {
+        // if the `map' array isn't big enough
         // TODO: The paper says it does some rearranging at this point
         LinkedList[] newMap = new LinkedList[size * INCREASE_FACTOR];
         System.arraycopy(map, 0, newMap, 0, map.length);

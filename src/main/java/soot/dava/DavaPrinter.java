@@ -398,8 +398,8 @@ public class DavaPrinter {
               // field"+f.getDeclaration());
               out.println("    " + declaration + ";");
             }
-          } // field is static final
-          else {
+          } else {
+            // field is static final
             out.println("    " + declaration + ";");
           }
         }

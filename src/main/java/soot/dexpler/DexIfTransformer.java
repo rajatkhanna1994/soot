@@ -401,10 +401,10 @@ public class DexIfTransformer extends AbstractNullTransformer {
           }
         } // for defs
 
-        if (doBreak) // as soon as one def or use refers to an object
-        // all defs from the two locals in the if must
-        // be updated
-        {
+        if (doBreak) {
+          // as soon as one def or use refers to an object
+          // all defs from the two locals in the if must
+          // be updated
           break;
         }
 

@@ -616,8 +616,8 @@ public class LoadStoreOptimizer extends BodyTransformer {
               logger.debug("xxx: success due: 0, SUCCESS ");
             }
             return SUCCESS;
-          }
-                /* xxx broken data depensie problem.
+          } else if (minStackHeightAttained < 0) {
+            /* xxx broken data depensie problem.
 		  else if (minStackHeightAttained == -1 && stackHeight == -1) { // try to make it more generic
                     Unit u = (Unit) block.getPredOf(from);
                     if(u instanceof FieldGetInst)
@@ -628,9 +628,8 @@ public class LoadStoreOptimizer extends BodyTransformer {
                             block.insertBefore(from, to);
                             if(debug) { logger.debug("xxx: success due to 1, SPECIAL_SUCCESS2");}
                             return SPECIAL_SUCCESS2;
-                        }                    
+                        }
 			}*/
-          else if (minStackHeightAttained < 0) {
             return pushStoreToLoad(from, to, block);
           }
         }
@@ -736,8 +735,8 @@ public class LoadStoreOptimizer extends BodyTransformer {
      *
      * @return true if aUnitToMove can be moved past aUnitToGoOver.
      */
-    private boolean canMoveUnitOver(Unit aUnitToMove, Unit aUnitToGoOver) // xxx missing cases
-    {
+    private boolean canMoveUnitOver(Unit aUnitToMove, Unit aUnitToGoOver) {
+      // xxx missing cases
 
       // can't change method call order or change fieldargInst and method call order
       if ((aUnitToGoOver instanceof MethodArgInst && aUnitToMove instanceof MethodArgInst) ||
@@ -1022,9 +1021,8 @@ public class LoadStoreOptimizer extends BodyTransformer {
                   }
                 }
               }
-            }
-            // second optimization
-            else if (defs.size() == 2) {
+            } else if (defs.size() == 2) {
+              // second optimization
 
               Unit def0 = defs.get(0);
               Unit def1 = defs.get(1);

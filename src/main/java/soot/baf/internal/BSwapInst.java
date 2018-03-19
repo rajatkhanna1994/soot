@@ -36,7 +36,8 @@ import soot.util.Switch;
 
 public class BSwapInst extends AbstractInst implements SwapInst {
 
-  protected Type mFromType, mToType;
+  protected Type mFromType;
+  protected Type  mToType;
 
 
   public BSwapInst(Type fromType, Type toType) {

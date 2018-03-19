@@ -575,10 +575,10 @@ public class DexAnnotation {
             name = null;
           }
 
-          if (name != null && name.matches("^\\d*$")) // anonymous or
-          // local inner
-          // classes
-          {
+          if (name != null && name.matches("^\\d*$")) {
+            // anonymous or
+            // local inner
+            // classes
             name = null;
           }
 
@@ -832,8 +832,7 @@ public class DexAnnotation {
     if ("system".equals(AnnotationVisibility.getVisibility(visibility))) {
       return AnnotationConstants.RUNTIME_INVISIBLE;
     }
-    if ("build".equals(AnnotationVisibility.getVisibility(visibility)))//
-    {
+    if ("build".equals(AnnotationVisibility.getVisibility(visibility))) {
       return AnnotationConstants.SOURCE_VISIBLE;
     }
     throw new RuntimeException("error: unknown annotation visibility: '" + visibility + "'");

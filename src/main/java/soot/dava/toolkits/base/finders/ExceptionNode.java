@@ -35,7 +35,8 @@ import soot.util.IterableSet;
 public class ExceptionNode {
   private static final Logger logger = LoggerFactory.getLogger(ExceptionNode.class);
   private final IterableSet<AugmentedStmt> body;
-  private IterableSet<AugmentedStmt> tryBody, catchBody;
+  private IterableSet<AugmentedStmt> tryBody;
+  private IterableSet<AugmentedStmt> catchBody;
   private boolean dirty;
   private List<AugmentedStmt> exitList;
   private LinkedList<IterableSet<AugmentedStmt>> catchList;
@@ -177,7 +178,8 @@ public class ExceptionNode {
 
     asg.clone_Body(catchBody);
 
-    AugmentedStmt oldCatchTarget = handlerAugmentedStmt, newCatchTarget = asg
+    AugmentedStmt oldCatchTarget = handlerAugmentedStmt;
+    AugmentedStmt newCatchTarget = asg
         .get_CloneOf(handlerAugmentedStmt);
 
     for (AugmentedStmt as : newTryBody) {

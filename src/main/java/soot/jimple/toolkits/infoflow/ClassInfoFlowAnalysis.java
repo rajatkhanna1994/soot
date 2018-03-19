@@ -104,8 +104,8 @@ public class ClassInfoFlowAnalysis {
       methodToInfoFlowSummary.put(method, dataFlowGraph);
 
       // Then do smart version that does follow invoke expressions, if possible
-      if (method.isConcrete() && doFullAnalysis)// && method.getDeclaringClass().isApplicationClass())
-      {
+      if (method.isConcrete() && doFullAnalysis) {
+        // && method.getDeclaringClass().isApplicationClass())
         Body b = method.retrieveActiveBody();
         UnitGraph g = new ExceptionalUnitGraph(b);
         SmartMethodInfoFlowAnalysis smdfa = new SmartMethodInfoFlowAnalysis(g, dfa);
@@ -262,8 +262,8 @@ public class ClassInfoFlowAnalysis {
     if (superclass.hasSuperclass()) {
       superclass = sm.getDeclaringClass().getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       for (SootField scField : superclass.getFields()) {
         if (scField.isStatic() || !sm.isStatic()) {
           EquivalentValue fieldRefEqVal = InfoFlowAnalysis.getNodeForFieldRef(sm, scField);
@@ -347,8 +347,8 @@ public class ClassInfoFlowAnalysis {
     if (superclass.hasSuperclass()) {
       superclass = sm.getDeclaringClass().getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       Iterator<SootField> scFieldsIt = superclass.getFields().iterator();
       while (scFieldsIt.hasNext()) {
         SootField scField = scFieldsIt.next();

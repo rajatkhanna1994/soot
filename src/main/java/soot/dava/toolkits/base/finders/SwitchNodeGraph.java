@@ -27,7 +27,8 @@ import java.util.List;
 import soot.toolkits.graph.DirectedGraph;
 
 class SwitchNodeGraph implements DirectedGraph {
-  private final LinkedList heads, tails;
+  private final LinkedList heads;
+  private final LinkedList tails;
   private final HashMap binding;
   private LinkedList body;
 

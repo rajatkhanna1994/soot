@@ -126,7 +126,8 @@ public class CFG {
    */
   private method_info method;
   private Instruction sentinel;
-  private Hashtable<Instruction, BasicBlock> h2bb, t2bb;
+  private Hashtable<Instruction, BasicBlock> h2bb;
+  private Hashtable<Instruction, BasicBlock> t2bb;
   /* bootstrap methods table */
   private BootstrapMethods_attribute bootstrap_methods_attribute;
 
@@ -176,7 +177,8 @@ public class CFG {
    * instruction after.
    */
   private static Instruction buildBasicBlock(Instruction head) {
-    Instruction insn, next;
+    Instruction insn;
+    Instruction next;
     insn = head;
     next = insn.next;
 
@@ -204,7 +206,10 @@ public class CFG {
 
     BasicBlock b = this.cfg;
     HashMap<BasicBlock, Integer> block2exc = new HashMap<BasicBlock, Integer>();
-    int tmp, nodes = 0, edges = 0, highest = 0;
+    int tmp;
+    int nodes = 0;
+    int edges = 0;
+    int highest = 0;
 
     while (b != null) {
       tmp = 0;
@@ -974,8 +979,7 @@ public class CFG {
               CONSTANT_Class_info classinfo = (CONSTANT_Class_info)
                   constant_pool[catchType];
 
-              String name = ((CONSTANT_Utf8_info) (constant_pool[classinfo.name_index])).
-                  convert();
+              String name = ((CONSTANT_Utf8_info) (constant_pool[classinfo.name_index])).convert();
               name = name.replace('/', '.');
 
               exception = cm.getSootClass(name);
@@ -1113,8 +1117,8 @@ public class CFG {
             } else {
               // logger.debug("considering successor: " + s);
 
-              TypeStack newTypeStack,
-                  oldTypeStack = instructionToTypeStack.get(s);
+              TypeStack newTypeStack;
+              TypeStack oldTypeStack = instructionToTypeStack.get(s);
 
               if (handlerInstructions.contains(s)) {
                 // The type stack for an instruction handler should always be that of
@@ -1232,8 +1236,7 @@ public class CFG {
         }
 
         if (!instructionToFirstStmt.containsKey(targetIns)) {
-          throw new RuntimeException
-              ("Exception handler does not coincide with jimple instruction");
+          throw new RuntimeException("Exception handler does not coincide with jimple instruction");
         }
 
         SootClass exception;
@@ -1738,15 +1741,15 @@ public class CFG {
         break;
 
       case ByteCode.DUP2: {
-        Type topType = typeStack.get(typeStack.topIndex()),
-            secondType = typeStack.get(typeStack.topIndex() - 1);
+        Type topType = typeStack.get(typeStack.topIndex());
+        Type secondType = typeStack.get(typeStack.topIndex() - 1);
         typeStack = (typeStack.push(secondType)).push(topType);
         break;
       }
 
       case ByteCode.DUP_X1: {
-        Type topType = typeStack.get(typeStack.topIndex()),
-            secondType = typeStack.get(typeStack.topIndex() - 1);
+        Type topType = typeStack.get(typeStack.topIndex());
+        Type secondType = typeStack.get(typeStack.topIndex() - 1);
 
         typeStack = typeStack.pop().pop();
 
@@ -1755,9 +1758,9 @@ public class CFG {
       }
 
       case ByteCode.DUP_X2: {
-        Type topType = typeStack.get(typeStack.topIndex()),
-            secondType = typeStack.get(typeStack.topIndex() - 1),
-            thirdType = typeStack.get(typeStack.topIndex() - 2);
+        Type topType = typeStack.get(typeStack.topIndex());
+        Type secondType = typeStack.get(typeStack.topIndex() - 1);
+        Type thirdType = typeStack.get(typeStack.topIndex() - 2);
 
         typeStack = typeStack.pop().pop().pop();
 
@@ -1766,27 +1769,25 @@ public class CFG {
       }
 
       case ByteCode.DUP2_X1: {
-        Type topType = typeStack.get(typeStack.topIndex()),
-            secondType = typeStack.get(typeStack.topIndex() - 1),
-            thirdType = typeStack.get(typeStack.topIndex() - 2);
+        Type topType = typeStack.get(typeStack.topIndex());
+        Type secondType = typeStack.get(typeStack.topIndex() - 1);
+        Type thirdType = typeStack.get(typeStack.topIndex() - 2);
 
         typeStack = typeStack.pop().pop().pop();
 
-        typeStack = typeStack.push(secondType).push(topType).
-            push(thirdType).push(secondType).push(topType);
+        typeStack = typeStack.push(secondType).push(topType).push(thirdType).push(secondType).push(topType);
         break;
       }
 
       case ByteCode.DUP2_X2: {
-        Type topType = typeStack.get(typeStack.topIndex()),
-            secondType = typeStack.get(typeStack.topIndex() - 1),
-            thirdType = typeStack.get(typeStack.topIndex() - 2),
-            fourthType = typeStack.get(typeStack.topIndex() - 3);
+        Type topType = typeStack.get(typeStack.topIndex());
+        Type secondType = typeStack.get(typeStack.topIndex() - 1);
+        Type thirdType = typeStack.get(typeStack.topIndex() - 2);
+        Type fourthType = typeStack.get(typeStack.topIndex() - 3);
 
         typeStack = typeStack.pop().pop().pop().pop();
 
-        typeStack = typeStack.push(secondType).push(topType).
-            push(fourthType).push(thirdType).push(secondType).push(topType);
+        typeStack = typeStack.push(secondType).push(topType).push(fourthType).push(thirdType).push(secondType).push(topType);
         break;
       }
 
@@ -2531,7 +2532,8 @@ public class CFG {
    * @see jimpleTargetFixup
    */
   private void processTargetFixup(BBQ bbq) {
-    BasicBlock b, p;
+    BasicBlock b;
+    BasicBlock p;
     Stmt s;
     while (!bbq.isEmpty()) {
       try {
@@ -2741,7 +2743,10 @@ public class CFG {
                       cp_info constant_pool[],
                       List<Stmt> statements, BasicBlock basicBlock) {
     Value[] params;
-    Local l1 = null, l2 = null, l3 = null, l4 = null;
+    Local l1 = null;
+    Local l2 = null;
+    Local l3 = null;
+    Local l4 = null;
 
     Expr rhs = null;
     ConditionExpr co = null;
@@ -3076,8 +3081,7 @@ public class CFG {
               typeStack.topIndex() - bdims + j + 1));
         }
 
-        String mstype = constant_pool[((Instruction_Multianewarray) ins).arg_i].
-            toString(constant_pool);
+        String mstype = constant_pool[((Instruction_Multianewarray) ins).arg_i].toString(constant_pool);
 
         ArrayType jimpleType = (ArrayType) Util.v().jimpleTypeOfFieldDescriptor(mstype);
 
@@ -3907,8 +3911,8 @@ public class CFG {
         break;
 
       case ByteCode.TABLESWITCH: {
-        int lowIndex = ((Instruction_Tableswitch) ins).low,
-            highIndex = ((Instruction_Tableswitch) ins).high;
+        int lowIndex = ((Instruction_Tableswitch) ins).low;
+        int highIndex = ((Instruction_Tableswitch) ins).high;
 
         int npairs = highIndex - lowIndex + 1;
 
@@ -3951,8 +3955,7 @@ public class CFG {
             (CONSTANT_NameAndType_info) constant_pool[fieldInfo.name_and_type_index];
 
         String fieldName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-            convert();
+        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).convert();
 
         Type fieldType = Util.v().jimpleTypeOfFieldDescriptor(fieldDescriptor);
 
@@ -3985,8 +3988,7 @@ public class CFG {
             (CONSTANT_NameAndType_info) constant_pool[fieldInfo.name_and_type_index];
 
         String fieldName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-            convert();
+        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).convert();
 
         if (className.charAt(0) == '[') {
           className = "java.lang.Object";
@@ -4023,8 +4025,7 @@ public class CFG {
             (CONSTANT_NameAndType_info) constant_pool[fieldInfo.name_and_type_index];
 
         String fieldName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-            convert();
+        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).convert();
 
         Type fieldType = Util.v().jimpleTypeOfFieldDescriptor(fieldDescriptor);
 
@@ -4054,8 +4055,7 @@ public class CFG {
             (CONSTANT_NameAndType_info) constant_pool[fieldInfo.name_and_type_index];
 
         String fieldName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-            convert();
+        String fieldDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).convert();
 
         Type fieldType = Util.v().jimpleTypeOfFieldDescriptor(fieldDescriptor);
 
@@ -4100,8 +4100,7 @@ public class CFG {
         CONSTANT_NameAndType_info nameAndTypeInfo = (CONSTANT_NameAndType_info) constant_pool[iv_info.name_and_type_index];
 
         String methodName = ((CONSTANT_Utf8_info) (constant_pool[nameAndTypeInfo.name_index])).convert();
-        String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[nameAndTypeInfo.descriptor_index])).
-            convert();
+        String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[nameAndTypeInfo.descriptor_index])).convert();
 
         SootClass bclass = cm.getSootClass(SootClass.INVOKEDYNAMIC_DUMMY_CLASS_NAME);
 
@@ -4388,8 +4387,7 @@ public class CFG {
         (CONSTANT_NameAndType_info) constant_pool[methodInfo.getNameAndTypeIndex()];
 
     String methodName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-    String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-        convert();
+    String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).convert();
 
     if (className.charAt(0) == '[') {
       className = "java.lang.Object";

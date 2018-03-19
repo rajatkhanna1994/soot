@@ -19,8 +19,8 @@ public class CallChain {
 
   public CallChain(Edge edge, CallChain next) {
     this.edge = edge;
-    if (next != null && next.edge == null && next.next == null) // ignore the empty chain...
-    {
+    if (next != null && next.edge == null && next.next == null) {
+      // ignore the empty chain...
       this.next = null;
     } else {
       this.next = next;

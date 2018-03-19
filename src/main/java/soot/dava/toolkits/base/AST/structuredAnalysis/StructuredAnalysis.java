@@ -169,7 +169,8 @@ public abstract class StructuredAnalysis<E> {
    */
   DavaFlowSet<E> NOPATH = emptyFlowSet();
   // storing before and after sets for each stmt or ASTNode
-  HashMap<Object, DavaFlowSet<E>> beforeSets, afterSets;
+  HashMap<Object, DavaFlowSet<E>> beforeSets;
+  HashMap<Object, DavaFlowSet<E>> afterSets;
 
   public StructuredAnalysis() {
     beforeSets = new HashMap<Object, DavaFlowSet<E>>();
@@ -304,7 +305,7 @@ public abstract class StructuredAnalysis<E> {
           result = processASTNode((ASTNode) temp, result);
           afterSets.put(temp, result);
         }
-      }// end of going through list
+      } // end of going through list
 
       // at this point the result var contains the result of processing
       // the List
@@ -562,7 +563,8 @@ public abstract class StructuredAnalysis<E> {
   }
 
   public DavaFlowSet<E> processASTDoWhileNode(ASTDoWhileNode node, DavaFlowSet<E> input) {
-    DavaFlowSet<E> lastin = null, output = null;
+    DavaFlowSet<E> lastin = null;
+    DavaFlowSet<E> output = null;
     DavaFlowSet<E> initialInput = cloneFlowSet(input);
     String label = getLabel(node);
     if (DEBUG_WHILE) {
@@ -697,7 +699,7 @@ public abstract class StructuredAnalysis<E> {
 
     List<DavaFlowSet<E>> toMergeBreaks = new ArrayList<DavaFlowSet<E>>();
 
-    while (it.hasNext()) {// going through all the cases of the switch
+    while (it.hasNext()) { // going through all the cases of the switch
       // statement
       Object currentIndex = it.next();
       List body = index2BodyList.get(currentIndex);
@@ -717,12 +719,12 @@ public abstract class StructuredAnalysis<E> {
 
         // the input to the next can be a fall through or directly input
         input = merge(out, initialIn);
-      }// body was non null
+      } // body was non null
     }
 
     // have to handle the case when no case matches. The input is the output
     DavaFlowSet<E> output = null;
-    if (out != null) {// just to make sure that there were some cases
+    if (out != null) { // just to make sure that there were some cases
       // present
 
       /*
@@ -886,13 +888,13 @@ public abstract class StructuredAnalysis<E> {
       out = in1.clone();
       out.copyInternalDataFrom(in2);
       return out; // meaning return NOPATH
-    } else {// both are not NOPATH
+    } else { // both are not NOPATH
       out = emptyFlowSet();
-      if (MERGETYPE == 1)// union
-      {
+      if (MERGETYPE == 1) {
+        // union
         in1.union(in2, out);
-      } else if (MERGETYPE == 2)// intersection
-      {
+      } else if (MERGETYPE == 2) {
+        // intersection
         in1.intersection(in2, out);
       } else {
         throw new RuntimeException("Merge type value" + MERGETYPE + " not recognized");
@@ -924,8 +926,8 @@ public abstract class StructuredAnalysis<E> {
           // merge this with toReturn
           toReturn = merge(toReturn, it.next());
         }
-      }// a non empty explicitSet was found
-    }// label not null could have explicit sets
+      } // a non empty explicitSet was found
+    } // label not null could have explicit sets
 
     // toReturn contains result of dealing with explicit stmts
 
@@ -1013,7 +1015,7 @@ public abstract class StructuredAnalysis<E> {
         // merge this with toReturn
         toReturn = merge(toReturn, it.next());
       }
-    }// a non empty breakSet was found
+    } // a non empty breakSet was found
 
     // dealing with implicit set now
 

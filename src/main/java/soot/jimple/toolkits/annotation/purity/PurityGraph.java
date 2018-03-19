@@ -1036,8 +1036,8 @@ public class PurityGraph {
       }
       nb++;
     }
-    if (right != null) // (1) rule for "this" argument
-    {
+    if (right != null) {
+      // (1) rule for "this" argument
       mu.putAll(PurityThisNode.node, locals.get(right));
     }
 
@@ -1199,9 +1199,8 @@ public class PurityGraph {
     while (it.hasNext()) {
       PurityNode n = (PurityNode) it.next();
       if (!escaping.contains(n)) {
-        if (n.isLoad())
-        // remove captured load nodes
-        {
+        if (n.isLoad()) {
+          // remove captured load nodes
           removeNode(n);
         } else {
           // ... and outside edges from captured nodes

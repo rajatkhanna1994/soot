@@ -116,7 +116,8 @@ public class CycleFinder implements FactFinder {
         AugmentedStmt entry_point = (AugmentedStmt) entry_points
             .getFirst();
         AugmentedStmt characterizing_stmt = find_CharacterizingStmt(
-            entry_point, node_list, wasg), succ_stmt = null;
+            entry_point, node_list, wasg);
+        AugmentedStmt succ_stmt = null;
 
         if (characterizing_stmt != null) {
           for (AugmentedStmt au : characterizing_stmt.bsuccs) {
@@ -427,9 +428,7 @@ public class CycleFinder implements FactFinder {
             && (sas.get_Dominators().contains(asg_ep))) {
 
           if ((boundary_stmt != null)
-              && ((wsas.get_Reachers().contains(boundary_stmt)) || (wsas == boundary_stmt)))
-
-          {
+              && ((wsas.get_Reachers().contains(boundary_stmt)) || (wsas == boundary_stmt))) {
             continue;
           }
 
@@ -472,9 +471,9 @@ public class CycleFinder implements FactFinder {
         entry_points.size() - 2, targets, defaultTarget);
     AugmentedStmt dispatchStmt = new AugmentedStmt(tss);
 
-    IterableSet<AugmentedStmt> predecessorSet = new IterableSet<AugmentedStmt>(),
-        indirectionStmtSet = new IterableSet<AugmentedStmt>(),
-        directionStmtSet = new IterableSet<AugmentedStmt>();
+    IterableSet<AugmentedStmt> predecessorSet = new IterableSet<AugmentedStmt>();
+    IterableSet<AugmentedStmt> indirectionStmtSet = new IterableSet<AugmentedStmt>();
+    IterableSet<AugmentedStmt> directionStmtSet = new IterableSet<AugmentedStmt>();
 
     int count = 0;
     Iterator<AugmentedStmt> epit = entry_points.iterator();
@@ -578,7 +577,8 @@ public class CycleFinder implements FactFinder {
     Iterator<AugmentedStmt> epit = entry_points.iterator();
     while (epit.hasNext()) {
       AugmentedStmt entryPoint = epit.next();
-      HashSet<AugmentedStmt> touchSet = new HashSet<AugmentedStmt>(), backTargets = new HashSet<AugmentedStmt>();
+      HashSet<AugmentedStmt> touchSet = new HashSet<AugmentedStmt>();
+      HashSet<AugmentedStmt> backTargets = new HashSet<AugmentedStmt>();
 
       touchSet.add(entryPoint);
       DFS(entryPoint, touchSet, backTargets, scc);

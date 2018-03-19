@@ -42,7 +42,7 @@ import soot.jimple.Jimple;
 import soot.jimple.internal.AbstractInvokeExpr;
 import soot.util.Switch;
 
-@SuppressWarnings( {"serial", "rawtypes", "unchecked"})
+@SuppressWarnings({"serial", "rawtypes", "unchecked"})
 public class GDynamicInvokeExpr extends AbstractInvokeExpr implements DynamicInvokeExpr {
   protected ValueBox[] bsmArgBoxes;
   protected int tag;

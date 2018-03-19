@@ -12,8 +12,8 @@ import soot.toolkits.graph.UnitGraph;
 
 // EncapsulatedMethodAnalysis written by Richard L. Halpert, 2006-12-26
 
-public class EncapsulatedMethodAnalysis // extends ForwardFlowAnalysis
-{
+public class EncapsulatedMethodAnalysis {
+  // extends ForwardFlowAnalysis
   boolean isMethodPure;
   boolean isMethodConditionallyPure;
 

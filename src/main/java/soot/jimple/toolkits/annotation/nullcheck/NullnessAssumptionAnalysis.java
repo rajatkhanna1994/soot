@@ -96,9 +96,8 @@ public class NullnessAssumptionAnalysis extends BackwardFlowAnalysis {
   /**
    * {@inheritDoc}
    */
-  protected void flowThrough(Object inValue, Object unit, Object outValue)
-//	protected void flowThrough(Object flowin, Unit u, List fallOut, List branchOuts)
-  {
+  protected void flowThrough(Object inValue, Object unit, Object outValue) {
+    //	protected void flowThrough(Object flowin, Unit u, List fallOut, List branchOuts)
     AnalysisInfo in = (AnalysisInfo) inValue;
     AnalysisInfo out = new AnalysisInfo(in);
 
@@ -274,8 +273,8 @@ public class NullnessAssumptionAnalysis extends BackwardFlowAnalysis {
       Object result;
       // This needs to be corrected for assumption *** TODO
       //TOP stays TOP
-      if (leftAndRight.contains(BOTTOM)) // if on either side we know nothing... then together we know nothing for sure
-      {
+      if (leftAndRight.contains(BOTTOM)) {
+        // if on either side we know nothing... then together we know nothing for sure
         result = BOTTOM;
       } else if (leftAndRight.contains(NON_NULL)) {
         if (leftAndRight.contains(NULL)) {

@@ -560,16 +560,15 @@ public abstract class AbstractASMBackend {
 
           generateAnnotationElems(av, at.getElems(), true);
         }
-      }
-      /*
-       * Here TypeAnnotations could be visited potentially. Currently
-       * (2015/02/03) they are not supported by the ASM-front-end and
-       * their information is not accessible.
-       */
-
-      // Visit AnnotationDefault on methods
-      else if (host instanceof SootMethod
+      } else if (host instanceof SootMethod
           && t instanceof AnnotationDefaultTag) {
+        /*
+         * Here TypeAnnotations could be visited potentially. Currently
+         * (2015/02/03) they are not supported by the ASM-front-end and
+         * their information is not accessible.
+         */
+
+        // Visit AnnotationDefault on methods
         AnnotationDefaultTag adt = (AnnotationDefaultTag) t;
         AnnotationVisitor av = ((MethodVisitor) visitor)
             .visitAnnotationDefault();

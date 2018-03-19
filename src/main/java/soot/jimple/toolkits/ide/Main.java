@@ -45,7 +45,7 @@ public class Main {
 
         IFDSTabulationProblem<Unit, ?, SootMethod, InterproceduralCFG<Unit, SootMethod>> problem = new IFDSPossibleTypes(new JimpleBasedInterproceduralCFG());
 
-        @SuppressWarnings( {"rawtypes", "unchecked"})
+        @SuppressWarnings({"rawtypes", "unchecked"})
         JimpleIFDSSolver<?, InterproceduralCFG<Unit, SootMethod>> solver = new JimpleIFDSSolver(problem);
         solver.solve();
       }

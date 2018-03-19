@@ -106,11 +106,9 @@ public class ThisInliner extends BodyTransformer {
             containerUnits.insertBefore(newParam, invokeStmt);
             oldStmtsToNew.put(inlineeStmt, newParam);
           }
-        }
-
-        // handle return void stmts (cannot return anything else
-        // from a constructor)
-        else if (inlineeStmt instanceof ReturnVoidStmt) {
+        } else if (inlineeStmt instanceof ReturnVoidStmt) {
+          // handle return void stmts (cannot return anything else
+          // from a constructor)
           Stmt newRet = Jimple.v().newGotoStmt((Stmt) containerUnits.getSuccOf(invokeStmt));
           containerUnits.insertBefore(newRet, invokeStmt);
           System.out.println("adding to stmt map: " + inlineeStmt + " and " + newRet);

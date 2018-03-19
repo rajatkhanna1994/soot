@@ -15,8 +15,8 @@ import soot.toolkits.graph.ExceptionalUnitGraph;
 // Checks if all methods of a class are "object-pure", meaning that
 // they read and write only themselves and new local objects
 
-public class EncapsulatedObjectAnalysis // extends ForwardFlowAnalysis
-{
+public class EncapsulatedObjectAnalysis {
+  // extends ForwardFlowAnalysis
   private static final Logger logger = LoggerFactory.getLogger(EncapsulatedObjectAnalysis.class);
   List cachedClasses;
   List<SootMethod> objectPureMethods;
@@ -29,8 +29,8 @@ public class EncapsulatedObjectAnalysis // extends ForwardFlowAnalysis
   }
 
   public boolean isMethodPureOnObject(SootMethod sm) {
-    if (!cachedClasses.contains(sm.getDeclaringClass()) && sm.isConcrete()) // NOT A COMPLETE SOLUTION (ignores subclassing)
-    {
+    if (!cachedClasses.contains(sm.getDeclaringClass()) && sm.isConcrete()) {
+      // NOT A COMPLETE SOLUTION (ignores subclassing)
       SootMethod initMethod = null;
       Collection methods = sm.getDeclaringClass().getMethods();
       Iterator methodsIt = methods.iterator();

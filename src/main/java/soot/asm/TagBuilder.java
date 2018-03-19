@@ -41,7 +41,8 @@ final class TagBuilder {
 
   private final Host host;
   private final SootClassBuilder scb;
-  private VisibilityAnnotationTag invisibleTag, visibleTag;
+  private VisibilityAnnotationTag invisibleTag;
+  private VisibilityAnnotationTag visibleTag;
 
   TagBuilder(Host host, SootClassBuilder scb) {
     this.host = host;

@@ -171,7 +171,7 @@ public class ReachingDefs extends StructuredAnalysis<Stmt> {
         // GEN
         gen(toReturn, (DefinitionStmt) s);
         return toReturn;
-      }// leftop is a local
+      } // leftop is a local
     }
     return inSet;
   }

@@ -123,9 +123,7 @@ public class MonitorSet extends ArraySparseSet {
         if (o instanceof MonitorDepth) {
           MonitorDepth md = (MonitorDepth) o;
           Object obj = dest.getMonitorDepth(md.getObjName());
-          if (obj != null)
-
-          {
+          if (obj != null) {
             if (md.getDepth() != ((MonitorDepth) obj).getDepth()) {
               throw new RuntimeException("stmt inside different monitor depth !");
             } else {

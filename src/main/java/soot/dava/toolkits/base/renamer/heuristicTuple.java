@@ -96,8 +96,8 @@ public class heuristicTuple {
   public String getPrint() {
     String temp = "BitSet: ";
     for (int i = 0; i < bitSetSize; i++) {
-      if (getHeuristic(i))//i bit is set
-      {
+      if (getHeuristic(i)) {
+        //i bit is set
         temp = temp.concat("1");
       } else {
         temp = temp.concat("0");

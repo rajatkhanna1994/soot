@@ -133,12 +133,10 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
     ///////////
     if (stmt.containsInvokeExpr()) {
       inter.analyseCall(inValue, stmt, outValue);
-    }
-
-    /////////////
-    // AssignStmt
-    /////////////
-    else if (stmt instanceof AssignStmt) {
+    } else if (stmt instanceof AssignStmt) {
+      /////////////
+      // AssignStmt
+      /////////////
       Value leftOp = ((AssignStmt) stmt).getLeftOp();
       Value rightOp = ((AssignStmt) stmt).getRightOp();
 
@@ -153,54 +151,40 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
 
         // ignore primitive types
         if (!(left.getType() instanceof RefLikeType)) {
-        }
-
-        // v = v
-        else if (rightOp instanceof Local) {
+          ;
+        } else if (rightOp instanceof Local) {
+          // v = v
           Local right = (Local) rightOp;
           outValue.g.assignLocalToLocal(right, left);
-        }
-
-        // v = v[i]
-        else if (rightOp instanceof ArrayRef) {
+        } else if (rightOp instanceof ArrayRef) {
+          // v = v[i]
           Local right = (Local) ((ArrayRef) rightOp).getBase();
           outValue.g.assignFieldToLocal(stmt, right, "[]", left);
-        }
-
-        // v = v.f
-        else if (rightOp instanceof InstanceFieldRef) {
+        } else if (rightOp instanceof InstanceFieldRef) {
+          // v = v.f
           Local right = (Local) ((InstanceFieldRef) rightOp).getBase();
           String field = ((InstanceFieldRef) rightOp).getField().getName();
           outValue.g.assignFieldToLocal(stmt, right, field, left);
-        }
-
-        // v = C.f
-        else if (rightOp instanceof StaticFieldRef) {
+        } else if (rightOp instanceof StaticFieldRef) {
+          // v = C.f
           outValue.g.localIsUnknown(left);
-        }
-
-        // v = cst
-        else if (rightOp instanceof Constant) {
+        } else if (rightOp instanceof Constant) {
+          // v = cst
           // do nothing...
-        }
-
-        // v = new / newarray / newmultiarray
-        else if (rightOp instanceof AnyNewExpr) {
+          ;
+        } else if (rightOp instanceof AnyNewExpr) {
+          // v = new / newarray / newmultiarray
           outValue.g.assignNewToLocal(stmt, left);
-        }
-
-        // v = binary or unary operator
-        else if (rightOp instanceof BinopExpr
+        } else if (rightOp instanceof BinopExpr
             || rightOp instanceof UnopExpr
             || rightOp instanceof InstanceOfExpr) {
+          // v = binary or unary operator
           // do nothing...
         } else {
           throw new Error("AssignStmt match failure (rightOp)" + stmt);
         }
-      }
-
-      // v[i] = ...
-      else if (leftOp instanceof ArrayRef) {
+      } else if (leftOp instanceof ArrayRef) {
+        // v[i] = ...
         Local left = (Local) ((ArrayRef) leftOp).getBase();
 
         // v[i] = v
@@ -211,18 +195,14 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
           } else {
             outValue.g.mutateField(left, "[]");
           }
-        }
-
-        // v[i] = cst
-        else if (rightOp instanceof Constant) {
+        } else if (rightOp instanceof Constant) {
+          // v[i] = cst
           outValue.g.mutateField(left, "[]");
         } else {
           throw new Error("AssignStmt match failure (rightOp)" + stmt);
         }
-      }
-
-      // v.f = ...
-      else if (leftOp instanceof InstanceFieldRef) {
+      } else if (leftOp instanceof InstanceFieldRef) {
+        // v.f = ...
         Local left = (Local) ((InstanceFieldRef) leftOp).getBase();
         String field = ((InstanceFieldRef) leftOp).getField().getName();
 
@@ -235,18 +215,14 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
           } else {
             outValue.g.mutateField(left, field);
           }
-        }
-
-        // v.f = cst
-        else if (rightOp instanceof Constant) {
+        } else if (rightOp instanceof Constant) {
+          // v.f = cst
           outValue.g.mutateField(left, field);
         } else {
           throw new Error("AssignStmt match failure (rightOp) " + stmt);
         }
-      }
-
-      // C.f = ...
-      else if (leftOp instanceof StaticFieldRef) {
+      } else if (leftOp instanceof StaticFieldRef) {
+        // C.f = ...
         String field = ((StaticFieldRef) leftOp).getField().getName();
 
         // C.f = v
@@ -257,10 +233,8 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
           } else {
             outValue.g.mutateStaticField(field);
           }
-        }
-
-        // C.f = cst
-        else if (rightOp instanceof Constant) {
+        } else if (rightOp instanceof Constant) {
+          // C.f = cst
           outValue.g.mutateStaticField(field);
         } else {
           throw new Error("AssignStmt match failure (rightOp) " + stmt);
@@ -268,12 +242,10 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
       } else {
         throw new Error("AssignStmt match failure (leftOp) " + stmt);
       }
-    }
-
-    ///////////////
-    // IdentityStmt
-    ///////////////
-    else if (stmt instanceof IdentityStmt) {
+    } else if (stmt instanceof IdentityStmt) {
+      ///////////////
+      // IdentityStmt
+      ///////////////
       Local left = (Local) ((IdentityStmt) stmt).getLeftOp();
       Value rightOp = ((IdentityStmt) stmt).getRightOp();
 
@@ -291,12 +263,10 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
       } else {
         throw new Error("IdentityStmt match failure (rightOp) " + stmt);
       }
-    }
-
-    ////////////
-    // ThrowStmt
-    ////////////
-    else if (stmt instanceof ThrowStmt) {
+    } else if (stmt instanceof ThrowStmt) {
+      ////////////
+      // ThrowStmt
+      ////////////
       Value op = ((ThrowStmt) stmt).getOp();
 
       if (op instanceof Local) {
@@ -307,13 +277,14 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
       } else {
         throw new Error("ThrowStmt match failure " + stmt);
       }
-    }
+    } else if (stmt instanceof ReturnVoidStmt) {
+      /////////////
+      // ReturnStmt
+      /////////////
 
-    /////////////
-    // ReturnStmt
-    /////////////
-    else if (stmt instanceof ReturnVoidStmt) {
       // do nothing...
+
+      ;
     } else if (stmt instanceof ReturnStmt) {
       Value v = ((ReturnStmt) stmt).getOp();
 
@@ -328,19 +299,20 @@ public class PurityIntraproceduralAnalysis extends ForwardFlowAnalysis<Unit, Pur
         throw new Error("ReturnStmt match failure " + stmt);
       }
 
-    }
-
-    //////////
-    // ignored
-    //////////
-    else if (stmt instanceof IfStmt
+    } else if (stmt instanceof IfStmt
         || stmt instanceof GotoStmt
         || stmt instanceof LookupSwitchStmt
         || stmt instanceof TableSwitchStmt
         || stmt instanceof MonitorStmt
         || stmt instanceof BreakpointStmt
         || stmt instanceof NopStmt) {
+      //////////
+      // ignored
+      //////////
+
       // do nothing...
+
+      ;
     } else {
       throw new Error("Stmt match faliure " + stmt);
     }

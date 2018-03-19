@@ -171,9 +171,7 @@ public class InlinerSafetyManager {
    */
   private static boolean canSafelyInlineInto(SootMethod inlinee,
                                              Stmt toInline,
-                                             SootMethod container)
-
-  {
+                                             SootMethod container) {
     /* first, check the simple (one-line) safety criteria. */
 
     // Rule 0: Don't inline constructors.
@@ -260,8 +258,7 @@ public class InlinerSafetyManager {
     // Condition 2. Check the package names.
     if (!inlinee.isPrivate() && !inlinee.isProtected()
         && !inlinee.isPublic()) {
-      if (!inlineeClass.getPackageName().equals
-          (containerClass.getPackageName())) {
+      if (!inlineeClass.getPackageName().equals(containerClass.getPackageName())) {
         return true;
       }
     }
@@ -289,8 +286,7 @@ public class InlinerSafetyManager {
 
   // m is the method being called; container is the class from which m
   // is being called.
-  static boolean specialInvokePerformsLookupIn
-  (InvokeExpr ie, SootClass containerClass) {
+  static boolean specialInvokePerformsLookupIn(InvokeExpr ie, SootClass containerClass) {
     // If all of the conditions are true, a lookup is performed.
     SootMethod m = ie.getMethod();
 

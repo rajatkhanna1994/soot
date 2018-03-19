@@ -151,16 +151,14 @@ public class TightestQualifiersTagger extends SceneTransformer {
         // public methods
         if (Modifier.isPublic(sm.getModifiers())) {
           analyzePublicMethod(sm, callingClass);
-        }
-        // protected methods
-        else if (Modifier.isProtected(sm.getModifiers())) {
+        } else if (Modifier.isProtected(sm.getModifiers())) {
+          // protected methods
           analyzeProtectedMethod(sm, callingClass);
-        }
-        // private methods - do nothing
-        else if (Modifier.isPrivate(sm.getModifiers())) {
-        }
-        // package level methods
-        else {
+        } else if (Modifier.isPrivate(sm.getModifiers())) {
+          // private methods - do nothing
+          ;
+        } else {
+          // package level methods
           analyzePackageMethod(sm, callingClass);
         }
 
@@ -362,6 +360,7 @@ public class TightestQualifiersTagger extends SceneTransformer {
               } else if (Modifier.isProtected(sf.getModifiers())) {
                 analyzeProtectedField(sf, appClass);
               } else if (Modifier.isPrivate(sf.getModifiers())) {
+                ;
               } else {
                 analyzePackageField(sf, appClass);
               }

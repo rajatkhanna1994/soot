@@ -122,10 +122,8 @@ public class DalvikTyper implements IDalvikTyper {
 
   @Override
   public void setType(ValueBox vb, Type t, boolean isUse) {
-    if (IDalvikTyper.DEBUG)
-    //Debug.printDbg(IDalvikTyper.DEBUG, "   [setType] ", vb, " -> ", t);
-
-    {
+    if (IDalvikTyper.DEBUG) {
+      //Debug.printDbg(IDalvikTyper.DEBUG, "   [setType] ", vb, " -> ", t);
       if (t instanceof UnknownType) {
 
         throw new RuntimeException("error: expected concreted type. Got " + t);
@@ -147,9 +145,8 @@ public class DalvikTyper implements IDalvikTyper {
 
   @Override
   public void addConstraint(ValueBox l, ValueBox r) {
-    if (IDalvikTyper.DEBUG)
-    //Debug.printDbg(IDalvikTyper.DEBUG, "   [addConstraint] ", l, " < ", r);
-    {
+    if (IDalvikTyper.DEBUG) {
+      //Debug.printDbg(IDalvikTyper.DEBUG, "   [addConstraint] ", l, " < ", r);
       constraints.add(new Constraint(l, r));
     }
   }
@@ -593,9 +590,8 @@ public class DalvikTyper implements IDalvikTyper {
       }
     }
 
-    for (Constraint c : constraints)
-    //Debug.printDbg(IDalvikTyper.DEBUG, "  -> constraint: ", c);
-    {
+    for (Constraint c : constraints) {
+      //Debug.printDbg(IDalvikTyper.DEBUG, "  -> constraint: ", c);
       for (ValueBox vb : typed.keySet()) {
         //Debug.printDbg(IDalvikTyper.DEBUG, "    typed: ", vb, " -> ", typed.get(vb));
       }
@@ -934,7 +930,7 @@ public class DalvikTyper implements IDalvikTyper {
               }
             }
           } else if (c instanceof UnopExpr) {
-
+            ;
           } else {
             throw new RuntimeException("error: expected binop or unop. Got " + stmt);
           }

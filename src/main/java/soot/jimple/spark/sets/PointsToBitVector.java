@@ -70,9 +70,8 @@ public class PointsToBitVector extends BitVector {
    */
   public boolean add(Node n) {
     int num = n.getNumber();
-    if (!get(num))
-    //if it's not already in this
-    {
+    if (!get(num)) {
+      //if it's not already in this
       set(num);
       return true;
     } else {

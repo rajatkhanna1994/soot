@@ -40,7 +40,9 @@ import soot.jimple.EnterMonitorStmt;
 import soot.jimple.MonitorStmt;
 
 public class MonitorConverter {
-  private final SootMethod v, enter, exit;
+  private final SootMethod v;
+  private final SootMethod enter;
+  private final SootMethod exit;
 
   public MonitorConverter(Singletons.Global g) {
     SootClass davaMonitor = new SootClass("soot.dava.toolkits.base.DavaMonitor.DavaMonitor", Modifier.PUBLIC);

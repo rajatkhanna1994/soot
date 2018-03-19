@@ -72,7 +72,7 @@ public class AndAggregator extends DepthFirstAdapter {
       // only one body of an if statement
       List body = (List) bodies.get(0);
       // this is the if body check to see if this is a single if Node
-      if (body.size() == 1) {// size is good
+      if (body.size() == 1) { // size is good
         ASTNode bodyNode = (ASTNode) body.get(0);
         if (bodyNode instanceof ASTIfNode) {
           /*
@@ -118,7 +118,7 @@ public class AndAggregator extends DepthFirstAdapter {
               .get_SubBodies();
 
           // retireve the actual body List
-          if (newBodyList.size() == 1) {// should always be one since
+          if (newBodyList.size() == 1) { // should always be one since
             // this is body of IF
             List<Object> newBody = (List<Object>) newBodyList
                 .get(0);
@@ -126,7 +126,7 @@ public class AndAggregator extends DepthFirstAdapter {
             // System.out.println("ANDDDDDD AGGREGATING !!!");
             G.v().ASTTransformations_modified = true;
           }
-        } else {// not an if node
+        } else { // not an if node
         }
       } else { // IfBody has more than 1 nodes cant do AND aggregation
       }
@@ -153,7 +153,7 @@ public class AndAggregator extends DepthFirstAdapter {
               SETNodeLabel label = abStmt.getLabel();
               String labelBroken = label.toString();
 
-              if (labelBroken != null) {// stmt breaks some label
+              if (labelBroken != null) { // stmt breaks some label
                 if (labelBroken.compareTo(from) == 0) {
                   // have to replace the "from" label to "to"
                   // label
@@ -180,7 +180,7 @@ public class AndAggregator extends DepthFirstAdapter {
         }
       }
 
-    }// going through subBodies
+    } // going through subBodies
 
   }
 

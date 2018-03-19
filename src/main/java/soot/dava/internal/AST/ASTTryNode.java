@@ -37,8 +37,10 @@ import soot.dava.toolkits.base.AST.TryContentsFinder;
 import soot.dava.toolkits.base.AST.analysis.Analysis;
 
 public class ASTTryNode extends ASTLabeledNode {
-  private List<Object> tryBody, catchList;
-  private Map<Object, Object> exceptionMap, paramMap;
+  private List<Object> tryBody;
+  private List<Object> catchList;
+  private Map<Object, Object> exceptionMap;
+  private Map<Object, Object> paramMap;
   private container tryBodyContainer;
 
   public ASTTryNode(SETNodeLabel label, List<Object> tryBody, List<Object> catchList, Map<Object, Object> exceptionMap, Map<Object, Object> paramMap) {

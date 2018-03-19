@@ -326,9 +326,8 @@ public class LabeledBlockFinder implements FactFinder {
 
       Iterator it = children.snapshotIterator();
       if (it.hasNext()) {
-        SETNode
-            curNode = (SETNode) it.next(),
-            prevNode = null;
+        SETNode curNode = (SETNode) it.next();
+        SETNode prevNode = null;
 
         // Look through all the children of the current SET node.
         while (it.hasNext()) {
@@ -344,8 +343,8 @@ public class LabeledBlockFinder implements FactFinder {
           while (pit.hasNext()) {
             AugmentedStmt pas = (AugmentedStmt) pit.next();
 
-            if (curBody.contains(pas) == false) // will happen with do-while loops
-            {
+            if (curBody.contains(pas) == false) {
+              // will happen with do-while loops
               continue;
             }
 

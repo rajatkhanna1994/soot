@@ -58,10 +58,9 @@ public class DexReturnValuePropagator extends BodyTransformer {
               }
             } else if (rightOp instanceof Constant) {
               retStmt.setOp(rightOp);
-            }
-            // If this is a field access which has no other uses,
-            // we rename the local to help splitting
-            else if (rightOp instanceof FieldRef) {
+            } else if (rightOp instanceof FieldRef) {
+              // If this is a field access which has no other uses,
+              // we rename the local to help splitting
               if (localUses == null) {
                 localUses = LocalUses.Factory.newLocalUses(body, localDefs);
               }

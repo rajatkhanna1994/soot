@@ -402,7 +402,7 @@ public class UnreachableCodeFinder extends StructuredAnalysis {
     List<DavaFlowSet> toMergeBreaks = new ArrayList<DavaFlowSet>();
 
     Iterator<Object> it = indexList.iterator();
-    while (it.hasNext()) {//going through all the cases of the switch statement
+    while (it.hasNext()) { //going through all the cases of the switch statement
       Object currentIndex = it.next();
       List body = index2BodyList.get(currentIndex);
 
@@ -424,7 +424,7 @@ public class UnreachableCodeFinder extends StructuredAnalysis {
 
     //have to handle the case when no case matches. The input is the output
     DavaFlowSet output = initialIn;
-    if (out != null) {//just to make sure that there were some cases present
+    if (out != null) { //just to make sure that there were some cases present
       if (defaultOut != null) {
         output = merge(defaultOut, out);
       } else {
@@ -592,5 +592,5 @@ public class UnreachableCodeFinder extends StructuredAnalysis {
       }
     }
 
-  }//end UnreachableCodeFlowSet
+  } //end UnreachableCodeFlowSet
 }

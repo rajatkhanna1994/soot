@@ -32,7 +32,10 @@ import soot.util.IterableSet;
 public class AugmentedStmt {
   private static final Logger logger = LoggerFactory.getLogger(AugmentedStmt.class);
   private final IterableSet<AugmentedStmt> dominators;
-  public List<AugmentedStmt> bpreds, bsuccs, cpreds, csuccs;
+  public List<AugmentedStmt> bpreds;
+  public List<AugmentedStmt> bsuccs;
+  public List<AugmentedStmt> cpreds;
+  public List<AugmentedStmt> csuccs;
   public SETNode myNode;
   private IterableSet<AugmentedStmt> reachers;
   private Stmt s;

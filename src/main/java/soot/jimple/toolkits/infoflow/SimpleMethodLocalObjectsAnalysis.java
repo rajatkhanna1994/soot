@@ -33,8 +33,8 @@ public class SimpleMethodLocalObjectsAnalysis extends SimpleMethodInfoFlowAnalys
     AbstractDataSource sharedDataSource = new AbstractDataSource(new String("SHARED"));
 
     // Add a source for every parameter that is shared
-    for (int i = 0; i < method.getParameterCount(); i++) // no need to worry about return value...
-    {
+    for (int i = 0; i < method.getParameterCount(); i++) {
+      // no need to worry about return value...
       EquivalentValue paramEqVal = InfoFlowAnalysis.getNodeForParameterRef(method, i);
       if (!cloa.parameterIsLocal(method, paramEqVal)) {
         addToEntryInitialFlow(sharedDataSource, paramEqVal.getValue());
@@ -98,8 +98,8 @@ public class SimpleMethodLocalObjectsAnalysis extends SimpleMethodInfoFlowAnalys
   }
 
   //
-  public boolean isObjectLocal(Value local) // to this analysis of this method (which depends on context)
-  {
+  public boolean isObjectLocal(Value local) {
+    // to this analysis of this method (which depends on context)
     EquivalentValue source = new CachedEquivalentValue(new AbstractDataSource(new String("SHARED")));
     if (infoFlowGraph.containsNode(source)) {
       List sinks = infoFlowGraph.getSuccsOf(source);

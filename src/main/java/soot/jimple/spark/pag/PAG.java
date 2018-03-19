@@ -665,15 +665,13 @@ public class PAG implements PointsToAnalysis {
         valToAllocNode.put(newExpr, ret = new AllocNode(this, newExpr, type, m));
         newAllocNodes.add(ret);
         addNodeTag(ret, m);
-      }
-      // For a normal "new" expression, there may only be one type
-      else if (!(ret.getType().equals(type))) {
+      } else if (!(ret.getType().equals(type))) {
+        // For a normal "new" expression, there may only be one type
         throw new RuntimeException(
             "NewExpr " + newExpr + " of type " + type + " previously had type " + ret.getType());
       }
-    }
-    // Check for reflective allocation sites
-    else {
+    } else {
+      // Check for reflective allocation sites
       ret = valToReflAllocNode.get(newExpr, type);
       if (ret == null) {
         valToReflAllocNode.put(newExpr, type, ret = new AllocNode(this, newExpr, type, m));

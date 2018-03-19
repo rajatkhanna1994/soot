@@ -69,11 +69,10 @@ public class Evaluator {
       return true;
     } else if ((op instanceof UnopExpr)) {
       Value innerOp = ((UnopExpr) op).getOp();
-      if (innerOp == NullConstant.v())
-      //operations on null will throw an exception and the operation
-      //is therefore not considered constant-valued; see posting on Soot list
-      //on 18 September 2007 14:36
-      {
+      if (innerOp == NullConstant.v()) {
+        //operations on null will throw an exception and the operation
+        //is therefore not considered constant-valued; see posting on Soot list
+        //on 18 September 2007 14:36
         return false;
       }
       if (isValueConstantValued(innerOp)) {
@@ -135,20 +134,17 @@ public class Evaluator {
         return ((NumericConstant) c1).subtract((NumericConstant) c2);
       } else if (op instanceof MulExpr) {
         return ((NumericConstant) c1).multiply((NumericConstant) c2);
-      }
-      // punting handled by isValueConstantValued().
-      else if (op instanceof DivExpr) {
+      } else if (op instanceof DivExpr) {
+        // punting handled by isValueConstantValued().
         return ((NumericConstant) c1).divide((NumericConstant) c2);
       } else if (op instanceof RemExpr) {
         return ((NumericConstant) c1).remainder((NumericConstant) c2);
       } else if (op instanceof EqExpr || op instanceof NeExpr) {
         if (c1 instanceof NumericConstant) {
           if (op instanceof EqExpr) {
-            return ((NumericConstant) c1).equalEqual
-                ((NumericConstant) c2);
+            return ((NumericConstant) c1).equalEqual((NumericConstant) c2);
           } else if (op instanceof NeExpr) {
-            return ((NumericConstant) c1).notEqual
-                ((NumericConstant) c2);
+            return ((NumericConstant) c1).notEqual((NumericConstant) c2);
           }
         } else if (c1 instanceof StringConstant || c1 instanceof NullConstant || c1 instanceof ClassConstant) {
           boolean equality = c1.equals(c2);
@@ -160,8 +156,7 @@ public class Evaluator {
           IntConstant beauty = IntConstant.v(truth ? 1 : 0);
           return beauty;
         }
-        throw new RuntimeException
-            ("constant neither numeric nor string");
+        throw new RuntimeException("constant neither numeric nor string");
       } else if (op instanceof GtExpr) {
         return ((NumericConstant) c1).greaterThan((NumericConstant) c2);
       } else if (op instanceof GeExpr) {

@@ -148,16 +148,14 @@ public class ExceptionFinder implements FactFinder {
           for (int j = i + 1; j < ena.length; j++) {
             ExceptionNode enj = ena[j];
 
-            IterableSet<AugmentedStmt> eniTryBody = eni.get_TryBody(),
-                enjTryBody = enj.get_TryBody();
+            IterableSet<AugmentedStmt> eniTryBody = eni.get_TryBody();
+            IterableSet<AugmentedStmt> enjTryBody = enj.get_TryBody();
 
             if ((eniTryBody.equals(enjTryBody) == false)
                 && (eniTryBody.intersects(enjTryBody))) {
 
               if ((eniTryBody.isSupersetOf(enj.get_Body()))
-                  || (enjTryBody.isSupersetOf(eni.get_Body())))
-
-              {
+                  || (enjTryBody.isSupersetOf(eni.get_Body()))) {
                 continue;
               }
 

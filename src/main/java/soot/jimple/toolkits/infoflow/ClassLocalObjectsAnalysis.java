@@ -101,21 +101,21 @@ public class ClassLocalObjectsAnalysis {
     this.localInnerFields = null;
     this.sharedInnerFields = null;
 
-    if (true) // verbose)
-    {
+    if (true) {
+      // verbose)
       logger.debug("[local-objects] Analyzing local objects for " + sootClass);
       logger.debug("[local-objects]   preparing class             " + new Date());
     }
     prepare();
 
-    if (true) // verbose)
-    {
+    if (true) {
+      // verbose)
       logger.debug("[local-objects]   analyzing class             " + new Date());
     }
     doAnalysis();
 
-    if (true) // verbose)
-    {
+    if (true) {
+      // verbose)
       logger.debug("[local-objects]   propagating over call graph " + new Date());
     }
     propagate();
@@ -145,8 +145,8 @@ public class ClassLocalObjectsAnalysis {
     if (superclass.hasSuperclass()) {
       superclass = superclass.getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       Iterator scMethodsIt = superclass.methodIterator();
       while (scMethodsIt.hasNext()) {
         SootMethod scMethod = (SootMethod) scMethodsIt.next();
@@ -173,8 +173,8 @@ public class ClassLocalObjectsAnalysis {
     if (superclass.hasSuperclass()) {
       superclass = superclass.getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       for (SootField scField : superclass.getFields()) {
         allFields.add(scField);
       }
@@ -297,8 +297,8 @@ public class ClassLocalObjectsAnalysis {
         if (node.getValue() instanceof InstanceFieldRef) {
           InstanceFieldRef ifr = (InstanceFieldRef) node.getValue();
           if (!localFields.contains(ifr.getField()) && !sharedFields.contains(ifr.getField()) &&
-              !localInnerFields.contains(ifr.getField())) // && !sharedInnerFields.contains(ifr.getField()))
-          {
+              !localInnerFields.contains(ifr.getField())) {
+            // && !sharedInnerFields.contains(ifr.getField()))
             // this field is read or written, but is not in the lists of fields!
             localInnerFields.add(ifr.getField());
           }
@@ -351,11 +351,11 @@ public class ClassLocalObjectsAnalysis {
             EquivalentValue sourceOrSink = (EquivalentValue) sourcesAndSinksIt.next();
             Ref sourceOrSinkRef = (Ref) sourceOrSink.getValue();
             boolean fieldBecomesShared = false;
-            if (sourceOrSinkRef instanceof ParameterRef) // or return ref
-            {
+            if (sourceOrSinkRef instanceof ParameterRef) {
+              // or return ref
               fieldBecomesShared = !parameterIsLocal(method, sourceOrSink, true);
-            } else if (sourceOrSinkRef instanceof ThisRef) // or return ref
-            {
+            } else if (sourceOrSinkRef instanceof ThisRef) {
+              // or return ref
               fieldBecomesShared = !thisIsLocal(method, sourceOrSink);
             } else if (sourceOrSinkRef instanceof InstanceFieldRef) {
               fieldBecomesShared = sharedFields.contains(((FieldRef) sourceOrSinkRef).getField()) || sharedInnerFields.contains(((FieldRef) sourceOrSinkRef).getField());
@@ -413,11 +413,11 @@ public class ClassLocalObjectsAnalysis {
             EquivalentValue sourceOrSink = (EquivalentValue) sourcesAndSinksIt.next();
             Ref sourceOrSinkRef = (Ref) sourceOrSink.getValue();
             boolean fieldBecomesShared = false;
-            if (sourceOrSinkRef instanceof ParameterRef) // or return ref
-            {
+            if (sourceOrSinkRef instanceof ParameterRef) {
+              // or return ref
               fieldBecomesShared = !parameterIsLocal(method, sourceOrSink, true);
-            } else if (sourceOrSinkRef instanceof ThisRef) // or return ref
-            {
+            } else if (sourceOrSinkRef instanceof ThisRef) {
+              // or return ref
               fieldBecomesShared = !thisIsLocal(method, sourceOrSink);
             } else if (sourceOrSinkRef instanceof InstanceFieldRef) {
               fieldBecomesShared = sharedFields.contains(((FieldRef) sourceOrSinkRef).getField()) || sharedInnerFields.contains(((FieldRef) sourceOrSinkRef).getField());
@@ -577,8 +577,8 @@ public class ClassLocalObjectsAnalysis {
             Ref r = (Ref) rEqVal.getValue();
             if (r instanceof InstanceFieldRef) {
               EquivalentValue newRefEqVal = InfoFlowAnalysis.getNodeForFieldRef(callingMethod, ((FieldRef) r).getFieldRef().resolve());
-              if (callingContext.containsField(newRefEqVal)) // if not, then we're probably calling a parent class's method, so some fields are missing
-              {
+              if (callingContext.containsField(newRefEqVal)) {
+                // if not, then we're probably calling a parent class's method, so some fields are missing
                 callingContext.setFieldLocal(newRefEqVal); // must make a new eqval for the method getting called
               }
             } else if (r instanceof ThisRef) {
@@ -633,8 +633,8 @@ public class ClassLocalObjectsAnalysis {
     }
 
     // Set context for every parameter that is shared
-    for (int i = 0; i < sm.getParameterCount(); i++) // no need to worry about return value...
-    {
+    for (int i = 0; i < sm.getParameterCount(); i++) {
+      // no need to worry about return value...
       EquivalentValue paramEqVal = InfoFlowAnalysis.getNodeForParameterRef(sm, i);
       if (parameterIsLocal(sm, paramEqVal, includePrimitiveDataFlowIfAvailable)) {
         context.setParamLocal(i);
@@ -761,8 +761,8 @@ public class ClassLocalObjectsAnalysis {
 
     // Check if param is primitive or ref type
     ParameterRef param = (ParameterRef) parameterRef.getValue();
-    if (!(param.getType() instanceof RefLikeType) && (!dfa.includesPrimitiveInfoFlow() || method.getName().equals("<init>"))) // TODO fix
-    {
+    if (!(param.getType() instanceof RefLikeType) && (!dfa.includesPrimitiveInfoFlow() || method.getName().equals("<init>"))) {
+      // TODO fix
       if (dfa.printDebug() && method.getDeclaringClass().isApplicationClass()) {
         logger.debug("          PARAM is local (primitive)");
       }
@@ -793,8 +793,8 @@ public class ClassLocalObjectsAnalysis {
       InvokeExpr ie = s.getInvokeExpr();
       if (ie.getMethodRef().resolve() == method) {
         if (((ParameterRef) parameterRef.getValue()).getIndex() >= 0) {
-          if (!isObjectLocal(ie.getArg(((ParameterRef) parameterRef.getValue()).getIndex()), containingMethod, includePrimitiveDataFlowIfAvailable)) // WORST CASE SCENARIO HERE IS INFINITE RECURSION!
-          {
+          if (!isObjectLocal(ie.getArg(((ParameterRef) parameterRef.getValue()).getIndex()), containingMethod, includePrimitiveDataFlowIfAvailable)) {
+            // WORST CASE SCENARIO HERE IS INFINITE RECURSION!
             if (dfa.printDebug() && method.getDeclaringClass().isApplicationClass()) {
               logger.debug("          PARAM is shared (internal propagation)");
             }
@@ -803,8 +803,8 @@ public class ClassLocalObjectsAnalysis {
         } else {
           if (s instanceof DefinitionStmt) {
             Value obj = ((DefinitionStmt) s).getLeftOp();
-            if (!isObjectLocal(obj, containingMethod, includePrimitiveDataFlowIfAvailable)) // WORST CASE SCENARIO HERE IS INFINITE RECURSION!
-            {
+            if (!isObjectLocal(obj, containingMethod, includePrimitiveDataFlowIfAvailable)) {
+              // WORST CASE SCENARIO HERE IS INFINITE RECURSION!
               if (dfa.printDebug() && method.getDeclaringClass().isApplicationClass()) {
                 logger.debug("          PARAM is shared (internal propagation)");
               }

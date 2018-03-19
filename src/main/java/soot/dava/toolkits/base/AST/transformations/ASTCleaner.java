@@ -120,7 +120,7 @@ public class ASTCleaner extends DepthFirstAdapter {
           }
         } else if (temp instanceof ASTIfNode) {
           //check if the next node in the subBody is also an ASTIfNode in which case invoke OrAggregatorThree
-          if (it.hasNext()) {//means we can get the nodeNumber+1
+          if (it.hasNext()) { //means we can get the nodeNumber+1
             ASTNode nextNode = (ASTNode) ((List) subBody).get(nodeNumber + 1);
             if (nextNode instanceof ASTIfNode) {
               //found an If followed by another if might match Patter 3.
@@ -138,7 +138,7 @@ public class ASTCleaner extends DepthFirstAdapter {
         nodeNumber++;
       }
       subBodyNumber++;
-    }//end of going over subBodies
+    } //end of going over subBodies
   }
 
   public void caseASTTryNode(ASTTryNode node) {
@@ -183,7 +183,7 @@ public class ASTCleaner extends DepthFirstAdapter {
         }
       } else if (temp instanceof ASTIfNode) {
         //check if the next node in the subBody is also an ASTIfNode in which case invoke OrAggregatorThree
-        if (it.hasNext()) {//means we can get the nodeNumber+1
+        if (it.hasNext()) { //means we can get the nodeNumber+1
           ASTNode nextNode = (ASTNode) tryBody.get(nodeNumber + 1);
           if (nextNode instanceof ASTIfNode) {
             //found an If followed by another if might match Patter 3.
@@ -267,7 +267,7 @@ public class ASTCleaner extends DepthFirstAdapter {
           }
         } else if (temp instanceof ASTIfNode) {
           //check if the next node in the subBody is also an ASTIfNode in which case invoke OrAggregatorThree
-          if (itBody.hasNext()) {//means we can get the nodeNumber+1
+          if (itBody.hasNext()) { //means we can get the nodeNumber+1
             ASTNode nextNode = (ASTNode) body.get(nodeNumber + 1);
             if (nextNode instanceof ASTIfNode) {
               //found an If followed by another if might match Patter 3.
@@ -298,7 +298,7 @@ public class ASTCleaner extends DepthFirstAdapter {
     Map<Object, List<Object>> index2BodyList = node.getIndex2BodyList();
 
     Iterator<Object> it = indexList.iterator();
-    while (it.hasNext()) {//going through all the cases of the switch statement
+    while (it.hasNext()) { //going through all the cases of the switch statement
       Object currentIndex = it.next();
       List<Object> body = index2BodyList.get(currentIndex);
 
@@ -349,7 +349,7 @@ public class ASTCleaner extends DepthFirstAdapter {
             }
           } else if (temp instanceof ASTIfNode) {
             //check if the next node in the subBody is also an ASTIfNode in which case invoke OrAggregatorThree
-            if (itBody.hasNext()) {//means we can get the nodeNumber+1
+            if (itBody.hasNext()) { //means we can get the nodeNumber+1
               ASTNode nextNode = (ASTNode) body.get(nodeNumber + 1);
               if (nextNode instanceof ASTIfNode) {
                 //found an If followed by another if might match Patter 3.

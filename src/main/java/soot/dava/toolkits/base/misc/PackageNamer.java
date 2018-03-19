@@ -43,7 +43,8 @@ public class PackageNamer {
   private final HashSet<String> keywords = new HashSet<String>();
   private boolean fixed = false;
   private char fileSep;
-  private String classPath, pathSep;
+  private String classPath;
+  private String pathSep;
 
 
   public PackageNamer(Singletons.Global g) {
@@ -133,17 +134,17 @@ public class PackageNamer {
     }
 
     String[] keywordArray =
-        {
-            "abstract", "default", "if", "private", "this", "boolean",
-            "do", "implements", "protected", "throw", "break",
-            "double", "import", "public", "throws", "byte", "else",
-            "instanceof", "return", "transient", "case", "extends",
-            "int", "short", "try", "catch", "final", "interface",
-            "static", "void", "char", "finally", "long", "strictfp",
-            "volatile", "class", "float", "native", "super", "while",
-            "const", "for", "new", "switch", "continue", "goto",
-            "package", "synchronized", "true", "false", "null"
-        };
+    {
+      "abstract", "default", "if", "private", "this", "boolean",
+      "do", "implements", "protected", "throw", "break",
+      "double", "import", "public", "throws", "byte", "else",
+      "instanceof", "return", "transient", "case", "extends",
+      "int", "short", "try", "catch", "final", "interface",
+      "static", "void", "char", "finally", "long", "strictfp",
+      "volatile", "class", "float", "native", "super", "while",
+      "const", "for", "new", "switch", "continue", "goto",
+      "package", "synchronized", "true", "false", "null"
+    };
 
     for (String element : keywordArray) {
       keywords.add(element);
@@ -250,9 +251,8 @@ public class PackageNamer {
 
     Iterator it = currentContext.iterator();
     while (it.hasNext()) {
-      String
-          currentPackage = (String) it.next(),
-          newPackage = null;
+      String currentPackage = (String) it.next();
+      String newPackage = null;
 
       StringTokenizer st = new StringTokenizer(currentPackage, ".");
 
@@ -284,7 +284,8 @@ public class PackageNamer {
   private class NameHolder {
     private final String originalName;
     private final ArrayList<NameHolder> children;
-    private String packageName, className;
+    private String packageName;
+    private String className;
     private NameHolder parent;
     private boolean isClass;
 
@@ -513,9 +514,7 @@ public class PackageNamer {
         }
 
         if (((sibling.is_Package()) && (sibling.get_PackageName().equals(name))) ||
-            ((sibling.is_Class()) && (sibling.get_ClassName().equals(name))))
-
-        {
+            ((sibling.is_Class()) && (sibling.get_ClassName().equals(name)))) {
           return true;
         }
       }

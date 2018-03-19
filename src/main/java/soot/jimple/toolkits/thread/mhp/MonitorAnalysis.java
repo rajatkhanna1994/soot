@@ -128,8 +128,8 @@ public class MonitorAnalysis extends ForwardFlowAnalysis {
               // System.out.println("pred: "+tag1+" "+stmt);
 
               // Object otherBranchFlow = unitToAfterFlow.get(stmt);
-              if (nodes.indexOf(stmt) >= 0) // RLH
-              {
+              if (nodes.indexOf(stmt) >= 0) {
+                // RLH
                 Object otherBranchFlow = valueAfter.elementAt(nodes.indexOf(stmt));
 
                 merge(beforeFlow, otherBranchFlow, beforeFlow);

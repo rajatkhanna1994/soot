@@ -123,8 +123,8 @@ public class SmartMethodInfoFlowAnalysis {
     if (superclass.hasSuperclass()) {
       superclass = sm.getDeclaringClass().getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       for (SootField scField : superclass.getFields()) {
         if (scField.isStatic() || !sm.isStatic()) {
           EquivalentValue fieldRefEqVal;
@@ -411,8 +411,8 @@ public class SmartMethodInfoFlowAnalysis {
   protected List<Value> handleInvokeExpr(InvokeExpr ie, Stmt is) {
     // get the data flow graph
     HashMutableDirectedGraph<EquivalentValue> dataFlowSummary = dfa.getInvokeInfoFlowSummary(ie, is, sm); // must return a graph whose nodes are Refs!!!
-    if (false) // DEBUG!!!
-    {
+    if (false) {
+      // DEBUG!!!
       SootMethod method = ie.getMethodRef().resolve();
       if (method.getDeclaringClass().isApplicationClass()) {
         logger.debug("Attempting to print graph (will succeed only if ./dfg/ is a valid path)");
@@ -458,12 +458,12 @@ public class SmartMethodInfoFlowAnalysis {
           sources.add(node);
 //					source = node;
         } else if (includeInnerFields) {
-          if (false) // isNonRefType(node.getType()) ) // TODO: double check this policy
-          {
+          if (false) {
+            // isNonRefType(node.getType()) ) // TODO: double check this policy
             // primitives flow from the parent object
             InstanceFieldRef ifr = (InstanceFieldRef) node;
-            if (ifr.getBase() instanceof FakeJimpleLocal)// && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
-            {
+            if (ifr.getBase() instanceof FakeJimpleLocal) {
+              // && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
               ; // sources.add(((FakeJimpleLocal) ifr.getBase()).getRealLocal());
             } else {
               sources.add(ifr.getBase());
@@ -471,8 +471,8 @@ public class SmartMethodInfoFlowAnalysis {
           } else {
             // objects flow from both
             InstanceFieldRef ifr = (InstanceFieldRef) node;
-            if (ifr.getBase() instanceof FakeJimpleLocal)// && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
-            {
+            if (ifr.getBase() instanceof FakeJimpleLocal) {
+              // && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
               ; // sources.add(((FakeJimpleLocal) ifr.getBase()).getRealLocal());
             } else {
               sources.add(ifr.getBase());
@@ -486,12 +486,12 @@ public class SmartMethodInfoFlowAnalysis {
 //					source = iie.getBase(); // Local
         }
       } else if (node instanceof InstanceFieldRef && includeInnerFields) {
-        if (false) // isNonRefType(node.getType()) ) // TODO: double check this policy
-        {
+        if (false) {
+          // isNonRefType(node.getType()) ) // TODO: double check this policy
           // primitives flow from the parent object
           InstanceFieldRef ifr = (InstanceFieldRef) node;
-          if (ifr.getBase() instanceof FakeJimpleLocal)// && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
-          {
+          if (ifr.getBase() instanceof FakeJimpleLocal) {
+            // && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
             ; // sources.add(((FakeJimpleLocal) ifr.getBase()).getRealLocal());
           } else {
             sources.add(ifr.getBase());
@@ -499,8 +499,8 @@ public class SmartMethodInfoFlowAnalysis {
         } else {
           // objects flow from both
           InstanceFieldRef ifr = (InstanceFieldRef) node;
-          if (ifr.getBase() instanceof FakeJimpleLocal)// && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
-          {
+          if (ifr.getBase() instanceof FakeJimpleLocal) {
+            // && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
             ; // sources.add(((FakeJimpleLocal) ifr.getBase()).getRealLocal());
           } else {
             sources.add(ifr.getBase());
@@ -547,12 +547,12 @@ public class SmartMethodInfoFlowAnalysis {
             for (Iterator<Value> sourcesIt = sources.iterator(); sourcesIt.hasNext(); ) {
               Value source = sourcesIt.next();
 
-              if (false) // isNonRefType(sink.getType()) ) // TODO: double check this policy
-              {
+              if (false) {
+                // isNonRefType(sink.getType()) ) // TODO: double check this policy
                 // primitives flow to the parent object
                 InstanceFieldRef ifr = (InstanceFieldRef) sink;
-                if (ifr.getBase() instanceof FakeJimpleLocal)// && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
-                {
+                if (ifr.getBase() instanceof FakeJimpleLocal) {
+                  // && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
                   ; // handleFlowsToDataStructure(((FakeJimpleLocal) ifr.getBase()).getRealLocal(), source);
                 } else {
                   handleFlowsToDataStructure(ifr.getBase(), source);
@@ -574,12 +574,12 @@ public class SmartMethodInfoFlowAnalysis {
         } else if (sink instanceof InstanceFieldRef && includeInnerFields) {
           for (Iterator<Value> sourcesIt = sources.iterator(); sourcesIt.hasNext(); ) {
             Value source = sourcesIt.next();
-            if (false) // isNonRefType(sink.getType()) ) // TODO: double check this policy
-            {
+            if (false) {
+              // isNonRefType(sink.getType()) ) // TODO: double check this policy
               // primitives flow to the parent object
               InstanceFieldRef ifr = (InstanceFieldRef) sink;
-              if (ifr.getBase() instanceof FakeJimpleLocal)// && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
-              {
+              if (ifr.getBase() instanceof FakeJimpleLocal) {
+                // && ((FakeJimpleLocal) ifr.getBase()).getRealLocal() != null)
                 ; // handleFlowsToDataStructure(((FakeJimpleLocal) ifr.getBase()).getRealLocal(), source);
               } else {
                 handleFlowsToDataStructure(ifr.getBase(), source);
@@ -599,8 +599,8 @@ public class SmartMethodInfoFlowAnalysis {
   }
 
   protected void addFlowToCdfg(Stmt stmt) {
-    if (stmt instanceof IdentityStmt) // assigns an IdentityRef to a Local
-    {
+    if (stmt instanceof IdentityStmt) {
+      // assigns an IdentityRef to a Local
       IdentityStmt is = (IdentityStmt) stmt;
       IdentityRef ir = (IdentityRef) is.getRightOp();
 
@@ -617,8 +617,8 @@ public class SmartMethodInfoFlowAnalysis {
           handleFlowsToValue(is.getLeftOp(), ir);
         }
       }
-    } else if (stmt instanceof ReturnStmt) // assigns an Immediate to the "returnRef"
-    {
+    } else if (stmt instanceof ReturnStmt) {
+      // assigns an Immediate to the "returnRef"
       ReturnStmt rs = (ReturnStmt) stmt;
       Value rv = rs.getOp();
       if (rv instanceof Constant) {
@@ -629,33 +629,33 @@ public class SmartMethodInfoFlowAnalysis {
           handleFlowsToValue(returnRef, rv);
         }
       }
-    } else if (stmt instanceof AssignStmt) // assigns a Value to a Variable
-    {
+    } else if (stmt instanceof AssignStmt) {
+      // assigns a Value to a Variable
       AssignStmt as = (AssignStmt) stmt;
       Value lv = as.getLeftOp();
       Value rv = as.getRightOp();
 
       Value sink = null;
       boolean flowsToDataStructure = false;
-      if (lv instanceof Local) // data flows into the Local
-      {
+      if (lv instanceof Local) {
+        // data flows into the Local
         sink = lv;
-      } else if (lv instanceof ArrayRef) // data flows into the base's data structure
-      {
+      } else if (lv instanceof ArrayRef) {
+        // data flows into the base's data structure
         ArrayRef ar = (ArrayRef) lv;
         sink = ar.getBase();
         flowsToDataStructure = true;
-      } else if (lv instanceof StaticFieldRef) // data flows into the field ref
-      {
+      } else if (lv instanceof StaticFieldRef) {
+        // data flows into the field ref
         sink = lv;
       } else if (lv instanceof InstanceFieldRef) {
         InstanceFieldRef ifr = (InstanceFieldRef) lv;
-        if (ifr.getBase() == thisLocal) // data flows into the field ref
-        {
+        if (ifr.getBase() == thisLocal) {
+          // data flows into the field ref
           sink = lv;
         } else if (includeInnerFields) {
-          if (false) //isNonRefType(lv.getType()) ) // TODO: double check this policy
-          {
+          if (false) {
+            //isNonRefType(lv.getType()) ) // TODO: double check this policy
             // primitives flow to the parent object
             sink = ifr.getBase();
             flowsToDataStructure = true;
@@ -664,8 +664,8 @@ public class SmartMethodInfoFlowAnalysis {
             sink = lv;
             handleInnerField(sink);
           }
-        } else // data flows into the base's data structure
-        {
+        } else {
+          // data flows into the base's data structure
           sink = ifr.getBase();
           flowsToDataStructure = true;
         }
@@ -680,8 +680,8 @@ public class SmartMethodInfoFlowAnalysis {
       } else if (rv instanceof Constant) {
         sources.add(rv);
         interestingFlow = !ignoreThisDataType(rv.getType());
-      } else if (rv instanceof ArrayRef) // data flows from the base's data structure
-      {
+      } else if (rv instanceof ArrayRef) {
+        // data flows from the base's data structure
         ArrayRef ar = (ArrayRef) rv;
         sources.add(ar.getBase());
         interestingFlow = !ignoreThisDataType(ar.getType());
@@ -690,13 +690,13 @@ public class SmartMethodInfoFlowAnalysis {
         interestingFlow = !ignoreThisDataType(rv.getType());
       } else if (rv instanceof InstanceFieldRef) {
         InstanceFieldRef ifr = (InstanceFieldRef) rv;
-        if (ifr.getBase() == thisLocal) // data flows from the field ref
-        {
+        if (ifr.getBase() == thisLocal) {
+          // data flows from the field ref
           sources.add(rv);
           interestingFlow = !ignoreThisDataType(rv.getType());
         } else if (includeInnerFields) {
-          if (false) // isNonRefType(rv.getType()) ) // TODO: double check this policy
-          {
+          if (false) {
+            // isNonRefType(rv.getType()) ) // TODO: double check this policy
             // primitives flow from the parent object
             sources.add(ifr.getBase());
           } else {
@@ -706,16 +706,16 @@ public class SmartMethodInfoFlowAnalysis {
             handleInnerField(rv);
           }
           interestingFlow = !ignoreThisDataType(rv.getType());
-        } else // data flows from the base's data structure
-        {
+        } else {
+          // data flows from the base's data structure
           sources.add(ifr.getBase());
           interestingFlow = !ignoreThisDataType(ifr.getType());
         }
       } else if (rv instanceof AnyNewExpr) {
         sources.add(rv);
         interestingFlow = !ignoreThisDataType(rv.getType());
-      } else if (rv instanceof BinopExpr) // does this include compares and others??? yes
-      {
+      } else if (rv instanceof BinopExpr) {
+        // does this include compares and others??? yes
         BinopExpr be = (BinopExpr) rv;
         sources.add(be.getOp1());
         sources.add(be.getOp2());
@@ -755,8 +755,8 @@ public class SmartMethodInfoFlowAnalysis {
           }
         }
       }
-    } else if (stmt.containsInvokeExpr()) // flows data between receiver object, parameters, globals, and return value
-    {
+    } else if (stmt.containsInvokeExpr()) {
+      // flows data between receiver object, parameters, globals, and return value
       handleInvokeExpr(stmt.getInvokeExpr(), stmt);
     }
   }

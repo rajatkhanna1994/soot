@@ -306,17 +306,14 @@ public class Util {
               throw new RuntimeException("unexpected ConstantValue: " + cval);
           }
           field.addTag(tag);
-        }
-        // add synthetic tag
-        else if (fieldInfo.attributes[j] instanceof Synthetic_attribute) {
+        } else if (fieldInfo.attributes[j] instanceof Synthetic_attribute) {
+          // add synthetic tag
           field.addTag(new SyntheticTag());
-        }
-        // add deprecated tag
-        else if (fieldInfo.attributes[j] instanceof Deprecated_attribute) {
+        } else if (fieldInfo.attributes[j] instanceof Deprecated_attribute) {
+          // add deprecated tag
           field.addTag(new DeprecatedTag());
-        }
-        // add signature tag
-        else if (fieldInfo.attributes[j] instanceof Signature_attribute) {
+        } else if (fieldInfo.attributes[j] instanceof Signature_attribute) {
+          // add signature tag
           String generic_sig = ((CONSTANT_Utf8_info) (coffiClass.constant_pool[((Signature_attribute) fieldInfo.attributes[j]).signature_index]))
               .convert();
           field.addTag(new SignatureTag(generic_sig));
@@ -469,9 +466,8 @@ public class Util {
           bclass.addTag(new SourceFileTag(sourceFile, filePath));
         }
 
-      }
-      // Set "InnerClass" attribute tag
-      else if (coffiClass.attributes[i] instanceof InnerClasses_attribute) {
+      } else if (coffiClass.attributes[i] instanceof InnerClasses_attribute) {
+        // Set "InnerClass" attribute tag
         InnerClasses_attribute attr = (InnerClasses_attribute) coffiClass.attributes[i];
         for (int j = 0; j < attr.inner_classes_length; j++) {
           inner_class_entry e = attr.inner_classes[j];
@@ -491,14 +487,12 @@ public class Util {
           }
           bclass.addTag(new InnerClassTag(inner, outer, name, e.access_flags));
         }
-      }
-      // set synthetic tags
-      else if (coffiClass.attributes[i] instanceof Synthetic_attribute) {
+      } else if (coffiClass.attributes[i] instanceof Synthetic_attribute) {
+        // set synthetic tags
 
         bclass.addTag(new SyntheticTag());
-      }
-      // set deprectaed tags
-      else if (coffiClass.attributes[i] instanceof Deprecated_attribute) {
+      } else if (coffiClass.attributes[i] instanceof Deprecated_attribute) {
+        // set deprectaed tags
         bclass.addTag(new DeprecatedTag());
       } else if (coffiClass.attributes[i] instanceof Signature_attribute) {
         String generic_sig = ((CONSTANT_Utf8_info) (coffiClass.constant_pool[((Signature_attribute) coffiClass.attributes[i]).signature_index]))

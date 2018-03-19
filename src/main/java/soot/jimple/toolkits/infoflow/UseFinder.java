@@ -173,8 +173,8 @@ public class UseFinder {
             }
             if (s.containsInvokeExpr()) {
               InvokeExpr ie = s.getInvokeExpr();
-              if (ie.getMethodRef().resolve().getDeclaringClass() == appClass) // what about sub/superclasses
-              {
+              if (ie.getMethodRef().resolve().getDeclaringClass() == appClass) {
+                // what about sub/superclasses
                 if (ie instanceof StaticInvokeExpr) {
                   // static field ref in same class is considered internal
                   classToIntCalls.get(appClass).add(new Pair(method, s));

@@ -24,7 +24,8 @@ import java.util.HashMap;
 public class DavaMonitor {
   private static final DavaMonitor instance = new DavaMonitor();
 
-  private final HashMap<Object, Lock> ref, lockTable;
+  private final HashMap<Object, Lock> ref;
+  private final HashMap<Object, Lock> lockTable;
 
   private DavaMonitor() {
     ref = new HashMap<Object, Lock>(1, 0.7f);

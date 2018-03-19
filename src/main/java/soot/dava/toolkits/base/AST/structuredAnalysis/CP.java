@@ -215,7 +215,7 @@ public class CP extends StructuredAnalysis {
 
         locals.add(newTuple);
         // System.out.print("\t"+tempLocal.getName());
-      }// was a local
+      } // was a local
     }
     // System.out.println();
   }

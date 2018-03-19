@@ -38,9 +38,7 @@ public class DIntConstant extends IntConstant {
   }
 
   public String toString() {
-    if (type != null)
-
-    {
+    if (type != null) {
       if (type instanceof BooleanType) {
         if (value == 0) {
           return "false";

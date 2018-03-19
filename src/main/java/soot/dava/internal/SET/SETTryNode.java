@@ -121,7 +121,8 @@ public class SETTryNode extends SETNode {
 
   public ASTNode emit_AST() {
     LinkedList<Object> catchList = new LinkedList<Object>();
-    HashMap<Object, Object> exceptionMap = new HashMap<Object, Object>(), paramMap = new HashMap<Object, Object>();
+    HashMap<Object, Object> exceptionMap = new HashMap<Object, Object>();
+    HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
 
     Iterator it = en.get_CatchList().iterator();
     while (it.hasNext()) {
@@ -153,7 +154,8 @@ public class SETTryNode extends SETNode {
         if (s instanceof IdentityStmt) {
           IdentityStmt ids = (IdentityStmt) s;
 
-          Value rightOp = ids.getRightOp(), leftOp = ids.getLeftOp();
+          Value rightOp = ids.getRightOp();
+          Value leftOp = ids.getLeftOp();
 
           if (rightOp instanceof CaughtExceptionRef) {
             paramMap.put(astBody, leftOp);
@@ -225,9 +227,7 @@ public class SETTryNode extends SETNode {
                     || ((as.cpreds.size() == 1)
                     && (as.get_Stmt() instanceof GotoStmt) && (scfn
                     .get_CharacterizingStmt() == as.cpreds
-                    .get(0))))
-
-                {
+                    .get(0)))) {
                   remove_AugmentedStmt(as);
                 }
               }

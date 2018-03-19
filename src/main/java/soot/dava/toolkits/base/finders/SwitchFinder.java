@@ -43,8 +43,13 @@ import soot.util.IterableSet;
 public class SwitchFinder implements FactFinder {
   private IterableSet junkBody;
   private HashSet targetSet;
-  private LinkedList targetList, snTargetList, tSuccList;
-  private HashMap index2target, tSucc2indexSet, tSucc2target, tSucc2Body;
+  private LinkedList targetList;
+  private LinkedList snTargetList;
+  private LinkedList tSuccList;
+  private HashMap index2target;
+  private HashMap tSucc2indexSet;
+  private HashMap tSucc2target;
+  private HashMap tSucc2Body;
 
   public SwitchFinder(Singletons.Global g) {
   }
@@ -113,9 +118,8 @@ public class SwitchFinder implements FactFinder {
         snTargetList.addLast(new SwitchNode(target, (TreeSet<Object>) tSucc2indexSet.get(tSucc), (IterableSet) tSucc2Body.get(tSucc)));
       }
 
-      TreeSet
-          targetHeads = new TreeSet(),
-          killBodies = new TreeSet();
+      TreeSet targetHeads = new TreeSet();
+      TreeSet killBodies = new TreeSet();
 
       //  Get the set of head cases and clear those bodies that should not be included in the switch.  Clear as mud, huh? :-)
       {

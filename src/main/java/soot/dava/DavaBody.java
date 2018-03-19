@@ -187,7 +187,8 @@ public class DavaBody extends Body {
   public boolean DEBUG = false;
   private Map<Integer, Value> pMap;
 
-  private HashSet<Object> consumedConditions, thisLocals;
+  private HashSet<Object> consumedConditions;
+  private HashSet<Object> thisLocals;
 
   private IterableSet<ExceptionNode> synchronizedBlockFacts;
   private IterableSet<ExceptionNode> exceptionFacts;
@@ -592,7 +593,7 @@ public class DavaBody extends Body {
               debug("", "ifelseflipped and transformations NOT modified count is not 0 TERMINATE");
             }
           }
-        }//if ASTTransformations was not modified
+        } //if ASTTransformations was not modified
 
       } while (G.v().ASTTransformations_modified);
       //System.out.println("The AST trasnformations has run"+times);
@@ -745,7 +746,8 @@ public class DavaBody extends Body {
 
       // Patch up references within units using our (old <-> new) map.
       for (UnitBox box : getAllUnitBoxes()) {
-        Unit newObject, oldObject = box.getUnit();
+        Unit newObject;
+        Unit oldObject = box.getUnit();
 
         // if we have a reference to an old object, replace it
         // it's clone.
@@ -851,7 +853,7 @@ public class DavaBody extends Body {
 
           String classPackageName = packageName;
 
-          if (className.lastIndexOf('.') > 0) {// 0 doesnt make sense
+          if (className.lastIndexOf('.') > 0) { // 0 doesnt make sense
             classPackageName = className.substring(0, className.lastIndexOf('.'));
           }
           if (!packageName.equals(classPackageName)) {
@@ -1039,7 +1041,7 @@ public class DavaBody extends Body {
 
       String classPackageName = packageName;
 
-      if (className.lastIndexOf('.') > 0) {// 0 doesnt make sense
+      if (className.lastIndexOf('.') > 0) { // 0 doesnt make sense
         classPackageName = className.substring(0, className.lastIndexOf('.'));
       }
       if (!packageName.equals(classPackageName)) {
@@ -1078,8 +1080,10 @@ public class DavaBody extends Body {
   private void javafy_binop_expr(ValueBox vb) {
     BinopExpr boe = (BinopExpr) vb.getValue();
 
-    ValueBox leftOpBox = boe.getOp1Box(), rightOpBox = boe.getOp2Box();
-    Value leftOp = leftOpBox.getValue(), rightOp = rightOpBox.getValue();
+    ValueBox leftOpBox = boe.getOp1Box();
+    ValueBox rightOpBox = boe.getOp2Box();
+    Value leftOp = leftOpBox.getValue();
+    Value rightOp = rightOpBox.getValue();
 
     if (rightOp instanceof IntConstant) {
       if ((leftOp instanceof IntConstant) == false) {
@@ -1164,7 +1168,7 @@ public class DavaBody extends Body {
     String packageName = ie.getMethodRef().declaringClass().getJavaPackageName();
     String classPackageName = packageName;
 
-    if (className.lastIndexOf('.') > 0) {// 0 doesnt make sense
+    if (className.lastIndexOf('.') > 0) { // 0 doesnt make sense
       classPackageName = className.substring(0, className.lastIndexOf('.'));
     }
     if (!packageName.equals(classPackageName)) {
@@ -1211,7 +1215,7 @@ public class DavaBody extends Body {
 
         classPackageName = packageName;
 
-        if (className.lastIndexOf('.') > 0) {// 0 doesnt make sense
+        if (className.lastIndexOf('.') > 0) { // 0 doesnt make sense
           classPackageName = className.substring(0, className.lastIndexOf('.'));
         }
         if (!packageName.equals(classPackageName)) {
@@ -1227,7 +1231,7 @@ public class DavaBody extends Body {
 
         classPackageName = packageName;
 
-        if (className.lastIndexOf('.') > 0) {// 0 doesnt make sense
+        if (className.lastIndexOf('.') > 0) { // 0 doesnt make sense
           classPackageName = className.substring(0, className.lastIndexOf('.'));
         }
         if (!packageName.equals(classPackageName)) {
@@ -1252,7 +1256,7 @@ public class DavaBody extends Body {
 
     String classPackageName = packageName;
 
-    if (className.lastIndexOf('.') > 0) {// 0 doesnt make sense
+    if (className.lastIndexOf('.') > 0) { // 0 doesnt make sense
       classPackageName = className.substring(0, className.lastIndexOf('.'));
     }
     if (!packageName.equals(classPackageName)) {

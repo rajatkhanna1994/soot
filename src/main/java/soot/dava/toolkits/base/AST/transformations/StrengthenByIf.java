@@ -115,11 +115,11 @@ public class StrengthenByIf {
                 newWhileBody));
             return toReturn;
           }
-        }// if the labels match
+        } // if the labels match
       }
-    }// the first Pattern was a match
-    else if (loopNode instanceof ASTUnconditionalLoopNode
+    } else if (loopNode instanceof ASTUnconditionalLoopNode
         && ifBody.size() == 1) {
+      // the first Pattern was a match
       // try the UnconditionalLoopNode pattern
 
       // we need one stmtSeq Node
@@ -173,9 +173,9 @@ public class StrengthenByIf {
                   toReturn.add(new ASTStatementSequenceNode(
                       newStmts));
                   return toReturn;
-                }// labels are the same
-              }// labels are non null
-            }// is a break stmt
+                } // labels are the same
+              } // labels are non null
+            } // is a break stmt
           } else if (stmt instanceof ReturnStmt
               || stmt instanceof ReturnVoidStmt) {
             if (!(stIt.hasNext())) {
@@ -209,11 +209,11 @@ public class StrengthenByIf {
               return toReturn;
             }
           }
-        }// end of going through statements
-      }// end of stmtSEq node
-    }// end of else if
+        } // end of going through statements
+      } // end of stmtSEq node
+    } // end of else if
     return null;
-  }// end of method
+  } // end of method
 
   /*
    * Given a body of a node the method checks for the following: 1, the body

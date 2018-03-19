@@ -71,10 +71,9 @@ public class ConstantCastEliminator extends BodyTransformer {
                 && ce.getOp() instanceof IntConstant) {
               IntConstant it = (IntConstant) ce.getOp();
               assign.setRightOp(FloatConstant.v(it.value));
-            }
-            // a = (double) 42
-            else if (ce.getType() instanceof DoubleType
+            } else if (ce.getType() instanceof DoubleType
                 && ce.getOp() instanceof IntConstant) {
+              // a = (double) 42
               IntConstant it = (IntConstant) ce.getOp();
               assign.setRightOp(DoubleConstant.v(it.value));
             }

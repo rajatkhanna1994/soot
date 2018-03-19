@@ -95,8 +95,8 @@ public class FillArrayDataInstruction extends PseudoInstruction {
     for (int i = 0; i < numElements; i++) {
       ArrayRef arrayRef = Jimple.v().newArrayRef(arrayReference, IntConstant.v(i));
       NumericConstant element = getArrayElement(elements.get(i), body, destRegister);
-      if (element == null) //array was not defined -> element type can not be found (obfuscated bytecode?)
-      {
+      if (element == null) {
+        //array was not defined -> element type can not be found (obfuscated bytecode?)
         break;
       }
       AssignStmt assign = Jimple.v().newAssignStmt(arrayRef, element);

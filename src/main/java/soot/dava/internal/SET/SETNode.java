@@ -44,7 +44,8 @@ public abstract class SETNode {
   private final SETNodeLabel label;
   protected SETNode parent;
   protected AugmentedStmt entryStmt;
-  protected IterableSet predecessors, successors;
+  protected IterableSet predecessors;
+  protected IterableSet successors;
   protected LinkedList<IterableSet> subBodies;
   protected Map<IterableSet, IterableSet> body2childChain;
   private IterableSet<AugmentedStmt> body;
@@ -253,7 +254,8 @@ public abstract class SETNode {
       Iterator cit = children.iterator();
       if (cit.hasNext()) {
 
-        SETNode cur = (SETNode) cit.next(), prev = null;
+        SETNode cur = (SETNode) cit.next();
+        SETNode prev = null;
 
         while (cit.hasNext()) {
           prev = cur;
@@ -358,7 +360,10 @@ public abstract class SETNode {
   }
 
   private void dump(PrintStream out, String indentation) {
-    String TOP = ".---", TAB = "|  ", MID = "+---", BOT = "`---";
+    String TOP = ".---";
+    String TAB = "|  ";
+    String MID = "+---";
+    String BOT = "`---";
 
     out.println(indentation);
     out.println(indentation + TOP);

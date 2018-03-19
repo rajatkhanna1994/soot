@@ -360,9 +360,9 @@ public class ConstantFieldValueFinder {
           }
 
           valueList.add(stmt.getRightOp());
-        }//going through all the definitions
-      }//going through methods of class s
-    }//going through  classes
+        } //going through all the definitions
+      } //going through methods of class s
+    } //going through  classes
   }
 
 

@@ -39,7 +39,8 @@ import soot.util.Switch;
 
 public class BTableSwitchInst extends AbstractInst implements TableSwitchInst {
   UnitBox defaultTargetBox;
-  int lowIndex, highIndex;
+  int lowIndex;
+  int highIndex;
   UnitBox[] targetBoxes;
   List unitBoxes;
 

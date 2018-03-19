@@ -31,7 +31,8 @@ import soot.jimple.IfStmt;
 import soot.util.IterableSet;
 
 public class SETIfElseNode extends SETDagNode {
-  private IterableSet ifBody, elseBody;
+  private IterableSet ifBody;
+  private IterableSet elseBody;
 
   public SETIfElseNode(AugmentedStmt characterizingStmt, IterableSet body,
                        IterableSet ifBody, IterableSet elseBody) {
@@ -61,8 +62,8 @@ public class SETIfElseNode extends SETDagNode {
   }
 
   public ASTNode emit_AST() {
-    List<Object> astBody0 = emit_ASTBody(body2childChain.get(ifBody)), astBody1 = emit_ASTBody(body2childChain
-        .get(elseBody));
+    List<Object> astBody0 = emit_ASTBody(body2childChain.get(ifBody));
+    List<Object> astBody1 = emit_ASTBody(body2childChain.get(elseBody));
 
     ConditionExpr ce = (ConditionExpr) ((IfStmt) get_CharacterizingStmt()
         .get_Stmt()).getCondition();

@@ -36,7 +36,8 @@ import soot.baf.InstSwitch;
 import soot.util.Switch;
 
 public class BDup2_x1Inst extends BDupInst implements Dup2_x1Inst {
-  private final Type mOp1Type, mOp2Type;
+  private final Type mOp1Type;
+  private final Type mOp2Type;
   private final Type mUnderType;
 
   public BDup2_x1Inst(Type aOp1Type, Type aOp2Type, Type aUnderType) {

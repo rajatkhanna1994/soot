@@ -237,9 +237,9 @@ public class DexBody {
         List<? extends ExceptionHandler> hList = tryItem.getExceptionHandlers();
         for (ExceptionHandler handler : hList) {
           String exType = handler.getExceptionType();
-          if (exType == null) // for handler which capture all
-          // Exceptions
-          {
+          if (exType == null) {
+            // for handler which capture all
+            // Exceptions
             continue;
           }
           types.add(DexType.toSoot(exType));
@@ -662,11 +662,11 @@ public class DexBody {
               if (ltype instanceof PrimType) {
                 continue;
               }
-              if (!(op1 instanceof IntConstant)) // by default
-              // null is
-              // IntConstant(0)
-              // in Dalvik
-              {
+              if (!(op1 instanceof IntConstant)) {
+                // by default
+                // null is
+                // IntConstant(0)
+                // in Dalvik
                 continue;
               }
               IntConstant icst = (IntConstant) op1;
@@ -681,11 +681,11 @@ public class DexBody {
               if (ltype instanceof PrimType) {
                 continue;
               }
-              if (!(op2 instanceof IntConstant)) // by default
-              // null is
-              // IntConstant(0)
-              // in Dalvik
-              {
+              if (!(op2 instanceof IntConstant)) {
+                // by default
+                // null is
+                // IntConstant(0)
+                // in Dalvik
                 continue;
               }
               IntConstant icst = (IntConstant) op2;

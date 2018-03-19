@@ -314,8 +314,8 @@ public class CPFlowSet extends DavaFlowSet<CPTuple> {
         } else {
           throw new DecompilationException("Ran out of cases in CPVariable values...report bug to developer");
         }
-      }//if match was found
-      else {
+      } else {
+        //if match was found
         //could not find a match for element[i] in other hence its bottom in other
         //CASE 4 and 7 (cant be case 1 since element[i]s presence means its not bottom
 
@@ -347,7 +347,7 @@ public class CPFlowSet extends DavaFlowSet<CPTuple> {
       }
 
 
-    }//end going through all elements of this flowset
+    } //end going through all elements of this flowset
 
 
     /*
@@ -406,7 +406,7 @@ public class CPFlowSet extends DavaFlowSet<CPTuple> {
 				 throw new DecompilationException("CPVariable is not local and not field");
 				 */
       }
-    }//end going through other elements
+    } //end going through other elements
   }
 
 

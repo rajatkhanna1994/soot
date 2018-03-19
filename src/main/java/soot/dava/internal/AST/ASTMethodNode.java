@@ -174,7 +174,7 @@ public class ASTMethodNode extends ASTNode {
   public List getDeclaredLocals() {
     List toReturn = new ArrayList();
 
-    for (AugmentedStmt as : declarations.getStatements()) {//going through each stmt
+    for (AugmentedStmt as : declarations.getStatements()) { //going through each stmt
       Stmt s = as.get_Stmt();
 
       if (!(s instanceof DVariableDeclarationStmt)) {
@@ -190,8 +190,8 @@ public class ASTMethodNode extends ASTNode {
         //going through each local declared
 
         toReturn.add(decIt.next());
-      }//going through all locals of this type
-    }//going through all stmts
+      } //going through all locals of this type
+    } //going through all stmts
     return toReturn;
   }
 
@@ -204,7 +204,7 @@ public class ASTMethodNode extends ASTNode {
    */
   public void removeDeclaredLocal(Local local) {
     Stmt s = null;
-    for (AugmentedStmt as : declarations.getStatements()) {//going through each stmt
+    for (AugmentedStmt as : declarations.getStatements()) { //going through each stmt
       s = as.get_Stmt();
 
       if (!(s instanceof DVariableDeclarationStmt)) {
@@ -345,7 +345,7 @@ public class ASTMethodNode extends ASTNode {
 
       // print out the remaining body
       up.newline();
-    }//if //davaBody != null
+    } //if //davaBody != null
 
     //notice that for an ASTMethod Node the first element of the body list is the
     //declared variables print it here so that we can control what gets printed
@@ -430,8 +430,8 @@ public class ASTMethodNode extends ASTNode {
         up.literal(";");
         up.endUnit(u);
         up.newline();
-      } //if DVariableDeclarationStmt
-      else {
+      } else {
+        //if DVariableDeclarationStmt
         up.startUnit(u);
         u.toString(up);
         up.literal(";");

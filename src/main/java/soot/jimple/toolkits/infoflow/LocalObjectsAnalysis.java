@@ -144,8 +144,8 @@ public class LocalObjectsAnalysis {
     return cloa.isObjectLocal(localOrRef, sm);
   }
 
-  public boolean isFieldLocalToParent(SootField sf) // To parent class!
-  {
+  public boolean isFieldLocalToParent(SootField sf) {
+    // To parent class!
     // Handle obvious case
     if (sf.isStatic()) {
       return false;
@@ -542,8 +542,8 @@ public class LocalObjectsAnalysis {
     if (superclass.hasSuperclass()) {
       superclass = sootClass.getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       Iterator scMethodsIt = superclass.methodIterator();
       while (scMethodsIt.hasNext()) {
         SootMethod scMethod = (SootMethod) scMethodsIt.next();
@@ -608,9 +608,8 @@ public class LocalObjectsAnalysis {
             }
           }
         }
-      }
-      // For a instance invoke on shared object, check if any fields or any shared params are read/written
-      else {
+      } else {
+        // For a instance invoke on shared object, check if any fields or any shared params are read/written
         Iterator graphIt = dataFlowGraph.iterator();
         while (graphIt.hasNext()) {
           EquivalentValue nodeEqVal = (EquivalentValue) graphIt.next();

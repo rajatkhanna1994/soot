@@ -87,7 +87,7 @@ public class UnreachableCodeEliminator extends DepthFirstAdapter {
         //System.out.println("Removed");
         ((List) subBody).remove(it.next());
       }
-    }//end of going over subBodies
+    } //end of going over subBodies
   }
 
 
@@ -170,7 +170,7 @@ public class UnreachableCodeEliminator extends DepthFirstAdapter {
     Map<Object, List<Object>> index2BodyList = node.getIndex2BodyList();
 
     Iterator<Object> it = indexList.iterator();
-    while (it.hasNext()) {//going through all the cases of the switch statement
+    while (it.hasNext()) { //going through all the cases of the switch statement
       Object currentIndex = it.next();
       List body = index2BodyList.get(currentIndex);
 

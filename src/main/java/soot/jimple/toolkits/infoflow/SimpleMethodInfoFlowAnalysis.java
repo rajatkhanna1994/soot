@@ -92,8 +92,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
     if (superclass.hasSuperclass()) {
       superclass = sm.getDeclaringClass().getSuperclass();
     }
-    while (superclass.hasSuperclass()) // we don't want to process Object
-    {
+    while (superclass.hasSuperclass()) {
+      // we don't want to process Object
       for (SootField scField : superclass.getFields()) {
         EquivalentValue fieldRefEqVal = InfoFlowAnalysis.getNodeForFieldRef(sm, scField);
         if (!infoFlowGraph.containsNode(fieldRefEqVal)) {
@@ -388,8 +388,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
                              Unit unit, FlowSet<Pair<EquivalentValue, EquivalentValue>> out) {
     Stmt stmt = (Stmt) unit;
 
-    if (in != out) // this method is reused for flow insensitive analysis, which uses the same FlowSet for in and out
-    {
+    if (in != out) {
+      // this method is reused for flow insensitive analysis, which uses the same FlowSet for in and out
       in.copy(out);
     }
     FlowSet<Pair<EquivalentValue, EquivalentValue>> changedFlow = out;
@@ -426,8 +426,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
 //			return;
 
 
-    if (stmt instanceof IdentityStmt) // assigns an IdentityRef to a Local
-    {
+    if (stmt instanceof IdentityStmt) {
+      // assigns an IdentityRef to a Local
       IdentityStmt is = (IdentityStmt) stmt;
       IdentityRef ir = (IdentityRef) is.getRightOp();
 
@@ -444,8 +444,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
           handleFlowsToValue(is.getLeftOp(), ir, changedFlow);
         }
       }
-    } else if (stmt instanceof ReturnStmt) // assigns an Immediate to the "returnRef"
-    {
+    } else if (stmt instanceof ReturnStmt) {
+      // assigns an Immediate to the "returnRef"
       ReturnStmt rs = (ReturnStmt) stmt;
       Value rv = rs.getOp();
       if (rv instanceof Constant) {
@@ -456,8 +456,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
           handleFlowsToValue(returnRef, rv, changedFlow);
         }
       }
-    } else if (stmt instanceof AssignStmt) // assigns a Value to a Variable
-    {
+    } else if (stmt instanceof AssignStmt) {
+      // assigns a Value to a Variable
       AssignStmt as = (AssignStmt) stmt;
       Value lv = as.getLeftOp();
       Value rv = as.getRightOp();
@@ -465,24 +465,24 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
       Value sink = null;
       boolean flowsToDataStructure = false;
 
-      if (lv instanceof Local) // data flows into the Local
-      {
+      if (lv instanceof Local) {
+        // data flows into the Local
         sink = lv;
-      } else if (lv instanceof ArrayRef) // data flows into the base's data structure
-      {
+      } else if (lv instanceof ArrayRef) {
+        // data flows into the base's data structure
         ArrayRef ar = (ArrayRef) lv;
         sink = ar.getBase();
         flowsToDataStructure = true;
-      } else if (lv instanceof StaticFieldRef) // data flows into the field ref
-      {
+      } else if (lv instanceof StaticFieldRef) {
+        // data flows into the field ref
         sink = lv;
       } else if (lv instanceof InstanceFieldRef) {
         InstanceFieldRef ifr = (InstanceFieldRef) lv;
-        if (ifr.getBase() == thisLocal) // data flows into the field ref
-        {
+        if (ifr.getBase() == thisLocal) {
+          // data flows into the field ref
           sink = lv;
-        } else // data flows into the base's data structure
-        {
+        } else {
+          // data flows into the base's data structure
           sink = ifr.getBase();
           flowsToDataStructure = true;
         }
@@ -497,8 +497,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
       } else if (rv instanceof Constant) {
         sources.add(rv);
         interestingFlow = !ignoreThisDataType(rv.getType());
-      } else if (rv instanceof ArrayRef) // data flows from the base's data structure
-      {
+      } else if (rv instanceof ArrayRef) {
+        // data flows from the base's data structure
         ArrayRef ar = (ArrayRef) rv;
         sources.add(ar.getBase());
         interestingFlow = !ignoreThisDataType(ar.getType());
@@ -507,12 +507,12 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
         interestingFlow = !ignoreThisDataType(rv.getType());
       } else if (rv instanceof InstanceFieldRef) {
         InstanceFieldRef ifr = (InstanceFieldRef) rv;
-        if (ifr.getBase() == thisLocal) // data flows from the field ref
-        {
+        if (ifr.getBase() == thisLocal) {
+          // data flows from the field ref
           sources.add(rv);
           interestingFlow = !ignoreThisDataType(rv.getType());
-        } else // data flows from the base's data structure
-        {
+        } else {
+          // data flows from the base's data structure
           sources.add(ifr.getBase());
           interestingFlow = !ignoreThisDataType(ifr.getType());
         }
@@ -553,8 +553,8 @@ public class SimpleMethodInfoFlowAnalysis extends ForwardFlowAnalysis<Unit, Flow
           }
         }
       }
-    } else if (stmt.containsInvokeExpr()) // flows data between receiver object, parameters, globals, and return value
-    {
+    } else if (stmt.containsInvokeExpr()) {
+      // flows data between receiver object, parameters, globals, and return value
       handleInvokeExpr(stmt.getInvokeExpr(), stmt, changedFlow);
     }
 

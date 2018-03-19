@@ -134,8 +134,8 @@ public class JasminClass extends AbstractJasminClass {
 
   }
 
-  protected void emitMethodBody(SootMethod method)//, Map options)
-  {
+  protected void emitMethodBody(SootMethod method) {
+    //, Map options)
     if (Options.v().time()) {
       Timers.v().buildJasminTimer.end();
     }
@@ -514,8 +514,7 @@ public class JasminClass extends AbstractJasminClass {
           contFlag = true;
           codeIt.next();
           codeIt.next();
-        }
-        while (false);
+        } while (false);
         if (contFlag) {
           continue;
         }

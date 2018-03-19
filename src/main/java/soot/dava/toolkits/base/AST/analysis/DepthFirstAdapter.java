@@ -570,7 +570,7 @@ public class DepthFirstAdapter extends AnalysisAdapter {
 
         temp.apply(this);
       }
-    }//end of going over subBodies
+    } //end of going over subBodies
   }
 
   public void inASTStatementSequenceNode(ASTStatementSequenceNode node) {
@@ -611,7 +611,7 @@ public class DepthFirstAdapter extends AnalysisAdapter {
         caseStmt(s);
       }
 
-    }//end of while going through the statement sequence
+    } //end of while going through the statement sequence
     outASTStatementSequenceNode(node);
   }
 

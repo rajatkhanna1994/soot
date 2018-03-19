@@ -200,10 +200,8 @@ public class DavaFlowSet<T> extends AbstractFlowSet<T> {
         for (int i = 0; i < this.numElements; i++) {
           dest.add(this.elements[i]);
         }
-      }
-
-      // Else, force that dest starts with contents of this
-      else {
+      } else {
+        // Else, force that dest starts with contents of this
         if (this != dest) {
           copy(dest);
         }

@@ -195,9 +195,7 @@ public class SlowAvailableExpressionsAnalysis extends ForwardFlowAnalysis<Unit, 
       for (Unit s : g) {
         BoundedFlowSet<Value> genSet = new ArrayPackedSet<Value>(exprUniv);
         // In Jimple, expressions only occur as the RHS of an AssignStmt.
-        if (s instanceof AssignStmt)
-
-        {
+        if (s instanceof AssignStmt) {
           AssignStmt as = (AssignStmt) s;
           if (as.getRightOp() instanceof Expr) {
             // canonical rep of as.getRightOp();

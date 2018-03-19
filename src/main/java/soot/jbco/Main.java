@@ -123,12 +123,12 @@ public class Main {
         metrics = true;
         remove[i] = true;
         rcount++;
-      } // temp dumby arg to printout name of benchmark for output files
-      else if (arg.startsWith("-jbco:name:")) {
+      } else if (arg.startsWith("-jbco:name:")) {
+        // temp dumby arg to printout name of benchmark for output files
         remove[i] = true;
         rcount++;
-      } // dumby dumby dumby
-      else if (arg.startsWith("-t:")) {
+      } else if (arg.startsWith("-t:")) {
+        // dumby dumby dumby
         arg = arg.substring(3);
 
         int tweight = 9;

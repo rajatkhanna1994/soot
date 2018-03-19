@@ -103,10 +103,12 @@ public class IFDSPossibleTypes extends DefaultJimpleIFDSTabulationProblem<Pair<V
                   //strong update for local variables
                   return Collections.emptySet();
                 } else if (maybeSameLocation(value, right)) {
-                  return new LinkedHashSet<Pair<Value, Type>>() {{
-                    add(new Pair<Value, Type>(left, source.getO2()));
-                    add(source);
-                  }};
+                  return new LinkedHashSet<Pair<Value, Type>>() {
+                    {
+                      add(new Pair<Value, Type>(left, source.getO2()));
+                      add(source);
+                    }
+                  };
                 } else {
                   return Collections.singleton(source);
                 }

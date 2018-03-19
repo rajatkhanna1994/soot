@@ -100,8 +100,8 @@ public class AddJSRs extends BodyTransformer implements IJbcoTransform {
 
         // test if we've already seen the target - if so, it might be a loop so
         // let's not slow things down
-        if (Rand.getInt(10) > weight) //seenUts.contains(tu)) {
-        {
+        if (Rand.getInt(10) > weight) {
+          //seenUts.contains(tu)) {
           ignoreJumps.put(ti, tu);
         } else if (!targets.contains(tu)) {
           targets.add(tu);

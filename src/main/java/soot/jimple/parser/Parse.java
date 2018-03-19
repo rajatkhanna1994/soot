@@ -98,10 +98,7 @@ public class Parse {
 
 
   public static void main(String args[])
-      throws java.lang.Exception
-
-
-  {
+      throws java.lang.Exception {
     boolean verbose = false;
     InputStream inFile;
 
@@ -118,6 +115,7 @@ public class Parse {
       if (arg.startsWith("-")) {
         arg = arg.substring(1);
         if (arg.equals("d")) {
+          ;
         } else if (arg.equals("v")) {
           verbose = true;
         }

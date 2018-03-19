@@ -29,7 +29,8 @@ import soot.dava.toolkits.base.AST.analysis.Analysis;
 import soot.jimple.ConditionExpr;
 
 public class ASTIfElseNode extends ASTControlFlowNode {
-  private List<Object> ifBody, elseBody;
+  private List<Object> ifBody;
+  private List<Object> elseBody;
 
   public ASTIfElseNode(SETNodeLabel label, ConditionExpr condition, List<Object> ifBody, List<Object> elseBody) {
     super(label, condition);

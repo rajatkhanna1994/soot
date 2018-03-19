@@ -50,9 +50,8 @@ public class StoreChainOptimizer extends BodyTransformer {
       if (!u.getBoxesPointingToThis().isEmpty()) {
         stores.clear();
         lastPush = null;
-      }
-      // Emulate pushing stuff on the stack
-      else if (u instanceof PushInst) {
+      } else if (u instanceof PushInst) {
+        // Emulate pushing stuff on the stack
         lastPush = u;
       } else if (u instanceof StoreInst && lastPush != null) {
         StoreInst si = (StoreInst) u;
