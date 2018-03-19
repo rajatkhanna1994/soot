@@ -17,9 +17,7 @@ import soot.toolkits.graph.UnitGraph;
 // -Richard L. Halpert, 2006-11-30
 
 
-public class NotifyStmt extends JPegStmt
-
-{
+public class NotifyStmt extends JPegStmt {
 
   public NotifyStmt(String obj, String ca, Unit un, UnitGraph ug, SootMethod sm) {
     this.object = obj;

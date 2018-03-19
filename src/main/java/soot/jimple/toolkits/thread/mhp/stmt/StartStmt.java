@@ -45,14 +45,10 @@ import soot.toolkits.graph.UnitGraph;
 // -Richard L. Halpert, 2006-11-30
 
 
-public class StartStmt extends JPegStmt
-
-//public class JPegStmt implements CommunicationStmt
-//public class JPegStmt extends AbstractStmt implements CommunicationStm 
-//public class JPegStmt extends AbstractStm 
-
-{
-
+public class StartStmt extends JPegStmt {
+  // public class JPegStmt implements CommunicationStmt
+  // public class JPegStmt extends AbstractStmt implements CommunicationStm
+  // public class JPegStmt extends AbstractStm
   public StartStmt(String obj, String ca, Unit un, UnitGraph ug, SootMethod sm) {
     this.object = obj;
     this.name = "start";

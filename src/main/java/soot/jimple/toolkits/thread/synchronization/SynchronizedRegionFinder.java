@@ -53,7 +53,7 @@ public class SynchronizedRegionFinder extends ForwardFlowAnalysis<Unit, FlowSet<
   Chain<Unit> units;
   SootMethod method;
   ExceptionalUnitGraph egraph;
-  //	SideEffectAnalysis sea;
+  //  SideEffectAnalysis sea;
   LocalUses slu;
   CriticalSectionAwareSideEffectAnalysis tasea;
   List<Object> prepUnits;
@@ -199,16 +199,18 @@ public class SynchronizedRegionFinder extends ForwardFlowAnalysis<Unit, FlowSet<
         if (stmt.containsInvokeExpr()) {
           // Note if this unit is a call to wait() or notify()/notifyAll()
           String InvokeSig = stmt.getInvokeExpr().getMethod().getSubSignature();
-          if ((InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()")) && tn.nestLevel == nestLevel) // only applies to outermost txn
-          {
+          if ((InvokeSig.equals("void notify()") ||
+              InvokeSig.equals("void notifyAll()")) && tn.nestLevel == nestLevel) {
+            // only applies to outermost txn
             if (!tn.notifys.contains(unit)) {
               tn.notifys.add(unit);
             }
             if (optionPrintDebug) {
               logger.debug("{x,x} ");
             }
-          } else if ((InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)")) && tn.nestLevel == nestLevel) // only applies to outermost txn
-          {
+          } else if ((InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") ||
+                      InvokeSig.equals("void wait(long,int)")) && tn.nestLevel == nestLevel) {
+            // only applies to outermost txn
             if (!tn.waits.contains(unit)) {
               tn.waits.add(unit);
             }
@@ -243,8 +245,8 @@ public class SynchronizedRegionFinder extends ForwardFlowAnalysis<Unit, FlowSet<
               logger.debug("} ");
             }
           }
-        } else if (unit instanceof ExitMonitorStmt && tn.nestLevel == nestLevel) // only applies to outermost txn
-        {
+        } else if (unit instanceof ExitMonitorStmt && tn.nestLevel == nestLevel) {
+          // only applies to outermost txn
           // Mark this as end of this tn
           srfp.inside = false;
 
@@ -342,7 +344,8 @@ public class SynchronizedRegionFinder extends ForwardFlowAnalysis<Unit, FlowSet<
         Iterator<UnitValueBoxPair> uses = slu.getUsesOf(prepUnit).iterator();
         while (uses.hasNext()) {
           UnitValueBoxPair use = (UnitValueBoxPair) uses.next();
-          if (use.getUnit() == (Unit) unit) {// if this transaction's monitorenter statement is one of the uses of this preparatory unit
+          if (use.getUnit() == (Unit) unit) {
+            // if this transaction's monitorenter statement is one of the uses of this preparatory unit
             newTn.prepStmt = (Stmt) prepUnit;
           }
         }
@@ -354,7 +357,8 @@ public class SynchronizedRegionFinder extends ForwardFlowAnalysis<Unit, FlowSet<
   /**
    * union
    **/
-  protected void merge(FlowSet<SynchronizedRegionFlowPair> inSet1, FlowSet<SynchronizedRegionFlowPair> inSet2, FlowSet<SynchronizedRegionFlowPair> outSet) {
+  protected void merge(FlowSet<SynchronizedRegionFlowPair> inSet1,
+                       FlowSet<SynchronizedRegionFlowPair> inSet2, FlowSet<SynchronizedRegionFlowPair> outSet) {
     inSet1.union(inSet2, outSet);
   }
 

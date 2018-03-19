@@ -62,9 +62,9 @@ public class LockAllocationBodyTransformer extends BodyTransformer {
       return lock;
     }
 
-    if (lock instanceof ArrayRef) // it would be better to lock the array
-    // ref for each value of the index!
-    {
+    if (lock instanceof ArrayRef) {
+      // it would be better to lock the array
+      // ref for each value of the index!
       return ((ArrayRef) lock).getBase();
     }
 
@@ -209,11 +209,11 @@ public class LockAllocationBodyTransformer extends BodyTransformer {
     // each global lock object,
     // add a local lock object and assign it a new object. Copy the new
     // local lock object into the global lock object for use by other fns.
-    if (!addedGlobalLockDefs)// thisMethod.getSubSignature().equals("void
-    // <clinit>()") &&
-    // thisMethod.getDeclaringClass() ==
-    // Scene.v().getMainClass())
-    {
+    if (!addedGlobalLockDefs) {
+      // thisMethod.getSubSignature().equals("void
+      // <clinit>()") &&
+      // thisMethod.getDeclaringClass() ==
+      // Scene.v().getMainClass())
       // Either get or add the <clinit> method to the main class
       SootClass mainClass = Scene.v().getMainClass();
       SootMethod clinitMethod = null;
@@ -410,8 +410,8 @@ public class LockAllocationBodyTransformer extends BodyTransformer {
           } else {
             csr = tn;
           }
-        } else // global lock
-        {
+        } else {
+          // global lock
           if (!addedLocalLockObj[tn.setNumber]) {
             b.getLocals().add(lockObj[tn.setNumber]);
           }
@@ -558,8 +558,8 @@ public class LockAllocationBodyTransformer extends BodyTransformer {
                 }
               }
             }
-            if (csr.last == null) // || !units.contains(clr.last))
-            {
+            if (csr.last == null) {
+              // || !units.contains(clr.last))
               csr.last = lastEnd; // last stmt and last end are
             }
             // the same

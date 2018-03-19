@@ -124,8 +124,8 @@ public class TrapManager {
         if (u.equals(rangeStart)) {
           insideRange = true;
         }
-        if (!unitIt.hasNext()) // i.e. u.equals(t.getEndUnit())
-        {
+        if (!unitIt.hasNext()) {
+          // i.e. u.equals(t.getEndUnit())
           if (insideRange) {
             Trap newTrap = (Trap) t.clone();
             t.setBeginUnit(rangeStart);

@@ -97,8 +97,8 @@ public class CriticalSectionVisibleEdgesPred implements EdgePredicate {
       Iterator<CriticalSection> tnIt = tns.iterator();
       while (tnIt.hasNext()) {
         CriticalSection tn = tnIt.next();
-        if (tn != exemptTn && tn.units.contains(e.srcStmt())) // if this method call originates inside a transaction...
-        {
+        if (tn != exemptTn && tn.units.contains(e.srcStmt())) {
+          // if this method call originates inside a transaction...
           return false; // ignore it
         }
       }

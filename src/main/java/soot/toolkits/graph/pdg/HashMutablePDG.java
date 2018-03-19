@@ -113,10 +113,10 @@ public class HashMutablePDG extends HashMutableEdgeLabelledDirectedGraph<PDGNode
     this.m_pdgRegions = HashMutablePDG.computePDGRegions(this.m_startNode);
 
 
-		/*This is needed to convert the initially Region-typed inner node of the PDG's head
-			to a PDGRegion-typed one after the whole graph is computed.
-			The root PDGRegion is the one with no parent.
-		*/
+    /*This is needed to convert the initially Region-typed inner node of the PDG's head
+    to a PDGRegion-typed one after the whole graph is computed.
+    The root PDGRegion is the one with no parent.
+    */
 
     IRegion r = this.m_pdgRegions.get(0);
     while (r.getParent() != null) {
@@ -352,9 +352,8 @@ public class HashMutablePDG extends HashMutableEdgeLabelledDirectedGraph<PDGNode
             dependents.add((Block) dode.getGode());
 
             //This occurs if the CFG is multi-tailed and therefore the pdom is a forest.
-            if (dode.getParent() == null)
-            //throw new RuntimeException("parent dode in pdom is null: dode is " + aDode);
-            {
+            if (dode.getParent() == null) {
+              //throw new RuntimeException("parent dode in pdom is null: dode is " + aDode);
               break;
             }
             dode = dode.getParent();
@@ -516,7 +515,8 @@ public class HashMutablePDG extends HashMutableEdgeLabelledDirectedGraph<PDGNode
                  * on it. Also, A is dependent on this strong region as well.
                  */
 
-                Region newRegion = new Region(this.m_strongRegionStartID++, topLevelRegion.getSootMethod(), topLevelRegion.getSootClass(), this.m_cfg);
+                Region newRegion = new Region(this.m_strongRegionStartID++, topLevelRegion.getSootMethod(),
+                                              topLevelRegion.getSootClass(), this.m_cfg);
                 newRegion.add(depB);
 
                 this.m_strongRegions.add(newRegion);

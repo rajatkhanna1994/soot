@@ -17,10 +17,7 @@ import soot.toolkits.graph.UnitGraph;
 // -Richard L. Halpert, 2006-11-30
 
 
-public class MonitorEntryStmt extends JPegStmt
-
-{
-
+public class MonitorEntryStmt extends JPegStmt {
   public MonitorEntryStmt(String obj, String ca, Unit un, UnitGraph ug, SootMethod sm) {
     this.object = obj;
     this.name = "entry";

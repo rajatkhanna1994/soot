@@ -131,7 +131,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
   private HashMap<Stmt, RWSet> RCache = new HashMap<Stmt, RWSet>();
   private HashMap<Stmt, RWSet> WCache = new HashMap<Stmt, RWSet>();
 
-  public CriticalSectionAwareSideEffectAnalysis(PointsToAnalysis pa, CallGraph cg, Collection<CriticalSection> criticalSections, ThreadLocalObjectsAnalysis tlo) {
+  public CriticalSectionAwareSideEffectAnalysis(PointsToAnalysis pa, CallGraph cg, Collection<CriticalSection> criticalSections,
+                                                ThreadLocalObjectsAnalysis tlo) {
     this.pa = pa;
     this.cg = cg;
     this.tve = new CriticalSectionVisibleEdgesPred(criticalSections);
@@ -144,41 +145,41 @@ public class CriticalSectionAwareSideEffectAnalysis {
 
     sigBlacklist = new Vector(); // Signatures of methods known to have effective read/write sets of size 0
     // Math does not have any synchronization risks, we think :-)
-/*		sigBlacklist.add("<java.lang.Math: double abs(double)>");
-		sigBlacklist.add("<java.lang.Math: double min(double,double)>");
-		sigBlacklist.add("<java.lang.Math: double sqrt(double)>");
-		sigBlacklist.add("<java.lang.Math: double pow(double,double)>");
-//*/
-//		sigBlacklist.add("");
+    /*  sigBlacklist.add("<java.lang.Math: double abs(double)>");
+        sigBlacklist.add("<java.lang.Math: double min(double,double)>");
+        sigBlacklist.add("<java.lang.Math: double sqrt(double)>");
+        sigBlacklist.add("<java.lang.Math: double pow(double,double)>");
+    // */
+    // sigBlacklist.add("");
 
     sigReadGraylist = new Vector(); // Signatures of methods whose effects must be approximated
     sigWriteGraylist = new Vector();
 
-/*		sigReadGraylist.add("<java.util.Vector: boolean remove(java.lang.Object)>");
-		sigWriteGraylist.add("<java.util.Vector: boolean remove(java.lang.Object)>");
+    /*      sigReadGraylist.add("<java.util.Vector: boolean remove(java.lang.Object)>");
+            sigWriteGraylist.add("<java.util.Vector: boolean remove(java.lang.Object)>");
 
-		sigReadGraylist.add("<java.util.Vector: boolean add(java.lang.Object)>");
-		sigWriteGraylist.add("<java.util.Vector: boolean add(java.lang.Object)>");
+            sigReadGraylist.add("<java.util.Vector: boolean add(java.lang.Object)>");
+            sigWriteGraylist.add("<java.util.Vector: boolean add(java.lang.Object)>");
 
-		sigReadGraylist.add("<java.util.Vector: java.lang.Object clone()>");
-//		sigWriteGraylist.add("<java.util.Vector: java.lang.Object clone()>");
+            sigReadGraylist.add("<java.util.Vector: java.lang.Object clone()>");
+    //      sigWriteGraylist.add("<java.util.Vector: java.lang.Object clone()>");
 
-		sigReadGraylist.add("<java.util.Vector: java.lang.Object get(int)>");
-//		sigWriteGraylist.add("<java.util.Vector: java.lang.Object get(int)>");
+        sigReadGraylist.add("<java.util.Vector: java.lang.Object get(int)>");
+    //  sigWriteGraylist.add("<java.util.Vector: java.lang.Object get(int)>");
 
-		sigReadGraylist.add("<java.util.Vector: java.util.List subList(int,int)>");
-//		sigWriteGraylist.add("<java.util.Vector: java.util.List subList(int,int)>");
+        sigReadGraylist.add("<java.util.Vector: java.util.List subList(int,int)>");
+    //  sigWriteGraylist.add("<java.util.Vector: java.util.List subList(int,int)>");
 
-		sigReadGraylist.add("<java.util.List: void clear()>");
-		sigWriteGraylist.add("<java.util.List: void clear()>");
-//*/
+        sigReadGraylist.add("<java.util.List: void clear()>");
+        sigWriteGraylist.add("<java.util.List: void clear()>");
+    //*/
     subSigBlacklist = new Vector(); // Subsignatures of methods on all objects known to have read/write sets of size 0
-/*		subSigBlacklist.add("java.lang.Class class$(java.lang.String)");
-		subSigBlacklist.add("void notify()");
-		subSigBlacklist.add("void notifyAll()");
-		subSigBlacklist.add("void wait()");
-		subSigBlacklist.add("void <clinit>()");
-//*/
+    /*    subSigBlacklist.add("java.lang.Class class$(java.lang.String)");
+          subSigBlacklist.add("void notify()");
+          subSigBlacklist.add("void notifyAll()");
+          subSigBlacklist.add("void wait()");
+          subSigBlacklist.add("void <clinit>()");
+    //*/
   }
 
   public void findNTRWSets(SootMethod method) {
@@ -237,11 +238,12 @@ public class CriticalSectionAwareSideEffectAnalysis {
             if (tlo == null || base == null || !tlo.isObjectThreadLocal(base, method)) {
               // add its approximated read set to read
               RWSet r;
-              //	            		String InvokeSig = calledMethod.getSubSignature();
-              //	            		if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
-              //	            			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
-              //							r = approximatedReadSet(method, s, base, true);
-              //						else
+              //                        String InvokeSig = calledMethod.getSubSignature();
+              //                        if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
+              //                            InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") ||
+              //                            InvokeSig.equals("void wait(long,int)"))
+              //                            r = approximatedReadSet(method, s, base, true);
+              //                        else
               r = approximatedReadSet(method, s, base, true);
               if (read == null) {
                 read = new CodeBlockRWSet();
@@ -252,10 +254,11 @@ public class CriticalSectionAwareSideEffectAnalysis {
 
               // add its approximated write set to write
               RWSet w;
-              //	            		if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
-              //	            			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
-              //							w = approximatedWriteSet(method, s, base, true);
-              //						else
+              //                            if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
+              //                            InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") ||
+              //                                              InvokeSig.equals("void wait(long,int)"))
+              //                            w = approximatedWriteSet(method, s, base, true);
+              //                            else
               w = approximatedWriteSet(method, s, base, true);
               if (write == null) {
                 write = new CodeBlockRWSet();
@@ -290,8 +293,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
     if (stmt instanceof AssignStmt) {
       AssignStmt a = (AssignStmt) stmt;
       Value r = a.getRightOp();
-      if (r instanceof NewExpr) // IGNORE NEW STATEMENTS
-      {
+      if (r instanceof NewExpr) {
+        // IGNORE NEW STATEMENTS
         return null;
       }
       return addValue(r, method, stmt);
@@ -299,7 +302,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
     return null;
   }
 
-  public RWSet approximatedReadSet(SootMethod method, Stmt stmt, Value specialRead, boolean allFields) {// used for stmts with method calls where the effect of the method call should be approximated by 0 or 1 reads (plus reads of all args)
+  public RWSet approximatedReadSet(SootMethod method, Stmt stmt, Value specialRead, boolean allFields) {
+    // used for stmts with method calls where the effect of the method call should be approximated by 0 or 1 reads (plus reads of all args)
     CodeBlockRWSet ret = new CodeBlockRWSet();
     if (specialRead != null) {
       if (specialRead instanceof Local) {
@@ -307,9 +311,9 @@ public class CriticalSectionAwareSideEffectAnalysis {
         PointsToSet base = pa.reachingObjects(vLocal);
 
         // Get an RWSet containing all fields
-//				Set possibleTypes = base.possibleTypes();
-//				for(Iterator pTypeIt = possibleTypes.iterator(); pTypeIt.hasNext(); )
-//				{
+        // Set possibleTypes = base.possibleTypes();
+        // for(Iterator pTypeIt = possibleTypes.iterator(); pTypeIt.hasNext(); )
+        // {
         Type pType = vLocal.getType(); //(Type) pTypeIt.next();
         if (pType instanceof RefType) {
           SootClass baseTypeClass = ((RefType) pType).getSootClass();
@@ -327,7 +331,7 @@ public class CriticalSectionAwareSideEffectAnalysis {
             }
           }
         }
-//				}
+        // }
 
         // If desired, prune to just actually-read fields
         if (!allFields) {
@@ -399,10 +403,10 @@ public class CriticalSectionAwareSideEffectAnalysis {
     Iterator<MethodOrMethodContext> targets = tt.iterator(stmt);
     while (!ignore && targets.hasNext()) {
       SootMethod target = (SootMethod) targets.next();
-//			if( target.isNative() ) {
-//				if( ret == null ) ret = new SiteRWSet();
-//				ret.setCallsNative();
-//			} else
+      //          if( target.isNative() ) {
+      //              if( ret == null ) ret = new SiteRWSet();
+      //                ret.setCallsNative();
+      //            } else
       if (target.isConcrete()) {
 
 
@@ -410,47 +414,48 @@ public class CriticalSectionAwareSideEffectAnalysis {
         // An approximation of their behavior must be performed here
         if (target.getDeclaringClass().toString().startsWith("java.util") ||
             target.getDeclaringClass().toString().startsWith("java.lang")) {
-/*					RWSet ntr;
-					if(stmt.getInvokeExpr() instanceof InstanceInvokeExpr)
-					{
-						Local base = (Local)((InstanceInvokeExpr)stmt.getInvokeExpr()).getBase();
+        /*                      RWSet ntr;
+                    if(stmt.getInvokeExpr() instanceof InstanceInvokeExpr)
+                      {
+                        Local base = (Local)((InstanceInvokeExpr)stmt.getInvokeExpr()).getBase();
 
-						// Add base object and args to set of possibly contributing uses at this stmt
-						if(!inaccessibleUses)
-						{
-							uses.add(base);
-							int argCount = stmt.getInvokeExpr().getArgCount();
-							for(int i = 0; i < argCount; i++)
-							{
-								if(addValue( stmt.getInvokeExpr().getArg(i), method, stmt ) != null)
-									uses.add(stmt.getInvokeExpr().getArg(i));
-							}
-						}
+                        // Add base object and args to set of possibly contributing uses at this stmt
+                        if(!inaccessibleUses)
+                        {
+                            uses.add(base);
+                            int argCount = stmt.getInvokeExpr().getArgCount();
+                             for(int i = 0; i < argCount; i++)
+                             {
+                             if(addValue( stmt.getInvokeExpr().getArg(i), method, stmt ) != null)
+                             uses.add(stmt.getInvokeExpr().getArg(i));
+                             }
+                             }
 
-						// Add base object to read set
-	            		String InvokeSig = target.getSubSignature();
-	            		if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
-	            			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
-	            		{
-	            			ntr = approximatedReadSet(method, stmt, base, target, true);
-	            		}
-	            		else
-	            		{
-							ntr = approximatedReadSet(method, stmt, base, target, false);
-						}
-					}
-					else
-					{
-						ntr = approximatedReadSet(method, stmt, null, target, false);
-					}
-					ret.union(ntr);
-*/
-        } else {// note that all library functions have already been filtered out (by name) via the filter
+                        // Add base object to read set
+                        String InvokeSig = target.getSubSignature();
+                          if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
+                            InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
+                             {
+                              ntr = approximatedReadSet(method, stmt, base, target, true);
+                              }
+                              else
+                              {
+                              ntr = approximatedReadSet(method, stmt, base, target, false);
+                              }
+                              }
+                              else
+                              {
+                              ntr = approximatedReadSet(method, stmt, null, target, false);
+                              }
+                              ret.union(ntr);
+                              */
+        } else {
+          // note that all library functions have already been filtered out (by name) via the filter
           // passed to the TransitiveTargets constructor.
           RWSet ntr = nonTransitiveReadSet(target);
           if (ntr != null) {
-//						uses.clear();
-//						inaccessibleUses = true;
+            //                    uses.clear();
+            //                    inaccessibleUses = true;
             ret.union(ntr);
           }
         }
@@ -486,11 +491,12 @@ public class CriticalSectionAwareSideEffectAnalysis {
         if (tlo == null || base == null || !tlo.isObjectThreadLocal(base, method)) {
           // add its approximated read set to read
           RWSet r;
-          //	            String InvokeSig = calledMethod.getSubSignature();
-          //        		if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
-          //        			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
-          //					r = approximatedReadSet(method, stmt, base, true);
-          //				else
+          //                String InvokeSig = calledMethod.getSubSignature();
+          //                    if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
+          //                    InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") ||
+          //                    InvokeSig.equals("void wait(long,int)"))
+          //                    r = approximatedReadSet(method, stmt, base, true);
+          //                    else
           r = approximatedReadSet(method, stmt, base, true);
           if (r != null) {
             ret.union(r);
@@ -519,7 +525,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
     return null;
   }
 
-  public RWSet approximatedWriteSet(SootMethod method, Stmt stmt, Value v, boolean allFields) {// used for stmts with method calls where the effect of the method call should be approximated by 0 or 1 writes
+  public RWSet approximatedWriteSet(SootMethod method, Stmt stmt, Value v, boolean allFields) {
+    // used for stmts with method calls where the effect of the method call should be approximated by 0 or 1 writes
     CodeBlockRWSet ret = new CodeBlockRWSet();
     if (v != null) {
       if (v instanceof Local) {
@@ -527,9 +534,9 @@ public class CriticalSectionAwareSideEffectAnalysis {
         PointsToSet base = pa.reachingObjects(vLocal);
 
         // Get an RWSet containing all fields
-//				Set possibleTypes = base.possibleTypes();
-//				for(Iterator pTypeIt = possibleTypes.iterator(); pTypeIt.hasNext(); )
-//				{
+        //                Set possibleTypes = base.possibleTypes();
+        //                for(Iterator pTypeIt = possibleTypes.iterator(); pTypeIt.hasNext(); )
+        //                {
         Type pType = vLocal.getType(); //(Type) pTypeIt.next();
         if (pType instanceof RefType) {
           SootClass baseTypeClass = ((RefType) pType).getSootClass();
@@ -547,7 +554,7 @@ public class CriticalSectionAwareSideEffectAnalysis {
             }
           }
         }
-//				}
+        // }
 
 
         // If desired, prune to just actually-written fields
@@ -614,14 +621,14 @@ public class CriticalSectionAwareSideEffectAnalysis {
     Iterator<MethodOrMethodContext> targets = tt.iterator(stmt);
     while (!ignore && targets.hasNext()) {
       SootMethod target = (SootMethod) targets.next();
-//			if( target.isNative() ) {
-//				if( ret == null ) ret = new SiteRWSet();
-//				ret.setCallsNative();
-//			} else
+      // if( target.isNative() ) {
+      // if( ret == null ) ret = new SiteRWSet();
+      // ret.setCallsNative();
+      // } else
       if (target.isConcrete()) {
         if (target.getDeclaringClass().toString().startsWith("java.util") ||
             target.getDeclaringClass().toString().startsWith("java.lang")) {
-/*					RWSet ntw;
+        /*					RWSet ntw;
 					if(stmt.getInvokeExpr() instanceof InstanceInvokeExpr)
 					{
 						Local base = (Local)((InstanceInvokeExpr)stmt.getInvokeExpr()).getBase();
@@ -633,7 +640,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
 						// Add base object to write set
 	            		String InvokeSig = target.getSubSignature();
 	            		if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") || 
-	            			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
+	            			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") ||
+	            			InvokeSig.equals("void wait(long,int)"))
 	            		{
 							ntw = approximatedWriteSet(method, stmt, base, true);
 		            	}
@@ -651,8 +659,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
         } else {
           RWSet ntw = nonTransitiveWriteSet(target);
           if (ntw != null) {
-//						inaccessibleUses = true;
-//						uses.clear();
+            //						inaccessibleUses = true;
+            //						uses.clear();
             ret.union(ntw);
           }
         }
@@ -691,7 +699,8 @@ public class CriticalSectionAwareSideEffectAnalysis {
           RWSet w;
           //	            String InvokeSig = calledMethod.getSubSignature();
           //        		if( InvokeSig.equals("void notify()") || InvokeSig.equals("void notifyAll()") ||
-          //        			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") || InvokeSig.equals("void wait(long,int)"))
+          //        			InvokeSig.equals("void wait()") || InvokeSig.equals("void wait(long)") ||
+          //                    InvokeSig.equals("void wait(long,int)"))
           //					w = approximatedWriteSet(method, stmt, base, true);
           //				else
           w = approximatedWriteSet(method, stmt, base, true);
@@ -794,10 +803,10 @@ public class CriticalSectionAwareSideEffectAnalysis {
       }
     }
 
-//		if(tlo != null && 
-//			(( v instanceof InstanceFieldRef && tlo.isObjectThreadLocal(((InstanceFieldRef)v).getBase(), m) ) ||
-//			 ( v instanceof ArrayRef && tlo.isObjectThreadLocal(((ArrayRef)v).getBase(), m) )))
-//			return null;
+    //		if(tlo != null &&
+    //			(( v instanceof InstanceFieldRef && tlo.isObjectThreadLocal(((InstanceFieldRef)v).getBase(), m) ) ||
+    //			 ( v instanceof ArrayRef && tlo.isObjectThreadLocal(((ArrayRef)v).getBase(), m) )))
+    //			return null;
 
     if (v instanceof InstanceFieldRef) {
       InstanceFieldRef ifr = (InstanceFieldRef) v;

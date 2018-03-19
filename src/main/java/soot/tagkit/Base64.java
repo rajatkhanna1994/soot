@@ -39,14 +39,14 @@ package soot.tagkit;
 public class Base64 {
 
   //
-// code characters for values 0..63
-//
+  // code characters for values 0..63
+  //
   private static final char[] alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
           .toCharArray();
   //
-// lookup table for converting base64 characters to value in range 0..63
-//
+  // lookup table for converting base64 characters to value in range 0..63
+  //
   private static final byte[] codes = new byte[256];
 
   static {
@@ -154,13 +154,13 @@ public class Base64 {
     for (char element : data) {
       int value = (element > 255) ? -1 : codes[element];
 
-      if (value >= 0)           // skip over non-code
-      {
+      if (value >= 0) {
+        // skip over non-code
         accum <<= 6;            // bits shift up by 6 each time thru
         shift += 6;             // loop, with new bits being put in
         accum |= value;         // at the bottom.
-        if (shift >= 8)       // whenever there are 8 or more shifted in,
-        {
+        if (shift >= 8) {
+          // whenever there are 8 or more shifted in,
           shift -= 8;         // write them out (from the top, leaving any
           out[index++] =      // excess at the bottom for next iteration.
               (byte) ((accum >> shift) & 0xff);

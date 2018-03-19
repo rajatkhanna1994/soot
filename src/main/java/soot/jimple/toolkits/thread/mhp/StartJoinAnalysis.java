@@ -85,7 +85,8 @@ public class StartJoinAnalysis extends ForwardFlowAnalysis {
         Stmt start = startIt.next();
 
         List<SootMethod> runMethodsList = new ArrayList<SootMethod>(); // will be a list of possible run methods called by this start stmt
-        List<AllocNode> allocNodesList = new ArrayList<AllocNode>(); // will be a list of possible allocation nodes for the thread object that's getting started
+        List<AllocNode> allocNodesList = new ArrayList<AllocNode>();
+        // will be a list of possible allocation nodes for the thread object that's getting started
 
         // Get possible thread objects (may alias)
         Value startObject = ((InstanceInvokeExpr) (start).getInvokeExpr()).getBase();
@@ -125,21 +126,20 @@ public class StartJoinAnalysis extends ForwardFlowAnalysis {
           allocNodesList.add(allocNode);
           if (runMethodsList.isEmpty()) {
             throw new RuntimeException("Can't find run method for: " + startObject);
-/*
-						if( allocNode.getType() instanceof RefType )
-						{
-							List threadClasses = hierarchy.getSubclassesOf(((RefType) allocNode.getType()).getSootClass());
-							Iterator threadClassesIt = threadClasses.iterator();
-							while(threadClassesIt.hasNext())
-							{
-								SootClass currentClass = (SootClass) threadClassesIt.next();
-								if( currentClass.declaresMethod("void run()") )							
-								{
-									runMethodsList.add(currentClass.getMethod("void run()"));
-								}
-							}
-						}
-*/
+            /*
+              if( allocNode.getType() instanceof RefType )
+                {
+                List threadClasses = hierarchy.getSubclassesOf(((RefType) allocNode.getType()).getSootClass());
+                Iterator threadClassesIt = threadClasses.iterator();
+                while(threadClassesIt.hasNext()) {
+                SootClass currentClass = (SootClass) threadClassesIt.next();
+                if( currentClass.declaresMethod("void run()") )
+                {
+                runMethodsList.add(currentClass.getMethod("void run()"));
+                }
+                }
+                }
+            */
           }
         }
 
@@ -156,11 +156,11 @@ public class StartJoinAnalysis extends ForwardFlowAnalysis {
           // If startObject and joinObject MUST be the same, and if join post-dominates start
           List barriers = new ArrayList();
           barriers.addAll(g.getSuccsOf(join)); // definitions of the start variable are tracked until they pass a join
-//					if( lif.areEqualUses( start, (Local) startObject, join, (Local) joinObject, barriers) )
+          // if( lif.areEqualUses( start, (Local) startObject, join, (Local) joinObject, barriers) )
           if (lma.mustAlias((Local) startObject, start, (Local) joinObject, join)) {
-            if ((pd.getDominators(start)).contains(join)) // does join post-dominate start?
-            {
-//							logger.debug("START-JOIN PAIR: " + start + ", " + join);
+            if ((pd.getDominators(start)).contains(join)) {
+              // does join post-dominate start?
+              // logger.debug("START-JOIN PAIR: " + start + ", " + join);
               startToJoin.put(start, join); // then this join always joins this start's thread
             }
           }
@@ -225,28 +225,27 @@ public class StartJoinAnalysis extends ForwardFlowAnalysis {
   protected void flowThrough(Object inValue, Object unit,
                              Object outValue) {
     Stmt stmt = (Stmt) unit;
-		
-/*
-		in.copy(out);
+    /*
+    in.copy(out);
 
-		// get list of definitions at this unit
-		List newDefs = new ArrayList();
-		if(stmt instanceof DefinitionStmt)
-		{
-			Value leftOp = ((DefinitionStmt)stmt).getLeftOp();
-			if(leftOp instanceof Local)
-				newDefs.add((Local) leftOp);
-		}
-		
-		// kill any start stmt whose base has been redefined
-		Iterator outIt = out.iterator();
-		while(outIt.hasNext())
-		{
-			Stmt outStmt = (Stmt) outIt.next();
-			if(newDefs.contains((Local) ((InstanceInvokeExpr) (outStmt).getInvokeExpr()).getBase()))
-				out.remove(outStmt);
-		}
-*/
+    // get list of definitions at this unit
+    List newDefs = new ArrayList();
+      if(stmt instanceof DefinitionStmt)
+        {
+          Value leftOp = ((DefinitionStmt)stmt).getLeftOp();
+          if(leftOp instanceof Local)
+            newDefs.add((Local) leftOp);
+        }
+
+        // kill any start stmt whose base has been redefined
+        Iterator outIt = out.iterator();
+        while(outIt.hasNext())
+        {
+            Stmt outStmt = (Stmt) outIt.next();
+            if(newDefs.contains((Local) ((InstanceInvokeExpr) (outStmt).getInvokeExpr()).getBase()))
+            out.remove(outStmt);
+            }
+            */
     // Search for start/join invoke expressions
     if (stmt.containsInvokeExpr()) {
       // If this is a start stmt, add it to startStatements
@@ -256,8 +255,8 @@ public class StartJoinAnalysis extends ForwardFlowAnalysis {
         SootMethod invokeMethod = ie.getMethod();
         if (invokeMethod.getName().equals("start")) {
           RefType baseType = (RefType) iie.getBase().getType();
-          if (!baseType.getSootClass().isInterface()) // the start method we're looking for is NOT an interface method
-          {
+          if (!baseType.getSootClass().isInterface()) {
+            // the start method we're looking for is NOT an interface method
             List<SootClass> superClasses = hierarchy.getSuperclassesOfIncluding(baseType.getSootClass());
             Iterator<SootClass> it = superClasses.iterator();
             while (it.hasNext()) {
@@ -268,15 +267,15 @@ public class StartJoinAnalysis extends ForwardFlowAnalysis {
                 }
 
                 // Flow this Thread.start() down
-                //						out.add(stmt);
+                // out.add(stmt);
               }
             }
           }
         }
 
         // If this is a join stmt, add it to joinStatements
-        if (invokeMethod.getName().equals("join")) // the join method we're looking for is NOT an interface method
-        {
+        if (invokeMethod.getName().equals("join")) {
+          // the join method we're looking for is NOT an interface method
           RefType baseType = (RefType) iie.getBase().getType();
           if (!baseType.getSootClass().isInterface()) {
             List<SootClass> superClasses = hierarchy.getSuperclassesOfIncluding(baseType.getSootClass());

@@ -17,10 +17,7 @@ import soot.toolkits.graph.UnitGraph;
 // -Richard L. Halpert, 2006-11-30
 
 
-public class OtherStmt extends JPegStmt
-
-{
-
+public class OtherStmt extends JPegStmt {
   public OtherStmt(String obj, String na, String ca, Unit un, UnitGraph ug, SootMethod sm) {
     this.object = obj;
     this.name = na;

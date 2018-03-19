@@ -119,13 +119,12 @@ class ConstraintChecker extends AbstractStmtSwitch {
     throw new RuntimeTypeException(message);
   }
 
-  static Type getTypeForCast(TypeNode node)
-  // This method is a local kludge, for avoiding NullPointerExceptions
-  // when a R0_1, R0_127, or R0_32767 node is used in a type
-  // cast. A more elegant solution would work with the TypeNode
-  // type definition itself, but that would require a more thorough
-  // knowledge of the typing system than the kludger posesses.
-  {
+  static Type getTypeForCast(TypeNode node) {
+    // This method is a local kludge, for avoiding NullPointerExceptions
+    // when a R0_1, R0_127, or R0_32767 node is used in a type
+    // cast. A more elegant solution would work with the TypeNode
+    // type definition itself, but that would require a more thorough
+    // knowledge of the typing system than the kludger posesses.
     if (node.type() == null) {
       if (node == ClassHierarchy.v().R0_1) {
         return BooleanType.v();
@@ -286,7 +285,9 @@ class ConstraintChecker extends AbstractStmtSwitch {
         }
       }
     } else if (r instanceof DoubleConstant) {
+      ;
     } else if (r instanceof FloatConstant) {
+      ;
     } else if (r instanceof IntConstant) {
       int value = ((IntConstant) r).value;
 
@@ -308,9 +309,13 @@ class ConstraintChecker extends AbstractStmtSwitch {
         right = ClassHierarchy.v().INT;
       }
     } else if (r instanceof LongConstant) {
+      ;
     } else if (r instanceof NullConstant) {
+      ;
     } else if (r instanceof StringConstant) {
+      ;
     } else if (r instanceof ClassConstant) {
+      ;
     } else if (r instanceof BinopExpr) {
       // ******** BINOP EXPR ********
 
@@ -328,7 +333,9 @@ class ConstraintChecker extends AbstractStmtSwitch {
           lop = ClassHierarchy.v().typeNode(((Local) lv).getType());
         }
       } else if (lv instanceof DoubleConstant) {
+        ;
       } else if (lv instanceof FloatConstant) {
+        ;
       } else if (lv instanceof IntConstant) {
         int value = ((IntConstant) lv).value;
 
@@ -350,9 +357,13 @@ class ConstraintChecker extends AbstractStmtSwitch {
           lop = ClassHierarchy.v().INT;
         }
       } else if (lv instanceof LongConstant) {
+        ;
       } else if (lv instanceof NullConstant) {
+        ;
       } else if (lv instanceof StringConstant) {
+        ;
       } else if (lv instanceof ClassConstant) {
+        ;
       } else {
         throw new RuntimeException(
             "Unhandled binary expression left operand type: "
@@ -365,7 +376,9 @@ class ConstraintChecker extends AbstractStmtSwitch {
           rop = ClassHierarchy.v().typeNode(((Local) rv).getType());
         }
       } else if (rv instanceof DoubleConstant) {
+        ;
       } else if (rv instanceof FloatConstant) {
+        ;
       } else if (rv instanceof IntConstant) {
         int value = ((IntConstant) rv).value;
 
@@ -387,9 +400,13 @@ class ConstraintChecker extends AbstractStmtSwitch {
           rop = ClassHierarchy.v().INT;
         }
       } else if (rv instanceof LongConstant) {
+        ;
       } else if (rv instanceof NullConstant) {
+        ;
       } else if (rv instanceof StringConstant) {
+        ;
       } else if (rv instanceof ClassConstant) {
+        ;
       } else {
         throw new RuntimeException(
             "Unhandled binary expression right operand type: "
@@ -557,6 +574,7 @@ class ConstraintChecker extends AbstractStmtSwitch {
         }
       }
     } else if (r instanceof NewExpr) {
+      ;
     } else if (r instanceof NewMultiArrayExpr) {
       NewMultiArrayExpr nmae = (NewMultiArrayExpr) r;
 
@@ -599,10 +617,13 @@ class ConstraintChecker extends AbstractStmtSwitch {
               .v().INT : ltype;
         }
       } else if (ne.getOp() instanceof DoubleConstant) {
+        ;
       } else if (ne.getOp() instanceof FloatConstant) {
+        ;
       } else if (ne.getOp() instanceof IntConstant) {
         right = ClassHierarchy.v().INT;
       } else if (ne.getOp() instanceof LongConstant) {
+        ;
       } else {
         throw new RuntimeException(
             "Unhandled neg expression operand type: "
@@ -693,7 +714,9 @@ class ConstraintChecker extends AbstractStmtSwitch {
         lop = ClassHierarchy.v().typeNode(((Local) lv).getType());
       }
     } else if (lv instanceof DoubleConstant) {
+      ;
     } else if (lv instanceof FloatConstant) {
+      ;
     } else if (lv instanceof IntConstant) {
       int value = ((IntConstant) lv).value;
 
@@ -715,9 +738,13 @@ class ConstraintChecker extends AbstractStmtSwitch {
         lop = ClassHierarchy.v().INT;
       }
     } else if (lv instanceof LongConstant) {
+      ;
     } else if (lv instanceof NullConstant) {
+      ;
     } else if (lv instanceof StringConstant) {
+      ;
     } else if (lv instanceof ClassConstant) {
+      ;
     } else {
       throw new RuntimeException(
           "Unhandled binary expression left operand type: "
@@ -730,7 +757,9 @@ class ConstraintChecker extends AbstractStmtSwitch {
         rop = ClassHierarchy.v().typeNode(((Local) rv).getType());
       }
     } else if (rv instanceof DoubleConstant) {
+      ;
     } else if (rv instanceof FloatConstant) {
+      ;
     } else if (rv instanceof IntConstant) {
       int value = ((IntConstant) rv).value;
 
@@ -752,9 +781,13 @@ class ConstraintChecker extends AbstractStmtSwitch {
         rop = ClassHierarchy.v().INT;
       }
     } else if (rv instanceof LongConstant) {
+      ;
     } else if (rv instanceof NullConstant) {
+      ;
     } else if (rv instanceof StringConstant) {
+      ;
     } else if (rv instanceof ClassConstant) {
+      ;
     } else {
       throw new RuntimeException(
           "Unhandled binary expression right operand type: "

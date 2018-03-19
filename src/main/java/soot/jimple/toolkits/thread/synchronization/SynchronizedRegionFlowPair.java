@@ -29,11 +29,11 @@ class SynchronizedRegionFlowPair {
   }
 
   public boolean equals(Object other) {
-//		logger.debug(".");
+    //  logger.debug(".");
     if (other instanceof SynchronizedRegionFlowPair) {
       SynchronizedRegionFlowPair tfp = (SynchronizedRegionFlowPair) other;
-      if (this.tn.IDNum == tfp.tn.IDNum) // && this.inside == tfp.inside)
-      {
+      if (this.tn.IDNum == tfp.tn.IDNum) {
+        // && this.inside == tfp.inside)
         return true;
       }
     }

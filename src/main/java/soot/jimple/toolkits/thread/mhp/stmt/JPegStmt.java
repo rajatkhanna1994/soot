@@ -46,14 +46,10 @@ import soot.toolkits.graph.UnitGraph;
 // -Richard L. Halpert, 2006-11-30
 
 
-public abstract class JPegStmt extends AbstractHost
-
-//public class JPegStmt implements CommunicationStmt
-//public class JPegStmt extends AbstractStmt implements CommunicationStm 
-//public class JPegStmt extends AbstractStm 
-
-{
-
+public abstract class JPegStmt extends AbstractHost {
+  // public class JPegStmt implements CommunicationStmt
+  // public class JPegStmt extends AbstractStmt implements CommunicationStm
+  // public class JPegStmt extends AbstractStm
   protected String object;
   protected String name;
   protected String caller;
@@ -164,20 +160,18 @@ public abstract class JPegStmt extends AbstractHost
   public SootMethod getMethod() {
     return sootMethod;
   }
-	
-	/* public void apply(Switch sw)
-	 {
-	 ((StmtSwitch) sw).caseCommunicationStmt(this);
-	 }
-	 */
-	
-	/* public Object clone() 
-	 {
-	 if (containUnit()){
-	 }
-	 return new JPegStmt(object,name,caller, );
-	 }
-	 */
+  /* public void apply(Switch sw)
+     {
+      ((StmtSwitch) sw).caseCommunicationStmt(this);
+     }
+  */
+  /* public Object clone()
+     {
+     if (containUnit()){
+     }
+     return new JPegStmt(object,name,caller, );
+     }
+   */
 
   public String toString() {
 
@@ -202,6 +196,4 @@ public abstract class JPegStmt extends AbstractHost
     }
 
   }
-
-
 }

@@ -250,9 +250,8 @@ public class ConstantInitializerToTagTransformer extends SceneTransformer {
         return false;
       }
       return ((StringConstantValueTag) t).getStringValue().equals(((StringConstant) rightOp).value);
-    } else
-    // We don't know the type, so we assume it's alright
-    {
+    } else {
+      // We don't know the type, so we assume it's alright
       return true;
     }
   }
